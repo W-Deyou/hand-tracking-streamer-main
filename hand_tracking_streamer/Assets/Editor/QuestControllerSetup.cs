@@ -8,6 +8,8 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Installs Meta Interaction SDK controller tracking and ray interactors into
@@ -80,10 +82,13 @@ public static class QuestControllerSetup
                     : transform.name == "[BuildingBlock] Controller Tracking Right" &&
                       Approximately(transform.localPosition, new Vector3(0.005f, 0f, 0.06f)));
         bool quest3OnlyControllerPreview = IsQuest3OnlyControllerPreview(scene);
+        int controllerStreamers = Resources.FindObjectsOfTypeAll<ControllerInputStreamer>()
+            .Count(streamer => streamer.gameObject.scene == scene);
         if (controllerBlockExists && configuredManager != null &&
             configuredManager.rayInteractors != null && configuredManager.rayInteractors.Length >= 4 &&
             quest3PointerCorrectors >= 2 && calibratedControllerVisuals >= 2 &&
-            quest3OnlyControllerPreview)
+            quest3OnlyControllerPreview && controllerStreamers >= 2 &&
+            configuredManager.controllerInputToggle != null)
         {
             return;
         }
@@ -119,6 +124,8 @@ public static class QuestControllerSetup
             ConfigureQuest3PointerCorrectors(scene);
             ConfigureControllerVisualTranslation(scene);
             ConfigureQuest3ControllerModelPreview(scene);
+            ConfigureControllerTelemetry(scene);
+            ConfigureControllerModeToggle(scene);
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
@@ -432,6 +439,80 @@ public static class QuestControllerSetup
         }
 
         return true;
+    }
+
+    private static void ConfigureControllerTelemetry(Scene scene)
+    {
+        Type controllerType = FindType("Oculus.Interaction.Input.Controller");
+        foreach (Component controller in FindSceneComponents(controllerType, scene))
+        {
+            bool isLeft = controller.gameObject.name.IndexOf("Left", StringComparison.OrdinalIgnoreCase) >= 0;
+            bool isRight = controller.gameObject.name.IndexOf("Right", StringComparison.OrdinalIgnoreCase) >= 0;
+            if (!isLeft && !isRight)
+            {
+                continue;
+            }
+
+            ControllerAxisVisualizer visualizer = controller.GetComponent<ControllerAxisVisualizer>();
+            if (visualizer == null)
+            {
+                visualizer = Undo.AddComponent<ControllerAxisVisualizer>(controller.gameObject);
+            }
+
+            ControllerInputStreamer streamer = controller.GetComponent<ControllerInputStreamer>();
+            if (streamer == null)
+            {
+                streamer = Undo.AddComponent<ControllerInputStreamer>(controller.gameObject);
+            }
+
+            SerializedObject serializedStreamer = new SerializedObject(streamer);
+            serializedStreamer.FindProperty("controllerSide").enumValueIndex = isLeft ? 0 : 1;
+            serializedStreamer.FindProperty("hudLogSource").stringValue = isLeft ? "Left" : "Right";
+            serializedStreamer.FindProperty("axisVisualizer").objectReferenceValue = visualizer;
+            serializedStreamer.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(streamer);
+        }
+    }
+
+    private static void ConfigureControllerModeToggle(Scene scene)
+    {
+        AppManager appManager = Resources.FindObjectsOfTypeAll<AppManager>()
+            .FirstOrDefault(manager => manager.gameObject.scene == scene);
+        if (appManager == null)
+        {
+            throw new InvalidOperationException("AppManager was not found in the active streamer scene.");
+        }
+
+        Toggle controllerToggle = Resources.FindObjectsOfTypeAll<Toggle>()
+            .FirstOrDefault(toggle => toggle.gameObject.scene == scene && toggle.gameObject.name == "Tgl_ControllerInput");
+        if (controllerToggle == null)
+        {
+            Toggle template = Resources.FindObjectsOfTypeAll<Toggle>()
+                .FirstOrDefault(toggle => toggle.gameObject.scene == scene && toggle.gameObject.name == "Tgl_HeadPose");
+            Transform row = scene.GetRootGameObjects()
+                .SelectMany(root => root.GetComponentsInChildren<Transform>(true))
+                .FirstOrDefault(transform => transform.name == "Debug_Experimental");
+            if (template == null || row == null)
+            {
+                throw new InvalidOperationException("Controller mode toggle template or Debug_Experimental row was not found.");
+            }
+
+            controllerToggle = UnityEngine.Object.Instantiate(template, row, false);
+            controllerToggle.gameObject.name = "Tgl_ControllerInput";
+            controllerToggle.isOn = false;
+            controllerToggle.onValueChanged = new Toggle.ToggleEvent();
+            TextMeshProUGUI label = controllerToggle.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (label != null)
+            {
+                label.text = "Controller Input";
+            }
+            Undo.RegisterCreatedObjectUndo(controllerToggle.gameObject, "Add controller input toggle");
+        }
+
+        Undo.RecordObject(appManager, "Register controller input toggle");
+        appManager.controllerInputToggle = controllerToggle;
+        EditorUtility.SetDirty(controllerToggle);
+        EditorUtility.SetDirty(appManager);
     }
 
     private static IEnumerable<Component> FindSceneComponents(Type type, Scene scene)

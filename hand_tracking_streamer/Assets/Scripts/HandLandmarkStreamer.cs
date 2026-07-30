@@ -84,7 +84,7 @@ public class HandLandmarkStreamer : MonoBehaviour
     private void OnHandUpdated()
     {
         // 1. Check AppManager State
-        if (AppManager.Instance == null || !AppManager.Instance.isStreaming)
+        if (AppManager.Instance == null || !AppManager.Instance.isStreaming || !AppManager.Instance.IsHandMode)
         {
             if (_isInitialized) Disconnect();
             return;

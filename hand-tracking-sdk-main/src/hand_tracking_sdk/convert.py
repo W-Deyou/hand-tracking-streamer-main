@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from hand_tracking_sdk.frame import HandFrame
-from hand_tracking_sdk.models import HandLandmarks, WristPose
+from hand_tracking_sdk.frame import ControllerFrame, HandFrame
+from hand_tracking_sdk.models import ControllerPose, HandLandmarks, WristPose
 
 # Type alias for a 3×3 matrix stored as a tuple-of-tuples.
 Matrix3x3 = tuple[
@@ -137,6 +137,13 @@ def convert_wrist_pose_unity_left_to_right(pose: WristPose) -> WristPose:
     return WristPose(x=x, y=y, z=z, qx=qx, qy=qy, qz=qz, qw=qw)
 
 
+def convert_controller_pose_unity_left_to_right(pose: ControllerPose) -> ControllerPose:
+    """Convert a controller endpoint pose to the SDK right-handed basis."""
+    x, y, z = unity_left_to_right_position(pose.x, pose.y, pose.z)
+    qx, qy, qz, qw = unity_left_to_right_quaternion(pose.qx, pose.qy, pose.qz, pose.qw)
+    return ControllerPose(x=x, y=y, z=z, qx=qx, qy=qy, qz=qz, qw=qw)
+
+
 def convert_landmarks_unity_left_to_right(landmarks: HandLandmarks) -> HandLandmarks:
     """Convert hand landmarks from Unity left-handed to right-handed.
 
@@ -171,6 +178,23 @@ def convert_hand_frame_unity_left_to_right(frame: HandFrame) -> HandFrame:
         wrist_recv_ts_ns=frame.wrist_recv_ts_ns,
         landmarks_recv_ts_ns=frame.landmarks_recv_ts_ns,
         source_frame_seq=frame.source_frame_seq,
+    )
+
+
+def convert_controller_frame_unity_left_to_right(frame: ControllerFrame) -> ControllerFrame:
+    """Convert controller geometry while preserving input and timing metadata."""
+    return ControllerFrame(
+        side=frame.side,
+        frame_id=frame.frame_id,
+        pose=convert_controller_pose_unity_left_to_right(frame.pose),
+        input=frame.input,
+        sequence_id=frame.sequence_id,
+        recv_ts_ns=frame.recv_ts_ns,
+        recv_time_unix_ns=frame.recv_time_unix_ns,
+        source_ts_ns=frame.source_ts_ns,
+        source_frame_seq=frame.source_frame_seq,
+        pose_recv_ts_ns=frame.pose_recv_ts_ns,
+        input_recv_ts_ns=frame.input_recv_ts_ns,
     )
 
 

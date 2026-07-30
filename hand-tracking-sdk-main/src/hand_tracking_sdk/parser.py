@@ -2,9 +2,19 @@
 
 import re
 
-from hand_tracking_sdk.constants import LANDMARK_COUNT, LANDMARK_VALUE_COUNT, WRIST_VALUE_COUNT
+from hand_tracking_sdk.constants import (
+    CONTROLLER_INPUT_VALUE_COUNT,
+    CONTROLLER_POSE_VALUE_COUNT,
+    LANDMARK_COUNT,
+    LANDMARK_VALUE_COUNT,
+    WRIST_VALUE_COUNT,
+)
 from hand_tracking_sdk.exceptions import ParseError
 from hand_tracking_sdk.models import (
+    ControllerInputPacket,
+    ControllerInputState,
+    ControllerPose,
+    ControllerPosePacket,
     HandLandmarks,
     HandSide,
     HeadPose,
@@ -51,6 +61,10 @@ def parse_line(line: str) -> ParsedPacket:
         return _parse_wrist(side=side, values=payload, debug=debug_info)
     if kind == PacketType.POSE:
         return _parse_pose(side=side, values=payload, debug=debug_info)
+    if kind == PacketType.CONTROLLER_POSE:
+        return _parse_controller_pose(side=side, values=payload, debug=debug_info)
+    if kind == PacketType.CONTROLLER_INPUT:
+        return _parse_controller_input(side=side, values=payload, debug=debug_info)
     return _parse_landmarks(side=side, values=payload, debug=debug_info)
 
 
@@ -104,23 +118,29 @@ def _parse_label(label: str) -> tuple[HandSide, PacketType]:
         If label format, side, or packet type is unsupported.
     """
     parts = label.split()
-    if len(parts) != 2:
+    if len(parts) not in {2, 3}:
         raise ParseError(f"Invalid label: {label!r}")
 
-    side_raw, kind_raw = parts
+    side_raw = parts[0]
+    kind_raw = " ".join(parts[1:]).lower()
 
     try:
         side = HandSide(side_raw)
     except ValueError as exc:
         raise ParseError(f"Unsupported hand side: {side_raw!r}") from exc
 
-    normalized_kind = kind_raw.lower()
-    if normalized_kind == PacketType.WRIST.value:
+    if kind_raw == PacketType.WRIST.value:
         return side, PacketType.WRIST
-    if normalized_kind == PacketType.LANDMARKS.value:
+    if kind_raw == PacketType.LANDMARKS.value:
         return side, PacketType.LANDMARKS
-    if normalized_kind == PacketType.POSE.value:
+    if kind_raw == PacketType.POSE.value:
         return side, PacketType.POSE
+    if side == HandSide.HEAD:
+        raise ParseError(f"Unsupported packet type: {kind_raw!r}")
+    if kind_raw == PacketType.CONTROLLER_POSE.value:
+        return side, PacketType.CONTROLLER_POSE
+    if kind_raw == PacketType.CONTROLLER_INPUT.value:
+        return side, PacketType.CONTROLLER_INPUT
     raise ParseError(f"Unsupported packet type: {kind_raw!r}")
 
 
@@ -175,6 +195,68 @@ def _parse_pose(
 
     pose = HeadPose(*values)
     return HeadPosePacket(side=side, kind=PacketType.POSE, data=pose, debug=debug)
+
+
+def _parse_controller_pose(
+    side: HandSide,
+    values: list[float],
+    debug: PacketDebugInfo | None,
+) -> ControllerPosePacket:
+    """Validate and map one controller endpoint pose packet."""
+    if len(values) != CONTROLLER_POSE_VALUE_COUNT:
+        raise ParseError(
+            "Controller pose packet must contain "
+            f"{CONTROLLER_POSE_VALUE_COUNT} values, got {len(values)}"
+        )
+    return ControllerPosePacket(
+        side=side,
+        kind=PacketType.CONTROLLER_POSE,
+        data=ControllerPose(*values),
+        debug=debug,
+    )
+
+
+def _parse_controller_input(
+    side: HandSide,
+    values: list[float],
+    debug: PacketDebugInfo | None,
+) -> ControllerInputPacket:
+    """Validate and map one controller input snapshot."""
+    if len(values) != CONTROLLER_INPUT_VALUE_COUNT:
+        raise ParseError(
+            "Controller input packet must contain "
+            f"{CONTROLLER_INPUT_VALUE_COUNT} values, got {len(values)}"
+        )
+
+    trigger, grip, stick_x, stick_y = values[:4]
+    epsilon = 1e-6
+    for name, value in (("trigger", trigger), ("grip", grip)):
+        if value < -epsilon or value > 1.0 + epsilon:
+            raise ParseError(f"Controller {name} must be in [0, 1], got {value}")
+    for name, value in (("stick_x", stick_x), ("stick_y", stick_y)):
+        if value < -1.0 - epsilon or value > 1.0 + epsilon:
+            raise ParseError(f"Controller {name} must be in [-1, 1], got {value}")
+
+    button_values = values[4:]
+    if any(value not in {0.0, 1.0} for value in button_values):
+        raise ParseError("Controller button fields must be numeric 0 or 1")
+
+    return ControllerInputPacket(
+        side=side,
+        kind=PacketType.CONTROLLER_INPUT,
+        data=ControllerInputState(
+            trigger=trigger,
+            grip=grip,
+            stick_x=stick_x,
+            stick_y=stick_y,
+            primary=bool(button_values[0]),
+            secondary=bool(button_values[1]),
+            trigger_button=bool(button_values[2]),
+            grip_button=bool(button_values[3]),
+            stick_click=bool(button_values[4]),
+        ),
+        debug=debug,
+    )
 
 
 def _parse_landmarks(

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import rclpy
-from hand_tracking_sdk import JointName
+from hand_tracking_sdk import ControllerFrame, HandSide, JointName
 from rclpy.node import Node
 from tf2_ros import TransformBroadcaster
 
@@ -14,12 +14,14 @@ from .adapters import (
     ros_time_from_unix_ns,
     to_landmarks_pose_array,
     to_marker_array,
+    to_controller_joy,
+    to_controller_pose_stamped,
     to_wrist_pose_stamped,
 )
 from .diagnostics import DiagnosticsPublisher
 from .publishers import BridgePublishers, sensor_qos_profile
 from .runtime import FrameRuntime
-from .tf_broadcaster import WristTfPublisher
+from .tf_broadcaster import ControllerTfPublisher, WristTfPublisher
 
 
 class HandTrackingBridgeNode(Node):
@@ -36,6 +38,8 @@ class HandTrackingBridgeNode(Node):
         self.declare_parameter("world_frame", "world")
         self.declare_parameter("left_wrist_frame", "left_wrist")
         self.declare_parameter("right_wrist_frame", "right_wrist")
+        self.declare_parameter("left_controller_frame", "left_controller_endpoint")
+        self.declare_parameter("right_controller_frame", "right_controller_endpoint")
         self.declare_parameter("use_source_frame_id", False)
         self.declare_parameter("landmarks_are_wrist_relative", True)
         self.declare_parameter("qos_reliability", "best_effort")
@@ -43,6 +47,7 @@ class HandTrackingBridgeNode(Node):
         self.declare_parameter("enable_tf", True)
         self.declare_parameter("enable_pose_array", True)
         self.declare_parameter("enable_markers", True)
+        self.declare_parameter("enable_controller_topics", True)
         self.declare_parameter("enable_diagnostics", True)
         self.declare_parameter("diagnostics_period_s", 1.0)
 
@@ -54,6 +59,8 @@ class HandTrackingBridgeNode(Node):
         world_frame = str(self.get_parameter("world_frame").value)
         self._left_wrist_frame = str(self.get_parameter("left_wrist_frame").value)
         self._right_wrist_frame = str(self.get_parameter("right_wrist_frame").value)
+        self._left_controller_frame = str(self.get_parameter("left_controller_frame").value)
+        self._right_controller_frame = str(self.get_parameter("right_controller_frame").value)
         self._use_source_frame_id = bool(self.get_parameter("use_source_frame_id").value)
         self._landmarks_are_wrist_relative = bool(
             self.get_parameter("landmarks_are_wrist_relative").value
@@ -63,6 +70,9 @@ class HandTrackingBridgeNode(Node):
         self._enable_tf = bool(self.get_parameter("enable_tf").value)
         self._enable_pose_array = bool(self.get_parameter("enable_pose_array").value)
         self._enable_markers = bool(self.get_parameter("enable_markers").value)
+        self._enable_controller_topics = bool(
+            self.get_parameter("enable_controller_topics").value
+        )
         self._enable_diagnostics = bool(self.get_parameter("enable_diagnostics").value)
         diagnostics_period_s = float(self.get_parameter("diagnostics_period_s").value)
 
@@ -76,13 +86,22 @@ class HandTrackingBridgeNode(Node):
             sensor_qos=qos,
             enable_pose_array=self._enable_pose_array,
             enable_markers=self._enable_markers,
+            enable_controller_topics=self._enable_controller_topics,
         )
+        transform_broadcaster = TransformBroadcaster(self)
         self._tf_publisher = WristTfPublisher(
-            TransformBroadcaster(self),
+            transform_broadcaster,
             enabled=self._enable_tf,
             world_frame=self._world_frame,
             left_wrist_frame=self._left_wrist_frame,
             right_wrist_frame=self._right_wrist_frame,
+        )
+        self._controller_tf_publisher = ControllerTfPublisher(
+            transform_broadcaster,
+            enabled=self._enable_tf,
+            world_frame=self._world_frame,
+            left_controller_frame=self._left_controller_frame,
+            right_controller_frame=self._right_controller_frame,
         )
         self._diagnostics = DiagnosticsPublisher(self)
 
@@ -123,6 +142,28 @@ class HandTrackingBridgeNode(Node):
                 stamp = ros_time_from_unix_ns(frame.recv_time_unix_ns)
             else:
                 stamp = self.get_clock().now().to_msg()
+
+            if isinstance(frame, ControllerFrame):
+                endpoint_frame = (
+                    self._left_controller_frame
+                    if frame.side == HandSide.LEFT
+                    else self._right_controller_frame
+                )
+                pose_msg = to_controller_pose_stamped(
+                    frame,
+                    stamp=stamp,
+                    frame_id=self._world_frame,
+                )
+                input_msg = to_controller_joy(
+                    frame,
+                    stamp=stamp,
+                    frame_id=endpoint_frame,
+                )
+                self._bridge_publishers.publish_controller_pose(frame.side, pose_msg)
+                self._bridge_publishers.publish_controller_input(frame.side, input_msg)
+                self._controller_tf_publisher.publish(frame, stamp)
+                self._last_frame_time = self.get_clock().now()
+                continue
 
             frame_id = frame_id_for_side(
                 frame,

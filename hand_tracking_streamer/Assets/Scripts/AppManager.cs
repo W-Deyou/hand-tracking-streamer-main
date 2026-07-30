@@ -4,6 +4,12 @@ using UnityEngine.UI;
 using System;
 using System.Net.Sockets;
 
+public enum InputMappingMode
+{
+    Hands = 0,
+    Controllers = 1,
+}
+
 public class AppManager : MonoBehaviour
 {
     public static AppManager Instance { get; private set; } 
@@ -13,6 +19,7 @@ public class AppManager : MonoBehaviour
     public TMP_InputField ipInputField;
     public TMP_InputField portInputField;
     public TMP_Dropdown handDropdown;     
+    public Toggle controllerInputToggle;
     public GameObject menuPanel;          
     
     [Header("Network Status References")]
@@ -25,6 +32,7 @@ public class AppManager : MonoBehaviour
     [Header("Visual Settings")]
     public Toggle visualizationToggle; 
     public bool ShowLandmarks => visualizationToggle != null && visualizationToggle.isOn;
+    public bool ShowControllerAxes => visualizationToggle != null && visualizationToggle.isOn;
 
     [Header("Debug and Experimental")]
     public Toggle debugInfoToggle;
@@ -55,11 +63,76 @@ public class AppManager : MonoBehaviour
     public int ServerPort { get; private set; }
     public int SelectedProtocol { get; private set; } 
     public int SelectedHandMode { get; private set; } 
+    public InputMappingMode SelectedInputMode { get; private set; } = InputMappingMode.Hands;
+    public bool IsHandMode => SelectedInputMode == InputMappingMode.Hands;
+    public bool IsControllerMode => SelectedInputMode == InputMappingMode.Controllers;
 
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(this);
-        else Instance = this;
+        else
+        {
+            Instance = this;
+            EnsureControllerModeUi();
+            EnsureControllerTelemetry();
+        }
+    }
+
+    private void EnsureControllerModeUi()
+    {
+        if (controllerInputToggle != null || headPoseToggle == null)
+        {
+            return;
+        }
+
+        Transform row = headPoseToggle.transform.parent;
+        if (row == null)
+        {
+            return;
+        }
+
+        controllerInputToggle = Instantiate(headPoseToggle, row, false);
+        controllerInputToggle.gameObject.name = "Tgl_ControllerInput";
+        controllerInputToggle.isOn = false;
+        controllerInputToggle.onValueChanged = new Toggle.ToggleEvent();
+        TextMeshProUGUI label = controllerInputToggle.GetComponentInChildren<TextMeshProUGUI>(true);
+        if (label != null)
+        {
+            label.text = "Controller Input";
+        }
+    }
+
+    private static void EnsureControllerTelemetry()
+    {
+        Oculus.Interaction.Input.Controller[] controllers = FindObjectsByType<Oculus.Interaction.Input.Controller>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+        foreach (Oculus.Interaction.Input.Controller controller in controllers)
+        {
+            bool isLeft = controller.gameObject.name.IndexOf("Left", StringComparison.OrdinalIgnoreCase) >= 0;
+            bool isRight = controller.gameObject.name.IndexOf("Right", StringComparison.OrdinalIgnoreCase) >= 0;
+            if (!isLeft && !isRight)
+            {
+                continue;
+            }
+
+            ControllerAxisVisualizer visualizer = controller.GetComponent<ControllerAxisVisualizer>();
+            if (visualizer == null)
+            {
+                visualizer = controller.gameObject.AddComponent<ControllerAxisVisualizer>();
+            }
+            ControllerInputStreamer streamer = controller.GetComponent<ControllerInputStreamer>();
+            if (streamer == null)
+            {
+                streamer = controller.gameObject.AddComponent<ControllerInputStreamer>();
+            }
+            streamer.Configure(
+                isLeft ? ControllerInputStreamer.ControllerSide.Left : ControllerInputStreamer.ControllerSide.Right,
+                visualizer,
+                isLeft ? "Left" : "Right"
+            );
+        }
     }
 
     private void Start()
@@ -78,10 +151,19 @@ public class AppManager : MonoBehaviour
             // OnProtocolChanged(protocolDropdown.value);
         }
 
+        if (controllerInputToggle != null)
+        {
+            controllerInputToggle.onValueChanged.AddListener(OnInputModeChanged);
+        }
+
         ipInputField.onValueChanged.AddListener(delegate { ClearError(); });
         portInputField.onValueChanged.AddListener(delegate { ClearError(); });
         // Load saved config (if any)
         LoadConfig();
+        SelectedInputMode = controllerInputToggle != null && controllerInputToggle.isOn
+            ? InputMappingMode.Controllers
+            : InputMappingMode.Hands;
+        UpdateInputModeLabels();
         ApplyVideoCanvasVisibility();
     }
 
@@ -92,6 +174,7 @@ public class AppManager : MonoBehaviour
         PlayerPrefs.SetString("SavedIP", ipInputField.text);
         PlayerPrefs.SetString("SavedPort", portInputField.text);
         PlayerPrefs.SetInt("SavedHandMode", handDropdown.value);
+        PlayerPrefs.SetInt("SavedInputMode", (int)SelectedInputMode);
         
         // Force write to disk immediately
         PlayerPrefs.Save(); 
@@ -125,6 +208,13 @@ public class AppManager : MonoBehaviour
         {
             handDropdown.value = PlayerPrefs.GetInt("SavedHandMode");
         }
+
+
+        if (controllerInputToggle != null)
+        {
+            int savedMode = PlayerPrefs.GetInt("SavedInputMode", (int)InputMappingMode.Hands);
+            controllerInputToggle.isOn = savedMode == (int)InputMappingMode.Controllers;
+        }
     }
 
     private void Update()
@@ -147,6 +237,10 @@ public class AppManager : MonoBehaviour
         if (protocolDropdown != null)
         {
             protocolDropdown.onValueChanged.RemoveListener(OnProtocolChanged);
+        }
+        if (controllerInputToggle != null)
+        {
+            controllerInputToggle.onValueChanged.RemoveListener(OnInputModeChanged);
         }
     }
 
@@ -230,6 +324,16 @@ private void OnProtocolChanged(int index)
 
         SelectedProtocol = protocolDropdown.value;
         SelectedHandMode = handDropdown.value;
+        SelectedInputMode = controllerInputToggle != null && controllerInputToggle.isOn
+            ? InputMappingMode.Controllers
+            : InputMappingMode.Hands;
+
+        if (IsControllerMode && !HasSelectedControllerStreamers())
+        {
+            UpdateStatusUI("Error: Controller telemetry is not configured", Color.red, true);
+            SendLog("Controller mode requires a configured streamer for every selected side.");
+            return;
+        }
 
         // --- UPDATED TCP CHECK BLOCK ---
         if (SelectedProtocol == 1 || SelectedProtocol == 2) // TCP wireless and wired
@@ -283,14 +387,15 @@ private void OnProtocolChanged(int index)
         SaveConfig();
         
         string protocolName = protocolDropdown.options[SelectedProtocol].text;
-        string handName = handDropdown.options[SelectedHandMode].text;
-        string statusMsg = $"Stream started! \nIP: {ServerIP} \nPort: {ServerPort} \nProtocol: {protocolName} \nHands: {handName}";
+        string inputName = handDropdown.options[SelectedHandMode].text;
+        string statusMsg = $"Stream started! \nIP: {ServerIP} \nPort: {ServerPort} \nProtocol: {protocolName} \nInput: {inputName}";
         SendLog(statusMsg);
         
         if(menuPanel != null) menuPanel.SetActive(false);
 
         ToggleRays(false);
         UpdateHandVisuals(SelectedHandMode);
+        SetInputModeInteractable(false);
         isStreaming = true;
 
         // Optional host->Quest video plane (separate from telemetry transport)
@@ -358,6 +463,8 @@ private void OnProtocolChanged(int index)
             if (recenter != null) recenter.Recenter();
         }
         ToggleRays(true);
+        SetInputModeInteractable(true);
+        UpdateHandVisuals(SelectedHandMode);
 
         // 3. Show Error Status
         _connectionErrorMessage = $"TCP Disconnected: {errorMsg}"; // persistent
@@ -382,6 +489,8 @@ private void OnProtocolChanged(int index)
             if (recenterScript != null) recenterScript.Recenter();
         }
         ToggleRays(true);
+        SetInputModeInteractable(true);
+        UpdateHandVisuals(SelectedHandMode);
 
         SendLog("Streaming stopped by user.");
     }
@@ -404,11 +513,64 @@ private void OnProtocolChanged(int index)
 
     private void UpdateHandVisuals(int mode)
     {
-        bool showLeft = (mode == 0 || mode == 1);
-        bool showRight = (mode == 0 || mode == 2);
+        bool showLeft = IsHandMode && (mode == 0 || mode == 1);
+        bool showRight = IsHandMode && (mode == 0 || mode == 2);
 
         if (syntheticHandLeft != null) syntheticHandLeft.SetActive(showLeft);
         if (syntheticHandRight != null) syntheticHandRight.SetActive(showRight);
+    }
+
+    private void OnInputModeChanged(bool useControllers)
+    {
+        if (isStreaming)
+        {
+            return;
+        }
+        SelectedInputMode = useControllers
+            ? InputMappingMode.Controllers
+            : InputMappingMode.Hands;
+        UpdateInputModeLabels();
+        UpdateHandVisuals(handDropdown != null ? handDropdown.value : 0);
+        ClearError();
+    }
+
+    private void UpdateInputModeLabels()
+    {
+        if (handDropdown == null || handDropdown.options.Count < 3)
+        {
+            return;
+        }
+        bool controllers = SelectedInputMode == InputMappingMode.Controllers;
+        handDropdown.options[0].text = controllers ? "Both Controllers" : "Both Hands";
+        handDropdown.options[1].text = controllers ? "Left Controller" : "Left Hand";
+        handDropdown.options[2].text = controllers ? "Right Controller" : "Right Hand";
+        handDropdown.RefreshShownValue();
+    }
+
+    private void SetInputModeInteractable(bool interactable)
+    {
+        if (controllerInputToggle != null)
+        {
+            controllerInputToggle.interactable = interactable;
+        }
+    }
+
+    private bool HasSelectedControllerStreamers()
+    {
+        bool needLeft = SelectedHandMode == 0 || SelectedHandMode == 1;
+        bool needRight = SelectedHandMode == 0 || SelectedHandMode == 2;
+        bool hasLeft = false;
+        bool hasRight = false;
+        ControllerInputStreamer[] streamers = FindObjectsByType<ControllerInputStreamer>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+        foreach (ControllerInputStreamer streamer in streamers)
+        {
+            if (streamer.Side == ControllerInputStreamer.ControllerSide.Left) hasLeft = true;
+            if (streamer.Side == ControllerInputStreamer.ControllerSide.Right) hasRight = true;
+        }
+        return (!needLeft || hasLeft) && (!needRight || hasRight);
     }
 
     private void ToggleRays(bool state)

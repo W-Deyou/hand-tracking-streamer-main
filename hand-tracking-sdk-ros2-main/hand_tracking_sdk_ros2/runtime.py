@@ -7,12 +7,15 @@ from collections import deque
 from dataclasses import dataclass
 
 from hand_tracking_sdk import (
+    ControllerFrame,
     HTSClient,
     HTSClientConfig,
     StreamOutput,
     TransportMode,
 )
 from hand_tracking_sdk.frame import HandFrame
+
+BridgeFrame = HandFrame | ControllerFrame
 
 
 @dataclass(frozen=True, slots=True)
@@ -41,7 +44,7 @@ class FrameRuntime:
         reconnect_delay_s: float,
         queue_size: int,
     ) -> None:
-        self._queue: deque[HandFrame] = deque(maxlen=queue_size)
+        self._queue: deque[BridgeFrame] = deque(maxlen=queue_size)
         self._queue_lock = threading.Lock()
         self._stats = RuntimeStats()
         self._stop_event = threading.Event()
@@ -75,7 +78,7 @@ class FrameRuntime:
         """
         self._stop_event.set()
 
-    def pop_frame(self) -> HandFrame | None:
+    def pop_frame(self) -> BridgeFrame | None:
         """Pop oldest buffered frame, if any."""
         with self._queue_lock:
             if not self._queue:
@@ -106,6 +109,9 @@ class FrameRuntime:
             for event in self._client.iter_events():
                 if self._stop_event.is_set():
                     return
+
+                if not isinstance(event, (HandFrame, ControllerFrame)):
+                    continue
 
                 frame = event
 

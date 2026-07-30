@@ -8,7 +8,7 @@ ROS 2 bridge package for [`hand-tracking-sdk`](https://github.com/wengmister/han
 ## Core Dependency
 
 This package treats `hand-tracking-sdk` as a required runtime dependency and
-wraps its high-level APIs (`HTSClient`, `HandFrame`, conversion helpers)
+wraps its high-level APIs (`HTSClient`, `HandFrame`, `ControllerFrame`, conversion helpers)
 instead of reimplementing parser/transport logic.
 
 ## Python / ROS Distro Compatibility
@@ -22,7 +22,7 @@ instead of reimplementing parser/transport logic.
 Install dependency in the same Python interpreter used by ROS:
 
 ```bash
-python3 -m pip install "hand-tracking-sdk>=1.0.0,<2.0.0"
+python3 -m pip install "hand-tracking-sdk>=1.2.0,<2.0.0"
 ```
 
 ## Build
@@ -58,6 +58,14 @@ ros2 launch hand_tracking_sdk_ros2 view_hands.launch.py
 - `/hands/left/markers` (`visualization_msgs/MarkerArray`)
 - `/hands/right/markers` (`visualization_msgs/MarkerArray`)
 - `/hands/joint_names` (`std_msgs/String`, comma-separated canonical order)
+- `/controllers/left/pose` (`geometry_msgs/PoseStamped`)
+- `/controllers/right/pose` (`geometry_msgs/PoseStamped`)
+- `/controllers/left/input` (`sensor_msgs/Joy`)
+- `/controllers/right/input` (`sensor_msgs/Joy`)
+
+Controller `Joy` layout is fixed: axes are `trigger, grip, stick_x, stick_y`; buttons are
+`primary, secondary, trigger_button, grip_button, stick_click`. Controller endpoint poses
+and TF frames are independent of wrist messages and never use wrist names.
 
 ## Default Behavior
 
@@ -67,6 +75,8 @@ ros2 launch hand_tracking_sdk_ros2 view_hands.launch.py
   - `landmarks_are_wrist_relative: true` (landmarks are transformed into world frame before publish)
 - TF:
   - wrist TF is published to `/tf` as `world -> left_wrist|right_wrist`
+  - controller TF is published when controller frames arrive as
+    `world -> left_controller_endpoint|right_controller_endpoint`
 - Marker visualization:
   - one `SPHERE_LIST` marker plus one `LINE_LIST` marker per hand
   - left hand: blue, right hand: red
@@ -99,6 +109,8 @@ The default parameter file is `config/bridge.params.yaml`.
 | `world_frame` | `string` | `world` | Parent frame used for wrist TF and world-space landmarks. |
 | `left_wrist_frame` | `string` | `left_wrist` | Child TF frame for left wrist. |
 | `right_wrist_frame` | `string` | `right_wrist` | Child TF frame for right wrist. |
+| `left_controller_frame` | `string` | `left_controller_endpoint` | Child TF frame for the left controller endpoint. |
+| `right_controller_frame` | `string` | `right_controller_endpoint` | Child TF frame for the right controller endpoint. |
 | `use_source_frame_id` | `bool` | `false` | Use incoming `frame_id` from SDK frame when present. |
 | `landmarks_are_wrist_relative` | `bool` | `true` | Rotate/translate landmarks by wrist pose before publish. |
 | `qos_reliability` | `string` | `best_effort` | `best_effort` or `reliable`. |
@@ -106,6 +118,7 @@ The default parameter file is `config/bridge.params.yaml`.
 | `enable_tf` | `bool` | `true` | Enable wrist TF publishing. |
 | `enable_pose_array` | `bool` | `false` | Enable `/hands/*/landmarks` `PoseArray` topics. |
 | `enable_markers` | `bool` | `true` | Enable `/hands/*/markers` `MarkerArray` topics. |
+| `enable_controller_topics` | `bool` | `true` | Publish controller Pose/Joy when controller frames arrive. |
 | `enable_diagnostics` | `bool` | `true` | Enable `/diagnostics` publishing. |
 | `diagnostics_period_s` | `float` | `1.0` | Diagnostics publish period seconds. |
 

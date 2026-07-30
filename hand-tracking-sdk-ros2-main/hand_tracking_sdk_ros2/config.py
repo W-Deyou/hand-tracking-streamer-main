@@ -17,6 +17,8 @@ class BridgeConfig:
     world_frame: str
     left_wrist_frame: str
     right_wrist_frame: str
+    left_controller_frame: str
+    right_controller_frame: str
     use_source_frame_id: bool
     landmarks_are_wrist_relative: bool
     qos_reliability: str
@@ -24,5 +26,6 @@ class BridgeConfig:
     enable_tf: bool
     enable_pose_array: bool
     enable_markers: bool
+    enable_controller_topics: bool
     enable_diagnostics: bool
     diagnostics_period_s: float

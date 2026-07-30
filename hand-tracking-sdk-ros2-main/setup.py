@@ -5,7 +5,7 @@ package_name = 'hand_tracking_sdk_ros2'
 
 setup(
     name=package_name,
-    version='0.2.0',
+    version='0.3.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -18,7 +18,7 @@ setup(
     install_requires=[
         'setuptools',
         # Core upstream SDK dependency for parsing/transport/frame assembly.
-        'hand-tracking-sdk>=1.0.0,<2.0.0',
+        'hand-tracking-sdk>=1.2.0,<2.0.0',
     ],
     zip_safe=True,
     maintainer='Zhengyang Kris Weng',

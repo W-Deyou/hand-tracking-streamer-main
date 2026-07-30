@@ -84,6 +84,10 @@ class TestBridgeTopics(unittest.TestCase):
             'hands/left/markers',
             'hands/right/markers',
             'hands/joint_names',
+            'controllers/left/pose',
+            'controllers/right/pose',
+            'controllers/left/input',
+            'controllers/right/input',
         }
         try:
             deadline = time.time() + 8.0

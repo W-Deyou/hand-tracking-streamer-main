@@ -26,7 +26,7 @@
 
 </p>
 
-**Hand Tracking SDK** is a Python package for consuming HTS hand-tracking telemetry (UDP/TCP), parsing wrist/landmark data into typed frames, and providing conversion, visualization, and integration-ready APIs.
+**Hand Tracking SDK** is a Python package for consuming HTS hand and controller telemetry (UDP/TCP), parsing the distinct message families into typed frames, and providing conversion, visualization, and integration-ready APIs.
 
 This SDK is hosted on [PyPI](https://pypi.org/project/hand-tracking-sdk/), with API documentation [Here](https://hand-tracking-sdk.readthedocs.io/)
 
@@ -62,8 +62,12 @@ for event in client.iter_events():
 HTS emits UTF-8 CSV lines:
 - wrist packet: 7 floats (`x, y, z, qx, qy, qz, qw`)
 - landmarks packet: 63 floats (`21 x [x, y, z]`)
+- controller pose packet: 7 floats (`x, y, z, qx, qy, qz, qw`)
+- controller input packet: 9 values (`trigger, grip, stick_x, stick_y` plus five `0|1` buttons)
 
-The SDK validates packet labels, hand side, and exact value counts.
+Controller endpoint poses have their own `controller pose` label and types; they are never
+reported as wrist data. The SDK validates packet labels, side, exact value counts, button
+encoding, and controller axis ranges.
 
 ## Streaming Client
 
@@ -81,6 +85,10 @@ The SDK validates packet labels, hand side, and exact value counts.
 objects. Head pose packets produce `HeadFrame` events. Stale out-of-order updates
 are discarded.
 
+`ControllerFrameAssembler` independently correlates controller pose + input packets into
+`ControllerFrame` objects. When debug metadata is present, both components must have the
+same source frame sequence before a frame is emitted.
+
 A `HandFrame` includes:
 - `side`: Left or Right
 - `wrist`: `WristPose(x, y, z, qx, qy, qz, qw)`
@@ -88,6 +96,10 @@ A `HandFrame` includes:
 - Per-joint access: `frame.get_joint(JointName.INDEX_TIP)`
 - Per-finger access: `frame.get_finger("index")`
 - Timing metadata: `recv_ts_ns`, `source_ts_ns`, `sequence_id`
+
+A `ControllerFrame` includes `pose: ControllerPose`, `input: ControllerInputState`, side,
+frame id, and the same timing metadata style. `StreamOutput.PACKETS`, `FRAMES`, and `BOTH`
+support both message families without changing the existing hand APIs.
 
 ### Coordinate Conversion
 

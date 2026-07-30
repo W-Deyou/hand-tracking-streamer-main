@@ -8,6 +8,7 @@ from geometry_msgs.msg import PoseArray, PoseStamped
 from hand_tracking_sdk import HandSide
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, ReliabilityPolicy
+from sensor_msgs.msg import Joy
 from std_msgs.msg import String
 from visualization_msgs.msg import MarkerArray
 
@@ -55,10 +56,12 @@ class BridgePublishers:
         sensor_qos: QoSProfile,
         enable_pose_array: bool,
         enable_markers: bool,
+        enable_controller_topics: bool = True,
     ) -> None:
         """Create ROS publishers used by the bridge node."""
         self._enable_pose_array = enable_pose_array
         self._enable_markers = enable_markers
+        self._enable_controller_topics = enable_controller_topics
 
         self._left_wrist_pub = node.create_publisher(PoseStamped, "hands/left/wrist_pose", sensor_qos)
         self._right_wrist_pub = node.create_publisher(
@@ -100,6 +103,27 @@ class BridgePublishers:
             ),
         )
 
+        self._left_controller_pose_pub = node.create_publisher(
+            PoseStamped,
+            "controllers/left/pose",
+            sensor_qos,
+        )
+        self._right_controller_pose_pub = node.create_publisher(
+            PoseStamped,
+            "controllers/right/pose",
+            sensor_qos,
+        )
+        self._left_controller_input_pub = node.create_publisher(
+            Joy,
+            "controllers/left/input",
+            sensor_qos,
+        )
+        self._right_controller_input_pub = node.create_publisher(
+            Joy,
+            "controllers/right/input",
+            sensor_qos,
+        )
+
     def publish_wrist(self, side: HandSide, message: PoseStamped) -> None:
         """Publish one wrist pose message for the selected side."""
         if side == HandSide.LEFT:
@@ -128,3 +152,21 @@ class BridgePublishers:
     def publish_joint_names(self, joint_names: Sequence[str]) -> None:
         """Publish canonical joint ordering metadata."""
         self._joint_names_pub.publish(String(data=",".join(joint_names)))
+
+    def publish_controller_pose(self, side: HandSide, message: PoseStamped) -> None:
+        """Publish one controller endpoint pose when enabled."""
+        if not self._enable_controller_topics:
+            return
+        if side == HandSide.LEFT:
+            self._left_controller_pose_pub.publish(message)
+        else:
+            self._right_controller_pose_pub.publish(message)
+
+    def publish_controller_input(self, side: HandSide, message: Joy) -> None:
+        """Publish one controller input snapshot when enabled."""
+        if not self._enable_controller_topics:
+            return
+        if side == HandSide.LEFT:
+            self._left_controller_input_pub.publish(message)
+        else:
+            self._right_controller_input_pub.publish(message)

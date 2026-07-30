@@ -24,6 +24,8 @@ class PacketType(StrEnum):
     WRIST = "wrist"
     LANDMARKS = "landmarks"
     POSE = "pose"
+    CONTROLLER_POSE = "controller pose"
+    CONTROLLER_INPUT = "controller input"
 
 
 class JointName(StrEnum):
@@ -163,6 +165,88 @@ class HeadPose:
 
 
 @dataclass(frozen=True, slots=True)
+class ControllerPose:
+    """Cartesian pose of a controller endpoint (Pointer Pose)."""
+
+    x: float
+    y: float
+    z: float
+    qx: float
+    qy: float
+    qz: float
+    qw: float
+
+    def to_dict(self) -> dict[str, float]:
+        """Serialize the controller endpoint pose."""
+        return {
+            "x": self.x,
+            "y": self.y,
+            "z": self.z,
+            "qx": self.qx,
+            "qy": self.qy,
+            "qz": self.qz,
+            "qw": self.qw,
+        }
+
+    @classmethod
+    def from_dict(cls, values: Mapping[str, Any]) -> ControllerPose:
+        """Build a controller endpoint pose from serialized values."""
+        return cls(
+            x=float(values["x"]),
+            y=float(values["y"]),
+            z=float(values["z"]),
+            qx=float(values["qx"]),
+            qy=float(values["qy"]),
+            qz=float(values["qz"]),
+            qw=float(values["qw"]),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class ControllerInputState:
+    """One controller input snapshot in the HTS wire-field order."""
+
+    trigger: float
+    grip: float
+    stick_x: float
+    stick_y: float
+    primary: bool
+    secondary: bool
+    trigger_button: bool
+    grip_button: bool
+    stick_click: bool
+
+    def to_dict(self) -> dict[str, float | bool]:
+        """Serialize the complete input snapshot."""
+        return {
+            "trigger": self.trigger,
+            "grip": self.grip,
+            "stick_x": self.stick_x,
+            "stick_y": self.stick_y,
+            "primary": self.primary,
+            "secondary": self.secondary,
+            "trigger_button": self.trigger_button,
+            "grip_button": self.grip_button,
+            "stick_click": self.stick_click,
+        }
+
+    @classmethod
+    def from_dict(cls, values: Mapping[str, Any]) -> ControllerInputState:
+        """Build an input snapshot from serialized values."""
+        return cls(
+            trigger=float(values["trigger"]),
+            grip=float(values["grip"]),
+            stick_x=float(values["stick_x"]),
+            stick_y=float(values["stick_y"]),
+            primary=bool(values["primary"]),
+            secondary=bool(values["secondary"]),
+            trigger_button=bool(values["trigger_button"]),
+            grip_button=bool(values["grip_button"]),
+            stick_click=bool(values["stick_click"]),
+        )
+
+
+@dataclass(frozen=True, slots=True)
 class HandLandmarks:
     """Ordered set of 21 hand landmarks as ``(x, y, z)`` points."""
 
@@ -277,4 +361,30 @@ class HeadPosePacket:
     debug: PacketDebugInfo | None = None
 
 
-ParsedPacket = WristPacket | LandmarksPacket | HeadPosePacket
+@dataclass(frozen=True, slots=True)
+class ControllerPosePacket:
+    """Parsed controller endpoint pose packet for one side."""
+
+    side: HandSide
+    kind: PacketType
+    data: ControllerPose
+    debug: PacketDebugInfo | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class ControllerInputPacket:
+    """Parsed controller input packet for one side."""
+
+    side: HandSide
+    kind: PacketType
+    data: ControllerInputState
+    debug: PacketDebugInfo | None = None
+
+
+ParsedPacket = (
+    WristPacket
+    | LandmarksPacket
+    | HeadPosePacket
+    | ControllerPosePacket
+    | ControllerInputPacket
+)

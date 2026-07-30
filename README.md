@@ -23,7 +23,7 @@
   </a>
 </p>
 
-**Hand Tracking Streamer** is a lightweight hand telemetry utility that turns a Meta Quest headset into a precision controller for robotics teleoperation and motion capture. Built on the Meta Interaction SDK, it streams 21-landmark hand data and 6-DoF wrist pose to a PC in real time over Wi-Fi using UDP for ultra-low latency or TCP for reliable data logging. The app supports left, right, or dual-hand modes with in-headset configuration, and includes a live log console and phantom hand visualization for debugging. Data is sent as structured packets of joint positions and orientations in Unity world space, making it suitable for robot control, imitation learning, and gesture-based prototyping.
+**Hand Tracking Streamer** is a lightweight Quest telemetry utility for robotics teleoperation and motion capture. The default Hands mode preserves the existing 21-landmark and 6-DoF wrist stream. An optional, mutually exclusive Controller Input mode streams each Touch controller's Pointer Pose as an independently labeled 6-DoF endpoint plus trigger, grip, thumbstick, and button state. Both modes use the existing UDP/TCP configuration, while the in-headset visualizer can show RGB axes at the controller endpoint.
 
 
 ### What's New!

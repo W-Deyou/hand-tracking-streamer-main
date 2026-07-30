@@ -6,11 +6,12 @@ from dataclasses import dataclass
 
 from builtin_interfaces.msg import Time
 from geometry_msgs.msg import Point, Pose, PoseArray, PoseStamped, Quaternion, TransformStamped
-from hand_tracking_sdk import HandFrame, HandSide, JointName
+from hand_tracking_sdk import ControllerFrame, HandFrame, HandSide, JointName
 from hand_tracking_sdk import (
     unity_left_to_flu_position,
 )
 from std_msgs.msg import Header
+from sensor_msgs.msg import Joy
 from visualization_msgs.msg import Marker, MarkerArray
 
 from .markers import BONE_EDGES
@@ -80,6 +81,69 @@ def to_wrist_pose_stamped(
             ),
         ),
     )
+
+
+def to_controller_pose_stamped(
+    frame: ControllerFrame,
+    *,
+    stamp: Time,
+    frame_id: str,
+) -> PoseStamped:
+    """Convert a controller endpoint frame to a world-space pose message."""
+    x, y, z = _map_point_frame(x=frame.pose.x, y=frame.pose.y, z=frame.pose.z)
+    qx, qy, qz, qw = _map_quaternion_frame(
+        qx=frame.pose.qx,
+        qy=frame.pose.qy,
+        qz=frame.pose.qz,
+        qw=frame.pose.qw,
+    )
+    return PoseStamped(
+        header=make_header(stamp=stamp, frame_id=frame_id),
+        pose=Pose(
+            position=Point(x=x, y=y, z=z),
+            orientation=Quaternion(x=qx, y=qy, z=qz, w=qw),
+        ),
+    )
+
+
+def to_controller_joy(
+    frame: ControllerFrame,
+    *,
+    stamp: Time,
+    frame_id: str,
+) -> Joy:
+    """Convert a controller input snapshot to the documented Joy layout."""
+    state = frame.input
+    return Joy(
+        header=make_header(stamp=stamp, frame_id=frame_id),
+        axes=[state.trigger, state.grip, state.stick_x, state.stick_y],
+        buttons=[
+            int(state.primary),
+            int(state.secondary),
+            int(state.trigger_button),
+            int(state.grip_button),
+            int(state.stick_click),
+        ],
+    )
+
+
+def to_controller_transform(
+    frame: ControllerFrame,
+    *,
+    stamp: Time,
+    world_frame: str,
+    child_frame_id: str,
+) -> TransformStamped:
+    """Convert a controller endpoint frame to a world TF transform."""
+    pose = to_controller_pose_stamped(frame, stamp=stamp, frame_id=world_frame).pose
+    transform = TransformStamped()
+    transform.header = make_header(stamp=stamp, frame_id=world_frame)
+    transform.child_frame_id = child_frame_id
+    transform.transform.translation.x = pose.position.x
+    transform.transform.translation.y = pose.position.y
+    transform.transform.translation.z = pose.position.z
+    transform.transform.rotation = pose.orientation
+    return transform
 
 
 def to_landmarks_pose_array(

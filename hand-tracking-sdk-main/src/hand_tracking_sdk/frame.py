@@ -8,6 +8,10 @@ from time import monotonic_ns, time_ns
 from typing import Any
 
 from hand_tracking_sdk.models import (
+    ControllerInputPacket,
+    ControllerInputState,
+    ControllerPose,
+    ControllerPosePacket,
     FingerName,
     HandLandmarks,
     HandSide,
@@ -231,8 +235,229 @@ class _HeadAssemblyState:
     next_sequence_id: int = 0
 
 
-AssembledFrame = HandFrame | HeadFrame
+@dataclass(frozen=True, slots=True)
+class ControllerFrame:
+    """Coherent controller endpoint pose and input snapshot for one side."""
+
+    side: HandSide
+    frame_id: str
+    pose: ControllerPose
+    input: ControllerInputState
+    sequence_id: int
+    recv_ts_ns: int
+    recv_time_unix_ns: int | None
+    source_ts_ns: int | None
+    pose_recv_ts_ns: int
+    input_recv_ts_ns: int
+    source_frame_seq: int | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize the controller frame deterministically."""
+        return {
+            "side": self.side.value,
+            "frame_id": self.frame_id,
+            "pose": self.pose.to_dict(),
+            "input": self.input.to_dict(),
+            "sequence_id": self.sequence_id,
+            "recv_ts_ns": self.recv_ts_ns,
+            "recv_time_unix_ns": self.recv_time_unix_ns,
+            "source_ts_ns": self.source_ts_ns,
+            "source_frame_seq": self.source_frame_seq,
+            "pose_recv_ts_ns": self.pose_recv_ts_ns,
+            "input_recv_ts_ns": self.input_recv_ts_ns,
+        }
+
+    @classmethod
+    def from_dict(cls, values: Mapping[str, Any]) -> ControllerFrame:
+        """Restore a controller frame from serialized values."""
+        return cls(
+            side=HandSide(str(values["side"])),
+            frame_id=str(values["frame_id"]),
+            pose=ControllerPose.from_dict(values["pose"]),
+            input=ControllerInputState.from_dict(values["input"]),
+            sequence_id=int(values["sequence_id"]),
+            recv_ts_ns=int(values["recv_ts_ns"]),
+            recv_time_unix_ns=(
+                None
+                if values.get("recv_time_unix_ns") is None
+                else int(values["recv_time_unix_ns"])
+            ),
+            source_ts_ns=(
+                None if values.get("source_ts_ns") is None else int(values["source_ts_ns"])
+            ),
+            source_frame_seq=(
+                None
+                if values.get("source_frame_seq") is None
+                else int(values["source_frame_seq"])
+            ),
+            pose_recv_ts_ns=int(values["pose_recv_ts_ns"]),
+            input_recv_ts_ns=int(values["input_recv_ts_ns"]),
+        )
+
+
+@dataclass(slots=True)
+class _ControllerSideAssemblyState:
+    pose: ControllerPose | None = None
+    input: ControllerInputState | None = None
+    pose_recv_ts_ns: int | None = None
+    input_recv_ts_ns: int | None = None
+    pose_source_ts_ns: int | None = None
+    input_source_ts_ns: int | None = None
+    pose_source_frame_seq: int | None = None
+    input_source_frame_seq: int | None = None
+    last_emitted_pose_recv_ts_ns: int | None = None
+    last_emitted_input_recv_ts_ns: int | None = None
+    next_sequence_id: int = 0
+
+
+AssembledFrame = HandFrame | HeadFrame | ControllerFrame
 """Frame event emitted by :class:`HandFrameAssembler`."""
+
+
+class ControllerFrameAssembler:
+    """Assemble controller pose and input packets without touching hand state."""
+
+    def __init__(
+        self,
+        *,
+        include_wall_time: bool = True,
+        frame_id_by_side: Mapping[HandSide, str] | None = None,
+    ) -> None:
+        self._include_wall_time = include_wall_time
+        self._frame_id_by_side = {
+            HandSide.LEFT: "hts_left_controller_endpoint",
+            HandSide.RIGHT: "hts_right_controller_endpoint",
+        }
+        if frame_id_by_side is not None:
+            self._frame_id_by_side.update(frame_id_by_side)
+        self._state = {
+            HandSide.LEFT: _ControllerSideAssemblyState(),
+            HandSide.RIGHT: _ControllerSideAssemblyState(),
+        }
+
+    def reset(self, side: HandSide | None = None) -> None:
+        """Reset one side or the entire controller assembly state."""
+        if side is None:
+            self._state[HandSide.LEFT] = _ControllerSideAssemblyState()
+            self._state[HandSide.RIGHT] = _ControllerSideAssemblyState()
+            return
+        if side in self._state:
+            self._state[side] = _ControllerSideAssemblyState()
+
+    def push_packet(
+        self,
+        packet: ControllerPosePacket | ControllerInputPacket,
+        *,
+        recv_ts_ns: int | None = None,
+        recv_time_unix_ns: int | None = None,
+        source_ts_ns: int | None = None,
+    ) -> ControllerFrame | None:
+        """Push one controller component and emit when a coherent pair exists."""
+        recv_ts = monotonic_ns() if recv_ts_ns is None else recv_ts_ns
+        wall_ts = recv_time_unix_ns
+        if wall_ts is None and self._include_wall_time:
+            wall_ts = time_ns()
+
+        state = self._state[packet.side]
+        packet_source_ts = packet.debug.source_ts_ns if packet.debug is not None else None
+        packet_source_seq = packet.debug.source_frame_seq if packet.debug is not None else None
+
+        if isinstance(packet, ControllerPosePacket):
+            if state.pose_recv_ts_ns is not None and recv_ts < state.pose_recv_ts_ns:
+                return None
+            state.pose = packet.data
+            state.pose_recv_ts_ns = recv_ts
+            state.pose_source_ts_ns = packet_source_ts
+            state.pose_source_frame_seq = packet_source_seq
+        else:
+            if state.input_recv_ts_ns is not None and recv_ts < state.input_recv_ts_ns:
+                return None
+            state.input = packet.data
+            state.input_recv_ts_ns = recv_ts
+            state.input_source_ts_ns = packet_source_ts
+            state.input_source_frame_seq = packet_source_seq
+
+        return self._maybe_emit(
+            side=packet.side,
+            recv_time_unix_ns=wall_ts,
+            source_ts_ns=source_ts_ns,
+        )
+
+    def push_line(
+        self,
+        line: str,
+        *,
+        recv_ts_ns: int | None = None,
+        recv_time_unix_ns: int | None = None,
+        source_ts_ns: int | None = None,
+    ) -> ControllerFrame | None:
+        """Parse and push one controller protocol line."""
+        packet = parse_line(line)
+        if not isinstance(packet, (ControllerPosePacket, ControllerInputPacket)):
+            return None
+        return self.push_packet(
+            packet,
+            recv_ts_ns=recv_ts_ns,
+            recv_time_unix_ns=recv_time_unix_ns,
+            source_ts_ns=source_ts_ns,
+        )
+
+    def _maybe_emit(
+        self,
+        *,
+        side: HandSide,
+        recv_time_unix_ns: int | None,
+        source_ts_ns: int | None,
+    ) -> ControllerFrame | None:
+        state = self._state[side]
+        if (
+            state.pose is None
+            or state.input is None
+            or state.pose_recv_ts_ns is None
+            or state.input_recv_ts_ns is None
+        ):
+            return None
+
+        pose_seq = state.pose_source_frame_seq
+        input_seq = state.input_source_frame_seq
+        if (pose_seq is None) != (input_seq is None):
+            return None
+        if pose_seq is not None and pose_seq != input_seq:
+            return None
+
+        has_new_pose = state.last_emitted_pose_recv_ts_ns != state.pose_recv_ts_ns
+        has_new_input = state.last_emitted_input_recv_ts_ns != state.input_recv_ts_ns
+        if not has_new_pose or not has_new_input:
+            return None
+
+        sequence_id = state.next_sequence_id
+        state.next_sequence_id += 1
+        state.last_emitted_pose_recv_ts_ns = state.pose_recv_ts_ns
+        state.last_emitted_input_recv_ts_ns = state.input_recv_ts_ns
+
+        resolved_source_ts = source_ts_ns
+        if resolved_source_ts is None:
+            candidates = [
+                value
+                for value in (state.pose_source_ts_ns, state.input_source_ts_ns)
+                if value is not None
+            ]
+            resolved_source_ts = max(candidates) if candidates else None
+
+        source_frame_seq = pose_seq if pose_seq is not None else input_seq
+        return ControllerFrame(
+            side=side,
+            frame_id=self._frame_id_by_side[side],
+            pose=state.pose,
+            input=state.input,
+            sequence_id=sequence_id,
+            recv_ts_ns=max(state.pose_recv_ts_ns, state.input_recv_ts_ns),
+            recv_time_unix_ns=recv_time_unix_ns,
+            source_ts_ns=resolved_source_ts,
+            source_frame_seq=source_frame_seq,
+            pose_recv_ts_ns=state.pose_recv_ts_ns,
+            input_recv_ts_ns=state.input_recv_ts_ns,
+        )
 
 
 class HandFrameAssembler:

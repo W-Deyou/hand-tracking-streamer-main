@@ -35,7 +35,7 @@ public class HandLandmarkVisualizer : MonoBehaviour
 
     private void Update()
     {
-        if (!AppManager.Instance.isStreaming || !AppManager.Instance.ShowLandmarks)
+        if (!AppManager.Instance.isStreaming || !AppManager.Instance.IsHandMode || !AppManager.Instance.ShowLandmarks)
         {
             ToggleAllVisualizers(false);
             return;

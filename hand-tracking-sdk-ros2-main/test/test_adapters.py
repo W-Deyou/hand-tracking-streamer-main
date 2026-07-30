@@ -5,7 +5,15 @@ from __future__ import annotations
 from math import isclose, sqrt
 
 from builtin_interfaces.msg import Time
-from hand_tracking_sdk import HandFrame, HandLandmarks, HandSide, WristPose
+from hand_tracking_sdk import (
+    ControllerFrame,
+    ControllerInputState,
+    ControllerPose,
+    HandFrame,
+    HandLandmarks,
+    HandSide,
+    WristPose,
+)
 from visualization_msgs.msg import Marker
 
 from hand_tracking_sdk_ros2.adapters import (
@@ -13,11 +21,39 @@ from hand_tracking_sdk_ros2.adapters import (
     frame_id_for_side,
     is_valid_landmark_count,
     ros_time_from_unix_ns,
+    to_controller_joy,
+    to_controller_pose_stamped,
+    to_controller_transform,
     to_landmarks_pose_array,
     to_marker_array,
     to_wrist_pose_stamped,
     to_wrist_transform,
 )
+
+
+def _controller_frame(side: HandSide = HandSide.LEFT) -> ControllerFrame:
+    return ControllerFrame(
+        side=side,
+        frame_id=f'{side.value.lower()}_controller_endpoint',
+        pose=ControllerPose(x=1.0, y=2.0, z=3.0, qx=0.0, qy=0.0, qz=0.0, qw=1.0),
+        input=ControllerInputState(
+            trigger=0.25,
+            grip=0.75,
+            stick_x=-0.5,
+            stick_y=0.5,
+            primary=True,
+            secondary=False,
+            trigger_button=True,
+            grip_button=False,
+            stick_click=True,
+        ),
+        sequence_id=1,
+        recv_ts_ns=1,
+        recv_time_unix_ns=1,
+        source_ts_ns=None,
+        pose_recv_ts_ns=1,
+        input_recv_ts_ns=1,
+    )
 
 
 def _frame_with_points(
@@ -50,6 +86,50 @@ def test_ros_time_from_unix_ns() -> None:
     message = ros_time_from_unix_ns(1_234_567_890)
     assert message.sec == 1
     assert message.nanosec == 234_567_890
+
+
+def test_controller_pose_maps_endpoint_into_flu() -> None:
+    """Controller pose uses its own endpoint schema and the common FLU mapping."""
+    message = to_controller_pose_stamped(
+        _controller_frame(),
+        stamp=Time(sec=2, nanosec=3),
+        frame_id='world',
+    )
+
+    assert message.header.frame_id == 'world'
+    assert message.pose.position.x == 3.0
+    assert message.pose.position.y == -1.0
+    assert message.pose.position.z == 2.0
+    assert isclose(message.pose.orientation.w, 1.0, rel_tol=0.0, abs_tol=1e-8)
+
+
+def test_controller_input_has_stable_joy_layout() -> None:
+    """Joy axes/buttons preserve the documented controller field order."""
+    message = to_controller_joy(
+        _controller_frame(),
+        stamp=Time(sec=2, nanosec=3),
+        frame_id='left_controller_endpoint',
+    )
+
+    assert message.header.frame_id == 'left_controller_endpoint'
+    assert list(message.axes) == [0.25, 0.75, -0.5, 0.5]
+    assert list(message.buttons) == [1, 0, 1, 0, 1]
+
+
+def test_controller_transform_uses_distinct_endpoint_child_frame() -> None:
+    """Controller TF must never reuse a wrist child-frame name."""
+    transform = to_controller_transform(
+        _controller_frame(),
+        stamp=Time(sec=4, nanosec=5),
+        world_frame='world',
+        child_frame_id='left_controller_endpoint',
+    )
+
+    assert transform.header.frame_id == 'world'
+    assert transform.child_frame_id == 'left_controller_endpoint'
+    assert transform.transform.translation.x == 3.0
+    assert transform.transform.translation.y == -1.0
+    assert transform.transform.translation.z == 2.0
 
 
 def test_frame_id_for_side_uses_source_frame_when_enabled() -> None:

@@ -1,6 +1,6 @@
 # Connecting and Streaming Data from HTS
 
-This document describes how Hand Tracking Streamer (HTS) streams hand and wrist data, and how to connect to it over UDP and TCP.
+This document describes how Hand Tracking Streamer (HTS) streams hand or controller data, and how to connect to it over UDP and TCP.
 
 ## Data format
 
@@ -48,6 +48,26 @@ Right landmarks:, 0.0000, 0.0000, 0.0000, -0.0275, -0.0197, 0.0362, -0.0438, -0.
 
 - `Right wrist:`: 7 floats → `x, y, z, qx, qy, qz, qw`.
 - `Right landmarks:`: 63 floats → `[x, y, z] * 21` in the joint order listed above.
+
+### Controller input mode
+
+The startup `Controller Input` toggle selects controller mode instead of hand mode. The two
+modes are mutually exclusive and use the same protocol, target IP, port, and Both/Left/Right
+selection. In controller mode each selected side is sent as one logical snapshot:
+
+```text
+Left controller pose:, 0.1000, 1.2000, -0.3000, 0.000, 0.000, 0.000, 1.000
+Left controller input:, 0.2500, 0.7500, -0.5000, 0.5000, 1, 0, 1, 0, 1
+```
+
+- `controller pose`: Pointer Pose endpoint `x, y, z, qx, qy, qz, qw`. It is a distinct
+  semantic type and is never labeled as `wrist`.
+- `controller input`: `trigger, grip, stick_x, stick_y, primary, secondary,
+  trigger_button, grip_button, stick_click`.
+- The five button fields are numeric `0` or `1`.
+- UDP puts both lines in the same datagram. TCP writes both lines together and remains
+  newline-delimited for stream parsing.
+- With Debug Info enabled, both lines use the same `| f = FRAME | t = TIMESTAMP` metadata.
 
 >[!IMPORTANT]
 > Data streamed from HTS follows Unity's left-hand coordinate convention. For most applications, you will want to flip the incoming data's Y-axis for the right-hand coordinate convention.
@@ -99,5 +119,4 @@ Set up TCP server before starting streaming from the HTS app. Minimal example pr
 1. Have you enabled "Allow USB connection" on your Meta Quest?
    - Verify with `adb devices`. You should see your headset listed.
 2. Make sure your firewall allows inbound traffic on the UDP/TCP port you are using.
-
 
