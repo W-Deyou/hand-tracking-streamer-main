@@ -1,0 +1,6 @@
+<linker>
+  <!-- The runtime-model bridge retries this SDK method after OpenXR becomes ready. -->
+  <assembly fullname="Oculus.VR">
+    <type fullname="OVRRuntimeController" preserve="all" />
+  </assembly>
+</linker>
