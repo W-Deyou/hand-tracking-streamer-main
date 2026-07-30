@@ -68,6 +68,8 @@ Left controller input:, 0.2500, 0.7500, -0.5000, 0.5000, 1, 0, 1, 0, 1
 - UDP puts both lines in the same datagram. TCP writes both lines together and remains
   newline-delimited for stream parsing.
 - With Debug Info enabled, both lines use the same `| f = FRAME | t = TIMESTAMP` metadata.
+- In Controller Input mode, the Quest view renders RGB local axes directly at the exported
+  Pointer Pose endpoint: red `+X`, green `+Y`, and blue `+Z`.
 
 >[!IMPORTANT]
 > Data streamed from HTS follows Unity's left-hand coordinate convention. For most applications, you will want to flip the incoming data's Y-axis for the right-hand coordinate convention.
@@ -119,4 +121,3 @@ Set up TCP server before starting streaming from the HTS app. Minimal example pr
 1. Have you enabled "Allow USB connection" on your Meta Quest?
    - Verify with `adb devices`. You should see your headset listed.
 2. Make sure your firewall allows inbound traffic on the UDP/TCP port you are using.
-

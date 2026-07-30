@@ -501,16 +501,31 @@ public static class QuestControllerSetup
             controllerToggle.gameObject.name = "Tgl_ControllerInput";
             controllerToggle.isOn = false;
             controllerToggle.onValueChanged = new Toggle.ToggleEvent();
-            TextMeshProUGUI label = controllerToggle.GetComponentInChildren<TextMeshProUGUI>(true);
-            if (label != null)
+            TextMeshProUGUI tmpLabel = controllerToggle.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (tmpLabel != null)
             {
-                label.text = "Controller Input";
+                tmpLabel.text = "Controller Input";
+            }
+            Text legacyLabel = controllerToggle.GetComponentInChildren<Text>(true);
+            if (legacyLabel != null)
+            {
+                legacyLabel.text = "Controller Input";
             }
             Undo.RegisterCreatedObjectUndo(controllerToggle.gameObject, "Add controller input toggle");
         }
 
         Undo.RecordObject(appManager, "Register controller input toggle");
         appManager.controllerInputToggle = controllerToggle;
+        TextMeshProUGUI existingTmpLabel = controllerToggle.GetComponentInChildren<TextMeshProUGUI>(true);
+        if (existingTmpLabel != null)
+        {
+            existingTmpLabel.text = "Controller Input";
+        }
+        Text existingLegacyLabel = controllerToggle.GetComponentInChildren<Text>(true);
+        if (existingLegacyLabel != null)
+        {
+            existingLegacyLabel.text = "Controller Input";
+        }
         EditorUtility.SetDirty(controllerToggle);
         EditorUtility.SetDirty(appManager);
     }

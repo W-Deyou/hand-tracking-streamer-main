@@ -42,7 +42,11 @@ Visualization Manager:
         All Enabled: true
         left_wrist:
           Value: true
+        left_controller_endpoint:
+          Value: true
         right_wrist:
+          Value: true
+        right_controller_endpoint:
           Value: true
         world:
           Value: true
@@ -53,11 +57,29 @@ Visualization Manager:
       Show Names: false
       Tree:
         world:
+          left_controller_endpoint:
+            {}
           left_wrist:
+            {}
+          right_controller_endpoint:
             {}
           right_wrist:
             {}
       Update Interval: 0
+      Value: true
+    - Class: rviz_default_plugins/Axes
+      Enabled: true
+      Length: 0.15
+      Name: LeftControllerEndpointAxes
+      Radius: 0.01
+      Reference Frame: left_controller_endpoint
+      Value: true
+    - Class: rviz_default_plugins/Axes
+      Enabled: true
+      Length: 0.15
+      Name: RightControllerEndpointAxes
+      Radius: 0.01
+      Reference Frame: right_controller_endpoint
       Value: true
     - Class: rviz_default_plugins/MarkerArray
       Enabled: true

@@ -69,7 +69,7 @@ public sealed class ControllerInputStreamer : MonoBehaviour
     private void OnControllerUpdated()
     {
         AppManager manager = AppManager.Instance;
-        if (manager == null || !manager.isStreaming || !manager.IsControllerMode)
+        if (manager == null || !manager.IsControllerMode)
         {
             axisVisualizer?.Hide();
             if (_isInitialized) Disconnect();
@@ -80,6 +80,34 @@ public sealed class ControllerInputStreamer : MonoBehaviour
         {
             axisVisualizer?.Hide();
             if (_isInitialized) Disconnect();
+            return;
+        }
+
+        Pose pointerPose = Pose.identity;
+        bool hasPointerPose = _controller.IsConnected
+            && _controller.TryGetPointerPose(out pointerPose);
+        if (hasPointerPose)
+        {
+            // This is the exact Pointer Pose exported over the network. Keeping
+            // visualization and telemetry on the same value prevents origin or
+            // orientation drift between the Quest view and RViz.
+            axisVisualizer?.SetPose(pointerPose, manager.ShowControllerAxes);
+        }
+        else
+        {
+            axisVisualizer?.Hide();
+        }
+
+        // Local endpoint axes are useful while configuring the menu and do not
+        // depend on network streaming being active.
+        if (!manager.isStreaming)
+        {
+            if (_isInitialized) Disconnect();
+            return;
+        }
+
+        if (!hasPointerPose)
+        {
             return;
         }
 
@@ -95,7 +123,7 @@ public sealed class ControllerInputStreamer : MonoBehaviour
             return;
         }
         _timer = 0f;
-        ProcessControllerData(manager);
+        ProcessControllerData(manager, pointerPose);
     }
 
     private bool IsSelectedSide(int mode)
@@ -105,15 +133,8 @@ public sealed class ControllerInputStreamer : MonoBehaviour
             || (mode == 2 && controllerSide == ControllerSide.Right);
     }
 
-    private void ProcessControllerData(AppManager manager)
+    private void ProcessControllerData(AppManager manager, Pose pointerPose)
     {
-        if (!_controller.IsConnected || !_controller.TryGetPointerPose(out Pose pointerPose))
-        {
-            axisVisualizer?.Hide();
-            return;
-        }
-
-        axisVisualizer?.SetPose(pointerPose, manager.ShowControllerAxes);
         ControllerInput input = _controller.ControllerInput;
         bool addDebugHeader = manager.ShowDebugInfo;
         uint frameId = 0;

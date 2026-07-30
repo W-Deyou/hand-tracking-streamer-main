@@ -75,7 +75,6 @@ mono_crash.*
 *.pdb.meta
 *.mdb.meta
 sysinfo.txt
-*.apk
 *.aab
 *.unitypackage
 *_DoNotShip/

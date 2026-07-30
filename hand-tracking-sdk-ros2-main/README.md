@@ -67,6 +67,10 @@ Controller `Joy` layout is fixed: axes are `trigger, grip, stick_x, stick_y`; bu
 `primary, secondary, trigger_button, grip_button, stick_click`. Controller endpoint poses
 and TF frames are independent of wrist messages and never use wrist names.
 
+`view_hands.launch.py` loads dedicated RGB Axes displays for
+`left_controller_endpoint` and `right_controller_endpoint`. The axes use the controller TF
+generated from the same Pointer Pose carried by `/controllers/*/pose`.
+
 ## Default Behavior
 
 - Frame normalization:

@@ -32,7 +32,7 @@ public class AppManager : MonoBehaviour
     [Header("Visual Settings")]
     public Toggle visualizationToggle; 
     public bool ShowLandmarks => visualizationToggle != null && visualizationToggle.isOn;
-    public bool ShowControllerAxes => visualizationToggle != null && visualizationToggle.isOn;
+    public bool ShowControllerAxes => IsControllerMode;
 
     [Header("Debug and Experimental")]
     public Toggle debugInfoToggle;
@@ -66,6 +66,8 @@ public class AppManager : MonoBehaviour
     public InputMappingMode SelectedInputMode { get; private set; } = InputMappingMode.Hands;
     public bool IsHandMode => SelectedInputMode == InputMappingMode.Hands;
     public bool IsControllerMode => SelectedInputMode == InputMappingMode.Controllers;
+    private Oculus.Interaction.Input.Controller[] _uiControllers =
+        Array.Empty<Oculus.Interaction.Input.Controller>();
 
     private void Awake()
     {
@@ -80,35 +82,47 @@ public class AppManager : MonoBehaviour
 
     private void EnsureControllerModeUi()
     {
-        if (controllerInputToggle != null || headPoseToggle == null)
+        if (controllerInputToggle == null && headPoseToggle == null)
         {
             return;
         }
 
-        Transform row = headPoseToggle.transform.parent;
-        if (row == null)
+        if (controllerInputToggle == null)
         {
-            return;
+            Transform row = headPoseToggle.transform.parent;
+            if (row == null)
+            {
+                return;
+            }
+
+            controllerInputToggle = Instantiate(headPoseToggle, row, false);
+            controllerInputToggle.gameObject.name = "Tgl_ControllerInput";
+            controllerInputToggle.isOn = false;
+            controllerInputToggle.onValueChanged = new Toggle.ToggleEvent();
         }
 
-        controllerInputToggle = Instantiate(headPoseToggle, row, false);
-        controllerInputToggle.gameObject.name = "Tgl_ControllerInput";
-        controllerInputToggle.isOn = false;
-        controllerInputToggle.onValueChanged = new Toggle.ToggleEvent();
-        TextMeshProUGUI label = controllerInputToggle.GetComponentInChildren<TextMeshProUGUI>(true);
-        if (label != null)
+        // The original Head Pose row uses the legacy UI Text component in this
+        // scene. Support both text systems so an existing/cloned controller row
+        // can never retain the misleading "Head Pose" caption.
+        TextMeshProUGUI tmpLabel = controllerInputToggle.GetComponentInChildren<TextMeshProUGUI>(true);
+        if (tmpLabel != null)
         {
-            label.text = "Controller Input";
+            tmpLabel.text = "Controller Input";
+        }
+        Text legacyLabel = controllerInputToggle.GetComponentInChildren<Text>(true);
+        if (legacyLabel != null)
+        {
+            legacyLabel.text = "Controller Input";
         }
     }
 
-    private static void EnsureControllerTelemetry()
+    private void EnsureControllerTelemetry()
     {
-        Oculus.Interaction.Input.Controller[] controllers = FindObjectsByType<Oculus.Interaction.Input.Controller>(
+        _uiControllers = FindObjectsByType<Oculus.Interaction.Input.Controller>(
             FindObjectsInactive.Include,
             FindObjectsSortMode.None
         );
-        foreach (Oculus.Interaction.Input.Controller controller in controllers)
+        foreach (Oculus.Interaction.Input.Controller controller in _uiControllers)
         {
             bool isLeft = controller.gameObject.name.IndexOf("Left", StringComparison.OrdinalIgnoreCase) >= 0;
             bool isRight = controller.gameObject.name.IndexOf("Right", StringComparison.OrdinalIgnoreCase) >= 0;
@@ -164,6 +178,7 @@ public class AppManager : MonoBehaviour
             ? InputMappingMode.Controllers
             : InputMappingMode.Hands;
         UpdateInputModeLabels();
+        UpdateHandVisuals(handDropdown != null ? handDropdown.value : 0);
         ApplyVideoCanvasVisibility();
     }
 
@@ -219,6 +234,11 @@ public class AppManager : MonoBehaviour
 
     private void Update()
     {
+        if (!isStreaming)
+        {
+            RefreshControllerInputsForMenu();
+        }
+
         // If streaming, check if the user clicks the Left Menu Button
         // This is the flat button with three lines on the Left Quest Controller
         if (isStreaming && OVRInput.GetDown(OVRInput.Button.Start, OVRInput.Controller.LTouch))
@@ -229,6 +249,27 @@ public class AppManager : MonoBehaviour
         if (!isStreaming)
         {
             ValidateNetwork();
+        }
+    }
+
+    private void RefreshControllerInputsForMenu()
+    {
+        // Interaction SDK controller data is lazily evaluated. Pull both sides
+        // independently while the menu is open so whichever controller wakes
+        // first can immediately activate its own ray and trigger selector.
+        foreach (Oculus.Interaction.Input.Controller controller in _uiControllers)
+        {
+            if (controller == null || !controller.isActiveAndEnabled)
+            {
+                continue;
+            }
+
+            controller.MarkInputDataRequiresUpdate();
+            bool connected = controller.IsConnected;
+            if (connected)
+            {
+                controller.TryGetPointerPose(out _);
+            }
         }
     }
     
@@ -393,10 +434,10 @@ private void OnProtocolChanged(int index)
         
         if(menuPanel != null) menuPanel.SetActive(false);
 
+        isStreaming = true;
         ToggleRays(false);
         UpdateHandVisuals(SelectedHandMode);
         SetInputModeInteractable(false);
-        isStreaming = true;
 
         // Optional host->Quest video plane (separate from telemetry transport)
         if (ShowVideoStream)
@@ -513,8 +554,11 @@ private void OnProtocolChanged(int index)
 
     private void UpdateHandVisuals(int mode)
     {
-        bool showLeft = IsHandMode && (mode == 0 || mode == 1);
-        bool showRight = IsHandMode && (mode == 0 || mode == 2);
+        // Input mapping only controls telemetry after Start Streaming. While the
+        // menu is open, keep both hand objects available together with both
+        // controller interactors so the user can operate the UI with either.
+        bool showLeft = !isStreaming || (IsHandMode && (mode == 0 || mode == 1));
+        bool showRight = !isStreaming || (IsHandMode && (mode == 0 || mode == 2));
 
         if (syntheticHandLeft != null) syntheticHandLeft.SetActive(showLeft);
         if (syntheticHandRight != null) syntheticHandRight.SetActive(showRight);
