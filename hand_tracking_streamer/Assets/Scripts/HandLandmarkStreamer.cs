@@ -81,6 +81,24 @@ public class HandLandmarkStreamer : MonoBehaviour
         Disconnect();
     }
 
+    private void Update()
+    {
+        AppManager manager = AppManager.Instance;
+        if (manager == null || !manager.isStreaming || !manager.IsHandMode
+            || !IsSelectedSide(manager.SelectedHandMode))
+        {
+            if (_isInitialized) Disconnect();
+            return;
+        }
+
+        if (!_isInitialized) InitializeNetwork();
+        if (_isInitialized && _currentProtocol != 0 && TcpConnectionHealth.IsDisconnected(_tcpClient))
+        {
+            Disconnect();
+            manager.HandleDisconnection("Telemetry host closed the TCP connection.");
+        }
+    }
+
     private void OnHandUpdated()
     {
         // 1. Check AppManager State
@@ -92,8 +110,7 @@ public class HandLandmarkStreamer : MonoBehaviour
 
         // 2. Check Hand Mode (Logic unchanged: still checks if this hand should be streaming)
         int mode = AppManager.Instance.SelectedHandMode;
-        if (mode == 1 && _handSide == HandSide.Right) return;
-        if (mode == 2 && _handSide == HandSide.Left) return;
+        if (!IsSelectedSide(mode)) return;
 
         // 3. Init Network
         if (!_isInitialized) InitializeNetwork();
@@ -105,6 +122,18 @@ public class HandLandmarkStreamer : MonoBehaviour
             _timer = 0f;
             ProcessHandData();
         }
+    }
+
+    private bool IsSelectedSide(int mode)
+    {
+        return mode == 0
+            || (mode == 1 && _handSide == HandSide.Left)
+            || (mode == 2 && _handSide == HandSide.Right);
+    }
+
+    public void StopConnection()
+    {
+        Disconnect();
     }
 
     private void ProcessHandData()

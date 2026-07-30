@@ -107,7 +107,7 @@ The default parameter file is `config/bridge.params.yaml`.
 |---|---|---:|---|
 | `transport_mode` | `string` | `tcp_server` | SDK transport mode (`udp`, `tcp_server`, `tcp_client`). |
 | `host` | `string` | `0.0.0.0` | Bind/connect host according to transport mode. |
-| `port` | `int` | `5555` | Transport port. |
+| `port` | `int` | `8000` | Transport port. |
 | `timeout_s` | `float` | `1.0` | SDK socket read/connect timeout seconds. |
 | `reconnect_delay_s` | `float` | `0.25` | TCP client reconnect delay seconds. |
 | `world_frame` | `string` | `world` | Parent frame used for wrist TF and world-space landmarks. |

@@ -46,6 +46,13 @@ public class HeadPoseStreamer : MonoBehaviour
         {
             InitializeNetwork();
         }
+        if (!_isInitialized) return;
+        if (_currentProtocol != 0 && TcpConnectionHealth.IsDisconnected(_tcpClient))
+        {
+            Disconnect();
+            AppManager.Instance.HandleDisconnection("Telemetry host closed the TCP connection.");
+            return;
+        }
 
         Transform source = ResolveHeadSource();
         if (source == null)
@@ -64,6 +71,11 @@ public class HeadPoseStreamer : MonoBehaviour
     }
 
     private void OnDestroy()
+    {
+        Disconnect();
+    }
+
+    public void StopConnection()
     {
         Disconnect();
     }

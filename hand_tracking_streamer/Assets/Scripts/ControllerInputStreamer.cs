@@ -69,6 +69,26 @@ public sealed class ControllerInputStreamer : MonoBehaviour
         Disconnect();
     }
 
+    private void Update()
+    {
+        AppManager manager = AppManager.Instance;
+        if (manager == null || !manager.isStreaming || !manager.IsControllerMode
+            || !IsSelectedSide(manager.SelectedHandMode))
+        {
+            if (_isInitialized) Disconnect();
+            return;
+        }
+
+        // Establish and monitor the telemetry socket independently of tracking.
+        // A controller can temporarily have no pointer pose while TCP is closed.
+        if (!_isInitialized) InitializeNetwork();
+        if (_isInitialized && _currentProtocol != 0 && TcpConnectionHealth.IsDisconnected(_tcpClient))
+        {
+            Disconnect();
+            manager.HandleDisconnection("Telemetry host closed the TCP connection.");
+        }
+    }
+
     private void OnControllerUpdated()
     {
         AppManager manager = AppManager.Instance;
@@ -114,11 +134,7 @@ public sealed class ControllerInputStreamer : MonoBehaviour
             return;
         }
 
-        if (!_isInitialized)
-        {
-            InitializeNetwork();
-            if (!_isInitialized) return;
-        }
+        if (!_isInitialized) return;
 
         _timer += Time.deltaTime;
         if (_timer < frequencySeconds)
@@ -134,6 +150,11 @@ public sealed class ControllerInputStreamer : MonoBehaviour
         return mode == 0
             || (mode == 1 && controllerSide == ControllerSide.Left)
             || (mode == 2 && controllerSide == ControllerSide.Right);
+    }
+
+    public void StopConnection()
+    {
+        Disconnect();
     }
 
     private void ProcessControllerData(AppManager manager, Pose pointerPose)

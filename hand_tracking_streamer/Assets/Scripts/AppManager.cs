@@ -69,6 +69,8 @@ public class AppManager : MonoBehaviour
     public bool IsControllerMode => SelectedInputMode == InputMappingMode.Controllers;
     private Oculus.Interaction.Input.Controller[] _uiControllers =
         Array.Empty<Oculus.Interaction.Input.Controller>();
+    private Oculus.Interaction.Input.Controller _leftUiController;
+    private bool _leftMenuWasPressed;
     private Coroutine _concurrentInputCoroutine;
 
     private void Awake()
@@ -131,6 +133,11 @@ public class AppManager : MonoBehaviour
             if (!isLeft && !isRight)
             {
                 continue;
+            }
+
+            if (isLeft)
+            {
+                _leftUiController = controller;
             }
 
             ControllerAxisVisualizer visualizer = controller.GetComponent<ControllerAxisVisualizer>();
@@ -290,17 +297,36 @@ public class AppManager : MonoBehaviour
             RefreshControllerInputsForMenu();
         }
 
-        // If streaming, check if the user clicks the Left Menu Button
-        // This is the flat button with three lines on the Left Quest Controller
-        if (isStreaming && OVRInput.GetDown(OVRInput.Button.Start, OVRInput.Controller.LTouch))
+        // While streaming, the Left Menu button exits the active session.
+        // Read the held state and detect the edge locally: GetDown alone can
+        // be missed when Interaction SDK refreshes later in the frame on APK.
+        if (isStreaming && GetLeftMenuDown())
         {
-            StopStreaming(); 
+            StopStreaming();
         }
 
         if (!isStreaming)
         {
             ValidateNetwork();
         }
+    }
+
+    private bool GetLeftMenuDown()
+    {
+        bool pressed = OVRInput.Get(
+            OVRInput.RawButton.Start,
+            OVRInput.Controller.LTouch
+        );
+
+        if (_leftUiController != null && _leftUiController.isActiveAndEnabled)
+        {
+            _leftUiController.MarkInputDataRequiresUpdate();
+            pressed |= _leftUiController.ControllerInput.MenuButton;
+        }
+
+        bool down = pressed && !_leftMenuWasPressed;
+        _leftMenuWasPressed = pressed;
+        return down;
     }
 
     private void RefreshControllerInputsForMenu()
@@ -558,6 +584,7 @@ private void OnProtocolChanged(int index)
         
         // 1. Reset Logic
         isStreaming = false;
+        CloseTelemetryConnections();
         
         // 2. Re-enable UI
         if (menuPanel != null) 
@@ -583,6 +610,7 @@ private void OnProtocolChanged(int index)
     public void StopStreaming()
     {
         isStreaming = false;
+        CloseTelemetryConnections();
         ClearError();
         StopVideoSessionAsync("user_stop");
         ApplyVideoCanvasVisibility();
@@ -599,6 +627,25 @@ private void OnProtocolChanged(int index)
         UpdateHandVisuals(SelectedHandMode);
 
         SendLog("Streaming stopped by user.");
+    }
+
+    private void CloseTelemetryConnections()
+    {
+        foreach (HandLandmarkStreamer streamer in FindObjectsByType<HandLandmarkStreamer>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            streamer.StopConnection();
+        }
+        foreach (ControllerInputStreamer streamer in FindObjectsByType<ControllerInputStreamer>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            streamer.StopConnection();
+        }
+        foreach (HeadPoseStreamer streamer in FindObjectsByType<HeadPoseStreamer>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            streamer.StopConnection();
+        }
     }
 
     private async void StopVideoSessionAsync(string reason)
