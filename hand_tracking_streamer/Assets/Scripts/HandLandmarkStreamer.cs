@@ -45,22 +45,30 @@ public class HandLandmarkStreamer : MonoBehaviour
     private uint _frameId = 0;
     private static readonly double _ticksToNs = 1_000_000_000.0 / Stopwatch.Frequency;
     
-    // Indices for the 21 standard landmarks (Sending)
+    // Semantic joint mapping for the 21 MediaPipe-style landmarks. Use
+    // HandJointId instead of raw skeleton indices because the OpenXR and
+    // legacy OVR skeletons assign different integer values to the same joint.
     private readonly int[] _streamedJoints = {
-        1, 2, 3, 4, 5,       // Wrist, Thumb
-        7, 8, 9, 10,         // Index
-        12, 13, 14, 15,      // Middle
-        17, 18, 19, 20,      // Ring
-        22, 23, 24, 25       // Pinky
+        (int)HandJointId.HandWristRoot,
+        (int)HandJointId.HandThumb1, (int)HandJointId.HandThumb2,
+        (int)HandJointId.HandThumb3, (int)HandJointId.HandThumbTip,
+        (int)HandJointId.HandIndex1, (int)HandJointId.HandIndex2,
+        (int)HandJointId.HandIndex3, (int)HandJointId.HandIndexTip,
+        (int)HandJointId.HandMiddle1, (int)HandJointId.HandMiddle2,
+        (int)HandJointId.HandMiddle3, (int)HandJointId.HandMiddleTip,
+        (int)HandJointId.HandRing1, (int)HandJointId.HandRing2,
+        (int)HandJointId.HandRing3, (int)HandJointId.HandRingTip,
+        (int)HandJointId.HandPinky1, (int)HandJointId.HandPinky2,
+        (int)HandJointId.HandPinky3, (int)HandJointId.HandPinkyTip
     };
 
     // Indices for the HUD Display (Wrist + Tips only)
     private readonly int[] _displayJoints = { 
-        5,  // Thumb Tip
-        10, // Index Tip
-        15, // Middle Tip
-        20, // Ring Tip
-        25  // Pinky Tip
+        (int)HandJointId.HandThumbTip,
+        (int)HandJointId.HandIndexTip,
+        (int)HandJointId.HandMiddleTip,
+        (int)HandJointId.HandRingTip,
+        (int)HandJointId.HandPinkyTip
     };
 
     private void Start()

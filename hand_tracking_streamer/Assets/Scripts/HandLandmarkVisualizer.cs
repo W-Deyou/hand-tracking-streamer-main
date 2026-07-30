@@ -10,9 +10,20 @@ public class HandLandmarkVisualizer : MonoBehaviour
     private GameObject[] _visualizerPool;
     private bool _poolCreated = false;
 
-    // The same 21 joints used in your streamer
+    // Keep visualization aligned with the stream by selecting semantic joints
+    // rather than skeleton-version-specific integer indices.
     private readonly int[] _jointsToTrack = {
-        1, 2, 3, 4, 5, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 20, 22, 23, 24, 25 
+        (int)HandJointId.HandWristRoot,
+        (int)HandJointId.HandThumb1, (int)HandJointId.HandThumb2,
+        (int)HandJointId.HandThumb3, (int)HandJointId.HandThumbTip,
+        (int)HandJointId.HandIndex1, (int)HandJointId.HandIndex2,
+        (int)HandJointId.HandIndex3, (int)HandJointId.HandIndexTip,
+        (int)HandJointId.HandMiddle1, (int)HandJointId.HandMiddle2,
+        (int)HandJointId.HandMiddle3, (int)HandJointId.HandMiddleTip,
+        (int)HandJointId.HandRing1, (int)HandJointId.HandRing2,
+        (int)HandJointId.HandRing3, (int)HandJointId.HandRingTip,
+        (int)HandJointId.HandPinky1, (int)HandJointId.HandPinky2,
+        (int)HandJointId.HandPinky3, (int)HandJointId.HandPinkyTip
     };
 
     private void Start()

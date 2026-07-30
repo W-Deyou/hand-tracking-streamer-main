@@ -1,0 +1,2 @@
+D:\hand-tracking-streamer-main\hand-tracking-streamer-main\hand_tracking_streamer\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+D:\hand-tracking-streamer-main\hand-tracking-streamer-main\hand_tracking_streamer\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
