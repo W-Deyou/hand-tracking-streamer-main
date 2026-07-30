@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro; 
 using UnityEngine.UI;
 using System;
+using System.Collections;
 using System.Net.Sockets;
 
 public enum InputMappingMode
@@ -68,6 +69,7 @@ public class AppManager : MonoBehaviour
     public bool IsControllerMode => SelectedInputMode == InputMappingMode.Controllers;
     private Oculus.Interaction.Input.Controller[] _uiControllers =
         Array.Empty<Oculus.Interaction.Input.Controller>();
+    private Coroutine _concurrentInputCoroutine;
 
     private void Awake()
     {
@@ -180,6 +182,55 @@ public class AppManager : MonoBehaviour
         UpdateInputModeLabels();
         UpdateHandVisuals(handDropdown != null ? handDropdown.value : 0);
         ApplyVideoCanvasVisibility();
+        StartConcurrentInputModeRetry();
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus)
+        {
+            StartConcurrentInputModeRetry();
+        }
+    }
+
+    private void OnApplicationPause(bool isPaused)
+    {
+        if (!isPaused)
+        {
+            StartConcurrentInputModeRetry();
+        }
+    }
+
+    private void StartConcurrentInputModeRetry()
+    {
+        if (_concurrentInputCoroutine != null)
+        {
+            StopCoroutine(_concurrentInputCoroutine);
+        }
+        _concurrentInputCoroutine = StartCoroutine(EnableConcurrentInputModeWhenReady());
+    }
+
+    private IEnumerator EnableConcurrentInputModeWhenReady()
+    {
+        // OVRManager also requests this during initialization, but on Android
+        // the one-shot request can run before the OpenXR session is ready. A
+        // short retry here prevents the runtime from falling back to global
+        // hand/controller switching (which requires waking both controllers).
+        const int maxAttempts = 40;
+        WaitForSeconds retryDelay = new WaitForSeconds(0.25f);
+        for (int attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            if (OVRManager.instance != null && OVRInput.EnableSimultaneousHandsAndControllers())
+            {
+                Debug.Log($"[Input] Concurrent hands/controllers enabled on attempt {attempt}.");
+                _concurrentInputCoroutine = null;
+                yield break;
+            }
+            yield return retryDelay;
+        }
+
+        Debug.LogWarning("[Input] Unable to enable concurrent hands/controllers after OpenXR startup.");
+        _concurrentInputCoroutine = null;
     }
 
     private void SaveConfig()
@@ -275,6 +326,11 @@ public class AppManager : MonoBehaviour
     
     private void OnDestroy()
     {
+        if (_concurrentInputCoroutine != null)
+        {
+            StopCoroutine(_concurrentInputCoroutine);
+            _concurrentInputCoroutine = null;
+        }
         if (protocolDropdown != null)
         {
             protocolDropdown.onValueChanged.RemoveListener(OnProtocolChanged);
