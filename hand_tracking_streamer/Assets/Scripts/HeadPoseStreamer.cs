@@ -7,13 +7,15 @@ using UnityEngine;
 
 public class HeadPoseStreamer : MonoBehaviour
 {
+    public const string SnapshotSource = "HeadPose";
+
     [Header("Configuration")]
     [SerializeField] private Transform centerEyeAnchor;
     [SerializeField] private float frequencySeconds = 1f / 30f;
 
     [Header("Logging")]
     [SerializeField] private bool logToHUD = true;
-    [SerializeField] private string hudLogSource = "Right";
+    [SerializeField] private string hudLogSource = SnapshotSource;
 
     private UdpClient _udpClient;
     private TcpClient _tcpClient;
@@ -105,7 +107,7 @@ public class HeadPoseStreamer : MonoBehaviour
             _sbLog.AppendLine("=== [Head] Pose ===");
             _sbLog.Append("Pos: ").AppendLine(FormatVector3Tuple(position));
             _sbLog.Append("Rot: ").AppendLine(FormatQuaternionTuple(rotation));
-            LogHUD(_sbLog.ToString());
+            LogHUDSnapshot(_sbLog.ToString());
         }
 
         SendData(_sbPacket.ToString());
@@ -262,6 +264,14 @@ public class HeadPoseStreamer : MonoBehaviour
         if (logToHUD && LogManager.Instance != null)
         {
             LogManager.Instance.Log(hudLogSource, msg);
+        }
+    }
+
+    private void LogHUDSnapshot(string msg)
+    {
+        if (logToHUD && LogManager.Instance != null)
+        {
+            LogManager.Instance.SetLatestSnapshot(SnapshotSource, msg);
         }
     }
 }

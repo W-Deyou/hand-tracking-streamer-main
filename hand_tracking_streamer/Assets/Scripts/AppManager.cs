@@ -359,7 +359,7 @@ private void OnProtocolChanged(int index)
         else if (index == 2) // TCP (Wireless) - NEW
         {
             // Set a placeholder or the last known IP. 
-            if (ipInputField != null) ipInputField.text = "192.168.1.1"; // Placeholder for the PC's Wi-Fi IP
+            if (ipInputField != null) ipInputField.text = "192.168.3.2"; // Default PC Wi-Fi IP
             if (portInputField != null) portInputField.text = "8000"; 
             StartCoroutine(QuickTCPCheck());
         }
@@ -424,6 +424,15 @@ private void OnProtocolChanged(int index)
         SelectedInputMode = controllerInputToggle != null && controllerInputToggle.isOn
             ? InputMappingMode.Controllers
             : InputMappingMode.Hands;
+
+        // Do not render telemetry retained from a previous streaming session
+        // while the newly selected devices are still acquiring their poses.
+        if (LogManager.Instance != null)
+        {
+            LogManager.Instance.ClearLatestSnapshot(ControllerInputStreamer.LeftSnapshotSource);
+            LogManager.Instance.ClearLatestSnapshot(ControllerInputStreamer.RightSnapshotSource);
+            LogManager.Instance.ClearLatestSnapshot(HeadPoseStreamer.SnapshotSource);
+        }
 
         if (IsControllerMode && !HasSelectedControllerStreamers())
         {

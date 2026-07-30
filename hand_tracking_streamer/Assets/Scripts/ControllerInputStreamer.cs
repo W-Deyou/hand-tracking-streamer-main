@@ -9,6 +9,9 @@ using UnityEngine;
 
 public sealed class ControllerInputStreamer : MonoBehaviour
 {
+    public const string LeftSnapshotSource = "Controller.Left";
+    public const string RightSnapshotSource = "Controller.Right";
+
     public enum ControllerSide { Left, Right }
 
     [SerializeField] private ControllerSide controllerSide;
@@ -176,7 +179,7 @@ public sealed class ControllerInputStreamer : MonoBehaviour
             _hud.Append("Trigger: ").Append(input.Trigger.ToString("F2", CultureInfo.InvariantCulture));
             _hud.Append(" Grip: ").AppendLine(input.Grip.ToString("F2", CultureInfo.InvariantCulture));
             _hud.Append("Stick: ").AppendLine(input.Primary2DAxis.ToString("F2"));
-            LogHUD(_hud.ToString());
+            LogHUDSnapshot(_hud.ToString());
         }
 
         SendData(_packet.ToString());
@@ -297,5 +300,14 @@ public sealed class ControllerInputStreamer : MonoBehaviour
         {
             LogManager.Instance.Log(hudLogSource, message);
         }
+    }
+
+    private void LogHUDSnapshot(string message)
+    {
+        if (!logToHUD || LogManager.Instance == null) return;
+        string source = controllerSide == ControllerSide.Left
+            ? LeftSnapshotSource
+            : RightSnapshotSource;
+        LogManager.Instance.SetLatestSnapshot(source, message);
     }
 }

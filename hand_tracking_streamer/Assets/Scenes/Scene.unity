@@ -20532,7 +20532,7 @@ MonoBehaviour:
   centerEyeAnchor: {fileID: 1397154442}
   frequencySeconds: 0.01
   logToHUD: 1
-  hudLogSource: Right
+  hudLogSource: HeadPose
 --- !u!1 &1399412822
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,11 +45,6 @@ public class LogDisplayHands : MonoBehaviour
             _currentMaxMessages = 1;
         }
 
-        // When head tracking is enabled, reserve one additional line entry.
-        if (AppManager.Instance.TrackHeadPose)
-        {
-            _currentMaxMessages += 1;
-        }
     }
 
     private void DisplayLog()
@@ -61,29 +56,58 @@ public class LogDisplayHands : MonoBehaviour
             return;
         }
 
-        // 1. Get the raw list of messages for this source
-        var messages = LogManager.Instance.GetLogMessages(logSource);
-        
-        if (messages == null || messages.Count == 0)
+        // Controller telemetry is kept as one latest snapshot per side. This
+        // avoids one controller (or Head Pose) evicting the other based on
+        // update order while preserving the original hand-history path below.
+        _sb.Clear();
+        if (AppManager.Instance != null && AppManager.Instance.IsControllerMode)
         {
-            SetText(string.Empty);
-            return;
+            AppendControllerSnapshots(AppManager.Instance.SelectedHandMode);
+        }
+        else
+        {
+            AppendHandHistory();
         }
 
-        // 2. Clear the builder
-        _sb.Clear();
+        if (AppManager.Instance != null && AppManager.Instance.TrackHeadPose &&
+            LogManager.Instance.TryGetLatestSnapshot(HeadPoseStreamer.SnapshotSource, out string headPose))
+        {
+            AppendSnapshot(headPose);
+        }
 
-        // 3. Calculate start index (Show only the last N messages based on dynamic limit)
+        SetText(_sb.ToString());
+    }
+
+    private void AppendControllerSnapshots(int mode)
+    {
+        if ((mode == 0 || mode == 1) &&
+            LogManager.Instance.TryGetLatestSnapshot(ControllerInputStreamer.LeftSnapshotSource, out string left))
+        {
+            AppendSnapshot(left);
+        }
+        if ((mode == 0 || mode == 2) &&
+            LogManager.Instance.TryGetLatestSnapshot(ControllerInputStreamer.RightSnapshotSource, out string right))
+        {
+            AppendSnapshot(right);
+        }
+    }
+
+    private void AppendHandHistory()
+    {
+        var messages = LogManager.Instance.GetLogMessages(logSource);
+        if (messages == null || messages.Count == 0) return;
+
         int startIdx = Mathf.Max(0, messages.Count - _currentMaxMessages);
-
-        // 4. Build the string
         for (int i = startIdx; i < messages.Count; i++)
         {
             _sb.AppendLine(messages[i]);
         }
+    }
 
-        // 5. Update UI
-        SetText(_sb.ToString());
+    private void AppendSnapshot(string snapshot)
+    {
+        if (string.IsNullOrWhiteSpace(snapshot)) return;
+        _sb.AppendLine(snapshot.TrimEnd());
     }
 
     private void SetText(string text)
