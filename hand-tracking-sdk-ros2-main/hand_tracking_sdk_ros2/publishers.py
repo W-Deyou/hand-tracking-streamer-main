@@ -57,11 +57,13 @@ class BridgePublishers:
         enable_pose_array: bool,
         enable_markers: bool,
         enable_controller_topics: bool = True,
+        enable_head_topics: bool = True,
     ) -> None:
         """Create ROS publishers used by the bridge node."""
         self._enable_pose_array = enable_pose_array
         self._enable_markers = enable_markers
         self._enable_controller_topics = enable_controller_topics
+        self._enable_head_topics = enable_head_topics
 
         self._left_wrist_pub = node.create_publisher(PoseStamped, "hands/left/wrist_pose", sensor_qos)
         self._right_wrist_pub = node.create_publisher(
@@ -123,6 +125,11 @@ class BridgePublishers:
             "controllers/right/input",
             sensor_qos,
         )
+        self._head_pose_pub = node.create_publisher(
+            PoseStamped,
+            "head/pose",
+            sensor_qos,
+        )
 
     def publish_wrist(self, side: HandSide, message: PoseStamped) -> None:
         """Publish one wrist pose message for the selected side."""
@@ -170,3 +177,8 @@ class BridgePublishers:
             self._left_controller_input_pub.publish(message)
         else:
             self._right_controller_input_pub.publish(message)
+
+    def publish_head_pose(self, message: PoseStamped) -> None:
+        """Publish the Quest center-eye pose when enabled."""
+        if self._enable_head_topics:
+            self._head_pose_pub.publish(message)

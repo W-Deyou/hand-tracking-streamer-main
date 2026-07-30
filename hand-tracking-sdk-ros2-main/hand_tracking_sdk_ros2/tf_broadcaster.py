@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 from builtin_interfaces.msg import Time
-from hand_tracking_sdk import ControllerFrame, HandFrame, HandSide
+from hand_tracking_sdk import ControllerFrame, HandFrame, HandSide, HeadFrame
 from tf2_ros import TransformBroadcaster
 
-from .adapters import to_controller_transform, to_wrist_transform
+from .adapters import to_controller_transform, to_head_transform, to_wrist_transform
 
 
 class WristTfPublisher:
@@ -80,5 +80,35 @@ class ControllerTfPublisher:
                 stamp=stamp,
                 world_frame=self._world_frame,
                 child_frame_id=child_frame_id,
+            )
+        )
+
+
+class HeadTfPublisher:
+    """Publish the Quest center-eye transform independently from hand/controller TF."""
+
+    def __init__(
+        self,
+        broadcaster: TransformBroadcaster,
+        *,
+        enabled: bool,
+        world_frame: str,
+        head_frame: str,
+    ) -> None:
+        self._broadcaster = broadcaster
+        self._enabled = enabled
+        self._world_frame = world_frame
+        self._head_frame = head_frame
+
+    def publish(self, frame: HeadFrame, stamp: Time) -> None:
+        """Publish one world-to-head transform if TF output is enabled."""
+        if not self._enabled:
+            return
+        self._broadcaster.sendTransform(
+            to_head_transform(
+                frame,
+                stamp=stamp,
+                world_frame=self._world_frame,
+                child_frame_id=self._head_frame,
             )
         )

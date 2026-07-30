@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from hand_tracking_sdk import (
     ControllerFrame,
+    HeadFrame,
     HTSClient,
     HTSClientConfig,
     StreamOutput,
@@ -15,7 +16,7 @@ from hand_tracking_sdk import (
 )
 from hand_tracking_sdk.frame import HandFrame
 
-BridgeFrame = HandFrame | ControllerFrame
+BridgeFrame = HandFrame | HeadFrame | ControllerFrame
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,7 +111,7 @@ class FrameRuntime:
                 if self._stop_event.is_set():
                     return
 
-                if not isinstance(event, (HandFrame, ControllerFrame)):
+                if not isinstance(event, (HandFrame, HeadFrame, ControllerFrame)):
                     continue
 
                 frame = event

@@ -10,6 +10,7 @@ hand_tracking_bridge:
     right_wrist_frame: right_wrist
     left_controller_frame: left_controller_endpoint
     right_controller_frame: right_controller_endpoint
+    head_frame: head
     use_source_frame_id: false
     landmarks_are_wrist_relative: true
     qos_reliability: best_effort
@@ -18,5 +19,6 @@ hand_tracking_bridge:
     enable_pose_array: false
     enable_markers: true
     enable_controller_topics: true
+    enable_head_topics: true
     enable_diagnostics: true
     diagnostics_period_s: 1.0

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from builtin_interfaces.msg import Time
 from geometry_msgs.msg import Point, Pose, PoseArray, PoseStamped, Quaternion, TransformStamped
-from hand_tracking_sdk import ControllerFrame, HandFrame, HandSide, JointName
+from hand_tracking_sdk import ControllerFrame, HandFrame, HandSide, HeadFrame, JointName
 from hand_tracking_sdk import (
     unity_left_to_flu_position,
 )
@@ -104,6 +104,48 @@ def to_controller_pose_stamped(
             orientation=Quaternion(x=qx, y=qy, z=qz, w=qw),
         ),
     )
+
+
+def to_head_pose_stamped(
+    frame: HeadFrame,
+    *,
+    stamp: Time,
+    frame_id: str,
+) -> PoseStamped:
+    """Convert the Quest center-eye pose to a world-space ROS pose."""
+    x, y, z = _map_point_frame(x=frame.head.x, y=frame.head.y, z=frame.head.z)
+    qx, qy, qz, qw = _map_quaternion_frame(
+        qx=frame.head.qx,
+        qy=frame.head.qy,
+        qz=frame.head.qz,
+        qw=frame.head.qw,
+    )
+    return PoseStamped(
+        header=make_header(stamp=stamp, frame_id=frame_id),
+        pose=Pose(
+            position=Point(x=x, y=y, z=z),
+            orientation=Quaternion(x=qx, y=qy, z=qz, w=qw),
+        ),
+    )
+
+
+def to_head_transform(
+    frame: HeadFrame,
+    *,
+    stamp: Time,
+    world_frame: str,
+    child_frame_id: str,
+) -> TransformStamped:
+    """Convert the Quest center-eye pose to a world-to-head TF transform."""
+    pose = to_head_pose_stamped(frame, stamp=stamp, frame_id=world_frame).pose
+    transform = TransformStamped()
+    transform.header = make_header(stamp=stamp, frame_id=world_frame)
+    transform.child_frame_id = child_frame_id
+    transform.transform.translation.x = pose.position.x
+    transform.transform.translation.y = pose.position.y
+    transform.transform.translation.z = pose.position.z
+    transform.transform.rotation = pose.orientation
+    return transform
 
 
 def to_controller_joy(

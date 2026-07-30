@@ -12,6 +12,8 @@ from hand_tracking_sdk import (
     HandFrame,
     HandLandmarks,
     HandSide,
+    HeadFrame,
+    HeadPose,
     WristPose,
 )
 from visualization_msgs.msg import Marker
@@ -24,11 +26,25 @@ from hand_tracking_sdk_ros2.adapters import (
     to_controller_joy,
     to_controller_pose_stamped,
     to_controller_transform,
+    to_head_pose_stamped,
+    to_head_transform,
     to_landmarks_pose_array,
     to_marker_array,
     to_wrist_pose_stamped,
     to_wrist_transform,
 )
+
+
+def _head_frame() -> HeadFrame:
+    return HeadFrame(
+        side=HandSide.HEAD,
+        frame_id='hts_head',
+        head=HeadPose(x=1.0, y=2.0, z=3.0, qx=0.0, qy=0.0, qz=0.0, qw=1.0),
+        sequence_id=1,
+        recv_ts_ns=1,
+        recv_time_unix_ns=1,
+        source_ts_ns=None,
+    )
 
 
 def _controller_frame(side: HandSide = HandSide.LEFT) -> ControllerFrame:
@@ -114,6 +130,35 @@ def test_controller_input_has_stable_joy_layout() -> None:
     assert message.header.frame_id == 'left_controller_endpoint'
     assert list(message.axes) == [0.25, 0.75, -0.5, 0.5]
     assert list(message.buttons) == [1, 0, 1, 0, 1]
+
+
+def test_head_pose_maps_center_eye_into_flu() -> None:
+    """Head pose uses the same Unity-to-FLU world mapping as other poses."""
+    message = to_head_pose_stamped(
+        _head_frame(),
+        stamp=Time(sec=2, nanosec=3),
+        frame_id='world',
+    )
+
+    assert message.header.frame_id == 'world'
+    assert message.pose.position.x == 3.0
+    assert message.pose.position.y == -1.0
+    assert message.pose.position.z == 2.0
+    assert isclose(message.pose.orientation.w, 1.0, rel_tol=0.0, abs_tol=1e-8)
+
+
+def test_head_transform_uses_dedicated_child_frame() -> None:
+    """Head TF remains independent from wrist and controller frame names."""
+    transform = to_head_transform(
+        _head_frame(),
+        stamp=Time(sec=4, nanosec=5),
+        world_frame='world',
+        child_frame_id='head',
+    )
+
+    assert transform.header.frame_id == 'world'
+    assert transform.child_frame_id == 'head'
+    assert transform.transform.translation.x == 3.0
 
 
 def test_controller_transform_uses_distinct_endpoint_child_frame() -> None:

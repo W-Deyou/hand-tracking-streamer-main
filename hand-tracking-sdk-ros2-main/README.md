@@ -62,6 +62,7 @@ ros2 launch hand_tracking_sdk_ros2 view_hands.launch.py
 - `/controllers/right/pose` (`geometry_msgs/PoseStamped`)
 - `/controllers/left/input` (`sensor_msgs/Joy`)
 - `/controllers/right/input` (`sensor_msgs/Joy`)
+- `/head/pose` (`geometry_msgs/PoseStamped`, Quest center-eye pose)
 
 Controller `Joy` layout is fixed: axes are `trigger, grip, stick_x, stick_y`; buttons are
 `primary, secondary, trigger_button, grip_button, stick_click`. Controller endpoint poses
@@ -70,6 +71,8 @@ and TF frames are independent of wrist messages and never use wrist names.
 `view_hands.launch.py` loads dedicated RGB Axes displays for
 `left_controller_endpoint` and `right_controller_endpoint`. The axes use the controller TF
 generated from the same Pointer Pose carried by `/controllers/*/pose`.
+The RViz configuration also displays RGB axes for the `head` TF frame generated
+from the same center-eye pose carried by `/head/pose`.
 
 ## Default Behavior
 
@@ -81,6 +84,7 @@ generated from the same Pointer Pose carried by `/controllers/*/pose`.
   - wrist TF is published to `/tf` as `world -> left_wrist|right_wrist`
   - controller TF is published when controller frames arrive as
     `world -> left_controller_endpoint|right_controller_endpoint`
+  - head TF is published when Head Pose is selected on Quest as `world -> head`
 - Marker visualization:
   - one `SPHERE_LIST` marker plus one `LINE_LIST` marker per hand
   - left hand: blue, right hand: red
@@ -115,6 +119,7 @@ The default parameter file is `config/bridge.params.yaml`.
 | `right_wrist_frame` | `string` | `right_wrist` | Child TF frame for right wrist. |
 | `left_controller_frame` | `string` | `left_controller_endpoint` | Child TF frame for the left controller endpoint. |
 | `right_controller_frame` | `string` | `right_controller_endpoint` | Child TF frame for the right controller endpoint. |
+| `head_frame` | `string` | `head` | Child TF frame for the Quest center-eye pose. |
 | `use_source_frame_id` | `bool` | `false` | Use incoming `frame_id` from SDK frame when present. |
 | `landmarks_are_wrist_relative` | `bool` | `true` | Rotate/translate landmarks by wrist pose before publish. |
 | `qos_reliability` | `string` | `best_effort` | `best_effort` or `reliable`. |
@@ -123,6 +128,7 @@ The default parameter file is `config/bridge.params.yaml`.
 | `enable_pose_array` | `bool` | `false` | Enable `/hands/*/landmarks` `PoseArray` topics. |
 | `enable_markers` | `bool` | `true` | Enable `/hands/*/markers` `MarkerArray` topics. |
 | `enable_controller_topics` | `bool` | `true` | Publish controller Pose/Joy when controller frames arrive. |
+| `enable_head_topics` | `bool` | `true` | Publish `/head/pose` and the `head` TF when head frames arrive. |
 | `enable_diagnostics` | `bool` | `true` | Enable `/diagnostics` publishing. |
 | `diagnostics_period_s` | `float` | `1.0` | Diagnostics publish period seconds. |
 

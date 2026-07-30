@@ -5,7 +5,7 @@ package_name = 'hand_tracking_sdk_ros2'
 
 setup(
     name=package_name,
-    version='0.3.0',
+    version='0.3.1',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages',

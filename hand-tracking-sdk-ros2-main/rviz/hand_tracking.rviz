@@ -48,6 +48,8 @@ Visualization Manager:
           Value: true
         right_controller_endpoint:
           Value: true
+        head:
+          Value: true
         world:
           Value: true
       Marker Scale: 0.5
@@ -58,6 +60,8 @@ Visualization Manager:
       Tree:
         world:
           left_controller_endpoint:
+            {}
+          head:
             {}
           left_wrist:
             {}
@@ -80,6 +84,13 @@ Visualization Manager:
       Name: RightControllerEndpointAxes
       Radius: 0.01
       Reference Frame: right_controller_endpoint
+      Value: true
+    - Class: rviz_default_plugins/Axes
+      Enabled: true
+      Length: 0.2
+      Name: HeadAxes
+      Radius: 0.012
+      Reference Frame: head
       Value: true
     - Class: rviz_default_plugins/MarkerArray
       Enabled: true
