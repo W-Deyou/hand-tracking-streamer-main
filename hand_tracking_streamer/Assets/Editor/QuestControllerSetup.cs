@@ -74,19 +74,20 @@ public static class QuestControllerSetup
         bool controllerBlockExists = GameObject.Find("[BuildingBlock] Controller Interactions") != null;
         int quest3PointerCorrectors = Resources.FindObjectsOfTypeAll<Quest3ControllerPointerPoseCorrector>()
             .Count(corrector => corrector.gameObject.scene == scene);
-        int calibratedControllerVisuals = scene.GetRootGameObjects()
+        // Mesh tracking anchors must stay at identity so visuals follow the
+        // real Interaction/OVR SDK pose without handmade calibration offsets.
+        int unoffsetControllerVisuals = scene.GetRootGameObjects()
             .SelectMany(root => root.GetComponentsInChildren<Transform>(true))
             .Count(transform =>
-                transform.name == "[BuildingBlock] Controller Tracking Left"
-                    ? Approximately(transform.localPosition, new Vector3(-0.005f, 0f, 0.06f))
-                    : transform.name == "[BuildingBlock] Controller Tracking Right" &&
-                      Approximately(transform.localPosition, new Vector3(0.005f, 0f, 0.06f)));
+                (transform.name == "[BuildingBlock] Controller Tracking Left" ||
+                 transform.name == "[BuildingBlock] Controller Tracking Right") &&
+                Approximately(transform.localPosition, Vector3.zero));
         bool quest3OnlyControllerPreview = IsQuest3OnlyControllerPreview(scene);
         int controllerStreamers = Resources.FindObjectsOfTypeAll<ControllerInputStreamer>()
             .Count(streamer => streamer.gameObject.scene == scene);
         if (controllerBlockExists && configuredManager != null &&
             configuredManager.rayInteractors != null && configuredManager.rayInteractors.Length >= 4 &&
-            quest3PointerCorrectors >= 2 && calibratedControllerVisuals >= 2 &&
+            quest3PointerCorrectors >= 2 && unoffsetControllerVisuals >= 2 &&
             quest3OnlyControllerPreview && controllerStreamers >= 2 &&
             configuredManager.controllerInputToggle != null)
         {
@@ -122,6 +123,7 @@ public static class QuestControllerSetup
             List<GameObject> controllerRays = EnsureControllerRays(scene);
             RegisterRaysWithAppManager(scene, controllerRays);
             ConfigureQuest3PointerCorrectors(scene);
+            ConfigureControllerPointerOffsets(scene);
             ConfigureControllerVisualTranslation(scene);
             ConfigureQuest3ControllerModelPreview(scene);
             ConfigureControllerTelemetry(scene);
@@ -355,8 +357,36 @@ public static class QuestControllerSetup
         }
     }
 
+    private static void ConfigureControllerPointerOffsets(Scene scene)
+    {
+        // Meta ControllerPointerPose already samples TryGetPointerPose; any
+        // non-zero _offset would diverge the ray from exported telemetry/axes.
+        Type pointerPoseType = FindType("Oculus.Interaction.ControllerPointerPose");
+        if (pointerPoseType == null)
+        {
+            return;
+        }
+
+        foreach (Component pointerPose in FindSceneComponents(pointerPoseType, scene))
+        {
+            SerializedObject serialized = new SerializedObject(pointerPose);
+            SerializedProperty offset = serialized.FindProperty("_offset");
+            if (offset == null || offset.vector3Value == Vector3.zero)
+            {
+                continue;
+            }
+
+            Undo.RecordObject(pointerPose, "Clear controller pointer pose offset");
+            offset.vector3Value = Vector3.zero;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(pointerPose);
+        }
+    }
+
     private static void ConfigureControllerVisualTranslation(Scene scene)
     {
+        // Keep mesh anchors at identity: pose comes from the real tracking SDK,
+        // not a handmade local translation on the virtual model root.
         foreach (GameObject root in scene.GetRootGameObjects())
         {
             foreach (Transform transform in root.GetComponentsInChildren<Transform>(true))
@@ -367,10 +397,13 @@ public static class QuestControllerSetup
                     continue;
                 }
 
-                Undo.RecordObject(transform, "Calibrate Quest 3 controller visual position");
-                transform.localPosition = transform.name.EndsWith("Left", StringComparison.Ordinal)
-                    ? new Vector3(-0.005f, 0f, 0.06f)
-                    : new Vector3(0.005f, 0f, 0.06f);
+                if (Approximately(transform.localPosition, Vector3.zero))
+                {
+                    continue;
+                }
+
+                Undo.RecordObject(transform, "Clear Quest controller visual offset");
+                transform.localPosition = Vector3.zero;
                 EditorUtility.SetDirty(transform);
             }
         }
@@ -383,30 +416,31 @@ public static class QuestControllerSetup
 
     private static void ConfigureQuest3ControllerModelPreview(Scene scene)
     {
+        // Hide all controller mesh previews. Rays and endpoint axes stay active.
         Type helperType = FindType("OVRControllerHelper");
         foreach (Component helper in FindSceneComponents(helperType, scene))
         {
             SerializedObject serializedHelper = new SerializedObject(helper);
-            bool isLeft = serializedHelper.FindProperty("m_controller")?.intValue == 1;
-            string visibleProperty = isLeft
-                ? "m_modelMetaTouchPlusLeftController"
-                : "m_modelMetaTouchPlusRightController";
+            SerializedProperty enabledProperty = serializedHelper.FindProperty("m_Enabled");
+            if (enabledProperty != null && enabledProperty.boolValue)
+            {
+                Undo.RecordObject(helper, "Disable Quest controller mesh helper");
+                enabledProperty.boolValue = false;
+                serializedHelper.ApplyModifiedPropertiesWithoutUndo();
+                EditorUtility.SetDirty(helper);
+            }
 
             foreach (string propertyName in ControllerModelProperties)
             {
                 GameObject model = serializedHelper.FindProperty(propertyName)?.objectReferenceValue as GameObject;
-                if (model == null)
+                if (model == null || !model.activeSelf)
                 {
                     continue;
                 }
 
-                bool shouldBeActive = propertyName == visibleProperty;
-                if (model.activeSelf != shouldBeActive)
-                {
-                    Undo.RecordObject(model, "Configure Quest 3 controller model preview");
-                    model.SetActive(shouldBeActive);
-                    EditorUtility.SetDirty(model);
-                }
+                Undo.RecordObject(model, "Hide Quest controller model");
+                model.SetActive(false);
+                EditorUtility.SetDirty(model);
             }
         }
     }
@@ -422,16 +456,18 @@ public static class QuestControllerSetup
 
         foreach (Component helper in helpers)
         {
-            SerializedObject serializedHelper = new SerializedObject(helper);
-            bool isLeft = serializedHelper.FindProperty("m_controller")?.intValue == 1;
-            string visibleProperty = isLeft
-                ? "m_modelMetaTouchPlusLeftController"
-                : "m_modelMetaTouchPlusRightController";
+            // Behaviour.enabled is the runtime switch that would otherwise
+            // re-show a controller mesh each frame.
+            if (helper is Behaviour behaviour && behaviour.enabled)
+            {
+                return false;
+            }
 
+            SerializedObject serializedHelper = new SerializedObject(helper);
             foreach (string propertyName in ControllerModelProperties)
             {
                 GameObject model = serializedHelper.FindProperty(propertyName)?.objectReferenceValue as GameObject;
-                if (model != null && model.activeSelf != (propertyName == visibleProperty))
+                if (model != null && model.activeSelf)
                 {
                     return false;
                 }

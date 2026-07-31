@@ -1,0 +1,17 @@
+[0.430s] Invoking command in '/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2': PYTHONPATH=/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/build --no-deps symlink_data
+[0.535s] running develop
+[0.595s] running egg_info
+[0.595s] writing hand_tracking_sdk_ros2.egg-info/PKG-INFO
+[0.596s] writing dependency_links to hand_tracking_sdk_ros2.egg-info/dependency_links.txt
+[0.596s] writing entry points to hand_tracking_sdk_ros2.egg-info/entry_points.txt
+[0.596s] writing requirements to hand_tracking_sdk_ros2.egg-info/requires.txt
+[0.596s] writing top-level names to hand_tracking_sdk_ros2.egg-info/top_level.txt
+[0.596s] reading manifest file 'hand_tracking_sdk_ros2.egg-info/SOURCES.txt'
+[0.597s] writing manifest file 'hand_tracking_sdk_ros2.egg-info/SOURCES.txt'
+[0.597s] running build_ext
+[0.598s] Creating /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/lib/python3.10/site-packages/hand-tracking-sdk-ros2.egg-link (link to .)
+[0.598s] Installing hand_tracking_bridge script to /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/lib/hand_tracking_sdk_ros2
+[0.598s] 
+[0.598s] Installed /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2
+[0.598s] running symlink_data
+[0.613s] Invoked command in '/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2' returned '0': PYTHONPATH=/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/build --no-deps symlink_data

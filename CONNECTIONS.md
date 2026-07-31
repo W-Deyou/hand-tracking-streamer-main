@@ -68,8 +68,11 @@ Left controller input:, 0.2500, 0.7500, -0.5000, 0.5000, 1, 0, 1, 0, 1
 - UDP puts both lines in the same datagram. TCP writes both lines together and remains
   newline-delimited for stream parsing.
 - With Debug Info enabled, both lines use the same `| f = FRAME | t = TIMESTAMP` metadata.
-- In Controller Input mode, the Quest view renders RGB local axes directly at the exported
-  Pointer Pose endpoint: red `+X`, green `+Y`, and blue `+Z`.
+- In Controller Input mode, the Quest view hides the virtual controller mesh by default.
+  RGB local axes and the controller ray are driven only from the same live
+  `IController.TryGetPointerPose()` sample that is exported: red `+X`, green `+Y`,
+  and blue `+Z`. The mesh (static SDK or runtime GLB) is display-only and must not
+  be used as a pose source.
 
 >[!IMPORTANT]
 > Data streamed from HTS follows Unity's left-hand coordinate convention. For most applications, you will want to flip the incoming data's Y-axis for the right-hand coordinate convention.

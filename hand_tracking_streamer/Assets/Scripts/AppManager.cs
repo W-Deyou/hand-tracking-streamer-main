@@ -33,7 +33,12 @@ public class AppManager : MonoBehaviour
     [Header("Visual Settings")]
     public Toggle visualizationToggle; 
     public bool ShowLandmarks => visualizationToggle != null && visualizationToggle.isOn;
+    // Controller endpoint axes stay on in controller mode (independent of the
+    // hand-landmark Visualization toggle, which defaults to off).
     public bool ShowControllerAxes => IsControllerMode;
+    // Virtual mesh is display-only and off by default so motion cues come from
+    // real Pointer Pose axes/ray, not the controller model.
+    public bool ShowControllerModels { get; private set; } = false;
 
     [Header("Debug and Experimental")]
     public Toggle debugInfoToggle;
@@ -179,6 +184,11 @@ public class AppManager : MonoBehaviour
             controllerInputToggle.onValueChanged.AddListener(OnInputModeChanged);
         }
 
+        if (handDropdown != null)
+        {
+            handDropdown.onValueChanged.AddListener(OnHandModeDropdownChanged);
+        }
+
         ipInputField.onValueChanged.AddListener(delegate { ClearError(); });
         portInputField.onValueChanged.AddListener(delegate { ClearError(); });
         // Load saved config (if any)
@@ -186,8 +196,10 @@ public class AppManager : MonoBehaviour
         SelectedInputMode = controllerInputToggle != null && controllerInputToggle.isOn
             ? InputMappingMode.Controllers
             : InputMappingMode.Hands;
+        SelectedHandMode = handDropdown != null ? handDropdown.value : 0;
         UpdateInputModeLabels();
-        UpdateHandVisuals(handDropdown != null ? handDropdown.value : 0);
+        UpdateHandVisuals(SelectedHandMode);
+        ApplyControllerModelVisibility();
         ApplyVideoCanvasVisibility();
         StartConcurrentInputModeRetry();
     }
@@ -365,6 +377,21 @@ public class AppManager : MonoBehaviour
         {
             controllerInputToggle.onValueChanged.RemoveListener(OnInputModeChanged);
         }
+        if (handDropdown != null)
+        {
+            handDropdown.onValueChanged.RemoveListener(OnHandModeDropdownChanged);
+        }
+    }
+
+    private void OnHandModeDropdownChanged(int mode)
+    {
+        if (isStreaming)
+        {
+            return;
+        }
+        SelectedHandMode = mode;
+        UpdateHandVisuals(SelectedHandMode);
+        ClearError();
     }
 
 private void OnProtocolChanged(int index)
@@ -685,9 +712,16 @@ private void OnProtocolChanged(int index)
         SelectedInputMode = useControllers
             ? InputMappingMode.Controllers
             : InputMappingMode.Hands;
+        SelectedHandMode = handDropdown != null ? handDropdown.value : 0;
         UpdateInputModeLabels();
-        UpdateHandVisuals(handDropdown != null ? handDropdown.value : 0);
+        UpdateHandVisuals(SelectedHandMode);
+        ApplyControllerModelVisibility();
         ClearError();
+    }
+
+    private void ApplyControllerModelVisibility()
+    {
+        QuestRuntimeControllerVisual.ApplyAllVisibility(ShowControllerModels);
     }
 
     private void UpdateInputModeLabels()

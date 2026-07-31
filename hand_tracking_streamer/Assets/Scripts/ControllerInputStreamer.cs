@@ -99,7 +99,11 @@ public sealed class ControllerInputStreamer : MonoBehaviour
             return;
         }
 
-        if (!IsSelectedSide(manager.SelectedHandMode))
+        // While the menu is open, show axes for whichever controller is awake so
+        // single-controller UI/setup works. Telemetry side-filter applies only
+        // after Start Streaming.
+        bool selectedForTelemetry = IsSelectedSide(manager.SelectedHandMode);
+        if (manager.isStreaming && !selectedForTelemetry)
         {
             axisVisualizer?.Hide();
             if (_isInitialized) Disconnect();
@@ -111,9 +115,9 @@ public sealed class ControllerInputStreamer : MonoBehaviour
             && _controller.TryGetPointerPose(out pointerPose);
         if (hasPointerPose)
         {
-            // This is the exact Pointer Pose exported over the network. Keeping
-            // visualization and telemetry on the same value prevents origin or
-            // orientation drift between the Quest view and RViz.
+            // Exact Pointer Pose exported over the network. Axes, ray origin
+            // (Quest3ControllerPointerPoseCorrector), and telemetry share this
+            // live IController sample — never the virtual controller mesh.
             axisVisualizer?.SetPose(pointerPose, manager.ShowControllerAxes);
         }
         else
@@ -129,7 +133,7 @@ public sealed class ControllerInputStreamer : MonoBehaviour
             return;
         }
 
-        if (!hasPointerPose)
+        if (!hasPointerPose || !selectedForTelemetry)
         {
             return;
         }

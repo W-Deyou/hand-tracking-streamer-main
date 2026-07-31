@@ -1,0 +1,33 @@
+[0.465s] Invoking command in '/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2': PYTHONPATH=/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/build --no-deps symlink_data
+[0.573s] running develop
+[0.633s] running egg_info
+[0.633s] creating hand_tracking_sdk_ros2.egg-info
+[0.633s] writing hand_tracking_sdk_ros2.egg-info/PKG-INFO
+[0.633s] writing dependency_links to hand_tracking_sdk_ros2.egg-info/dependency_links.txt
+[0.633s] writing entry points to hand_tracking_sdk_ros2.egg-info/entry_points.txt
+[0.633s] writing requirements to hand_tracking_sdk_ros2.egg-info/requires.txt
+[0.634s] writing top-level names to hand_tracking_sdk_ros2.egg-info/top_level.txt
+[0.634s] writing manifest file 'hand_tracking_sdk_ros2.egg-info/SOURCES.txt'
+[0.634s] reading manifest file 'hand_tracking_sdk_ros2.egg-info/SOURCES.txt'
+[0.634s] writing manifest file 'hand_tracking_sdk_ros2.egg-info/SOURCES.txt'
+[0.636s] running build_ext
+[0.636s] Creating /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/lib/python3.10/site-packages/hand-tracking-sdk-ros2.egg-link (link to .)
+[0.636s] Installing hand_tracking_bridge script to /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/lib/hand_tracking_sdk_ros2
+[0.636s] 
+[0.636s] Installed /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2
+[0.636s] running symlink_data
+[0.636s] creating /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/ament_index
+[0.636s] creating /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/ament_index/resource_index
+[0.636s] creating /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/ament_index/resource_index/packages
+[0.636s] symbolically linking /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/resource/hand_tracking_sdk_ros2 -> /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/ament_index/resource_index/packages
+[0.636s] symbolically linking /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/package.xml -> /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2
+[0.636s] symbolically linking /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/README.md -> /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2
+[0.636s] creating /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2/launch
+[0.636s] symbolically linking /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/launch/bridge.launch.py -> /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2/launch
+[0.636s] symbolically linking /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/launch/view_hands.launch.py -> /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2/launch
+[0.636s] creating /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2/config
+[0.636s] symbolically linking /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/config/bridge.wired.params.yaml -> /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2/config
+[0.636s] symbolically linking /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/config/bridge.params.yaml -> /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2/config
+[0.636s] creating /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2/rviz
+[0.636s] symbolically linking /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/rviz/hand_tracking.rviz -> /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/share/hand_tracking_sdk_ros2/rviz
+[0.651s] Invoked command in '/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2' returned '0': PYTHONPATH=/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/install/hand_tracking_sdk_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/wdy/wang_dy/hand-tracking-streamer-main/ros-ws/build/hand_tracking_sdk_ros2/build --no-deps symlink_data

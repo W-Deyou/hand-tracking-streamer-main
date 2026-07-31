@@ -153,9 +153,12 @@ IController.TryGetPointerPose(out Pose pointerPose)
 
 - 网络姿态组包。
 - `ControllerAxisVisualizer.SetPose()`。
+- `Quest3ControllerPointerPoseCorrector`（手柄射线原点，禁止再用虚拟模型局部偏移重算）。
 - HUD 调试显示。
 
 姿态和输入快照使用相同 `frameId` 和 `sendTimestampNs`，避免可视化、姿态包和按键包来自不同帧。
+手柄 3D 虚拟模型（静态或 runtime GLB）默认隐藏，仅作可选显示，不得作为射线/坐标轴/导出位姿的数据源。
+`AppManager.ShowControllerModels` 默认为 `false`；`Visualization` Toggle 在手柄模式下只控制末端 RGB 坐标轴。
 
 ## 5. 网络协议
 

@@ -2,12 +2,21 @@ using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Android;
 using UnityEditor.Build.Reporting;
 
 public static class CodexAndroidBuild
 {
     public static void BuildApk()
     {
+        // Cap IL2CPP/Bee parallelism for low-RAM hosts (avoid machine freeze).
+        Environment.SetEnvironmentVariable("UNITY_PLAYER_PROCESS_COUNT", "1");
+        Environment.SetEnvironmentVariable("BEE_RESOURCE_CALCULATION_HALF_PROJECTED_MACHINE_MEMORY_USAGE", "1");
+
+        // Unity defaults Gradle JVM heap to 4096 MB; that freezes this 15 Gi host.
+        // Docs: AndroidExternalToolsSettings.maxJvmHeapSize (min 128).
+        AndroidExternalToolsSettings.maxJvmHeapSize = 1536;
+
         string outputPath = GetArgument("-apkPath");
         if (string.IsNullOrWhiteSpace(outputPath))
         {
