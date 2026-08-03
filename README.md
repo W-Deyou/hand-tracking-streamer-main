@@ -5,6 +5,7 @@ Hand Tracking Streamer（HTS）是一套面向机器人遥操作、动作捕捉�
 ## README 导航
 
 - [工程总览与快速开始（本文）](README.md)
+- [已实现功能（SDK / ROS 2）](#已实现功能)
 - [Unity / Quest 应用](hand_tracking_streamer/README.md)
 - [Python SDK](hand-tracking-sdk-main/README.md)
 - [ROS 2 桥接包](hand-tracking-sdk-ros2-main/README.md)
@@ -21,7 +22,7 @@ flowchart LR
     P --> S[Python SDK\n解析、组帧、坐标转换]
     P --> D[scripts\n收包、可视化、延迟诊断]
     S --> R[ROS 2 Bridge\nTopic / TF / RViz]
-    S --> V[摄像头或 MuJoCo 仿真]
+    S --> V[摄像头 / Orbbec RGB\n或 MuJoCo 仿真]
     V -->|WebSocket :8765 信令\nWebRTC H.264 视频| Q
 ```
 
@@ -35,6 +36,138 @@ flowchart LR
 | `scripts/` | Python 3.13、NumPy、Matplotlib | 不依赖 SDK 的基础收包、绘图和到达间隔诊断工具 |
 
 数据默认采用 Unity 左手坐标系。接入机器人或其他右手坐标系前，应使用 SDK 的转换函数，或由 ROS 2 桥接包完成坐标归一化。完整字段定义见 [CONNECTIONS.md](CONNECTIONS.md)。
+
+## 已实现功能
+
+下列为当前仓库**已落地**能力（以代码为准）。Quest 侧采集与发送见 [Unity README](hand_tracking_streamer/README.md)；线协议见 [CONNECTIONS.md](CONNECTIONS.md)。
+
+### 能力总览
+
+| 能力 | Quest 应用 | Python SDK (`hand-tracking-sdk`) | ROS 2 (`hand_tracking_sdk_ros2`) |
+|---|---|---|---|
+| 手部手腕 + 21 关键 | Hands 模式发送 | `HandFrame` / `get_joint` / `get_finger` | `/hands/*/wrist_pose`、`/hands/*/landmarks`、`/hands/*/markers`、手腕 TF |
+| 头部位姿 | Head Pose 开关 | `HeadFrame` | `/head/pose`、TF `head` |
+| 控制器 Pointer Pose | Controller Input 模式 | `ControllerFrame.pose` | `/controllers/*/pose`、TF `*_controller_endpoint` |
+| 控制器轴与按键 | 同上 | `ControllerFrame.input`（见下表） | `/controllers/*/input`（`sensor_msgs/Joy`） |
+| UDP / TCP 传输 | 协议菜单 | `TransportMode.UDP\|TCP_SERVER\|TCP_CLIENT` | 参数 `transport_mode` / `host` / `port` |
+| 坐标转换 | Unity 左手原始输出 | `convert_*`、`unity_left_to_flu_*` 等 | 桥接内固定映射为 FLU |
+| 遥操作辅助 | — | `pinch_distance` / `grip_value` / `extract_arm_target` / `finger_curl_angles` | —（不发布） |
+| Rerun / RViz 可视化 | 头显内骨架/射线 | `RerunVisualizer` | `view_hands.launch.py` + Marker |
+| 主机→Quest 视频 | Video 开关 + WebRTC 接收 | `VideoService`（`test`/`webcam`/`orbbec`/`mujoco`） | —（无视频 Topic） |
+| 运行诊断 | Debug Info | `HTSClient.get_stats()` | `/diagnostics` |
+
+### 控制器轴与按键（两边一致）
+
+Quest 在 Controller Input 模式下发送 `controller pose` + `controller input` 两行；SDK 组装为 `ControllerFrame`，ROS 2 映射为 `Joy`。
+
+| 语义 | Python SDK（`ControllerInputState`） | ROS 2 `sensor_msgs/Joy` |
+|---|---|---|
+| 扳机行程 | `input.trigger` ∈ `[0,1]` | `axes[0]` |
+| 握持行程 | `input.grip` ∈ `[0,1]` | `axes[1]` |
+| 摇杆 X | `input.stick_x` ∈ `[-1,1]` | `axes[2]` |
+| 摇杆 Y | `input.stick_y` ∈ `[-1,1]` | `axes[3]` |
+| A/X（主按键） | `input.primary` | `buttons[0]` |
+| B/Y（次按键） | `input.secondary` | `buttons[1]` |
+| 扳机键点击 | `input.trigger_button` | `buttons[2]` |
+| 握持键点击 | `input.grip_button` | `buttons[3]` |
+| 摇杆按下 | `input.stick_click` | `buttons[4]` |
+
+线格式为 9 个数值：`trigger, grip, stick_x, stick_y, primary, secondary, trigger_button, grip_button, stick_click`（后 5 个为 `0`/`1`）。
+
+### Python SDK：主要 API 与用法
+
+包路径：`hand-tracking-sdk-main`（导入名 `hand_tracking_sdk`）。
+
+| 用途 | API / 类型 | 说明 |
+|---|---|---|
+| 收流客户端 | `HTSClient` + `HTSClientConfig` | `iter_events()` / `run(callback)`；示例 `examples/stream_frames.py` |
+| 传输模式 | `TransportMode.UDP` / `TCP_SERVER` / `TCP_CLIENT` | 配置项 `transport_mode`、`host`、`port` |
+| 输出形态 | `StreamOutput.PACKETS` / `FRAMES` / `BOTH` | 默认组帧后的 `FRAMES` |
+| 手过滤 / 容错 | `HandFilter`、`ErrorPolicy` | `BOTH`/`LEFT`/`RIGHT`；`STRICT`/`TOLERANT` |
+| 手帧 | `HandFrame`：`.wrist`、`.landmarks` | 21 点；`get_joint(JointName.INDEX_TIP)`、`get_finger("index")` |
+| 头帧 | `HeadFrame`：`.head` | 中心眼位姿 |
+| 控制器帧 | `ControllerFrame`：`.pose`、`.input` | Pointer Pose + 上表输入；左右独立 |
+| 坐标 | `convert_hand_frame_unity_left_to_right`、`convert_controller_frame_unity_left_to_right`、`unity_left_to_flu_*`、`unity_left_to_rfu_*` | 见 `convert.py` |
+| 遥操作 | `pinch_distance`、`grip_value`、`extract_arm_target`、`finger_curl_angles` | 见 `teleop.py` |
+| 可视化 | `RerunVisualizer` | 示例 `examples/visualize_rerun.py` |
+| 视频回传 | `VideoService` / `VideoServiceConfig` | `source`=`test`/`webcam`/`orbbec`/`mujoco`；信令默认 `:8765`；示例 `examples/video/*` |
+
+最小收帧示例：
+
+```python
+from hand_tracking_sdk import HTSClient, HTSClientConfig, TransportMode, ControllerFrame, HandFrame
+
+client = HTSClient(HTSClientConfig(
+    transport_mode=TransportMode.TCP_SERVER,
+    host="0.0.0.0",
+    port=8000,
+))
+for event in client.iter_events():
+    if isinstance(event, HandFrame):
+        tip = event.get_joint("IndexTip")
+    elif isinstance(event, ControllerFrame):
+        pulled = event.input.trigger          # 扳机行程
+        a_pressed = event.input.primary       # A/X
+```
+
+### ROS 2：Topic / TF / 参数
+
+包名：`hand_tracking_sdk_ros2`。启动：
+
+```bash
+ros2 launch hand_tracking_sdk_ros2 bridge.launch.py          # 仅桥接
+ros2 launch hand_tracking_sdk_ros2 view_hands.launch.py      # 桥接 + RViz
+```
+
+**Topic（默认开启项以 [bridge.params.yaml](hand-tracking-sdk-ros2-main/config/bridge.params.yaml) 为准）**
+
+| Topic | 类型 | 内容 |
+|---|---|---|
+| `/hands/left/wrist_pose`、`/hands/right/wrist_pose` | `geometry_msgs/PoseStamped` | 手腕位姿 |
+| `/hands/left/landmarks`、`/hands/right/landmarks` | `geometry_msgs/PoseArray` | 21 关键；参数 `enable_pose_array`（默认 `false`） |
+| `/hands/left/markers`、`/hands/right/markers` | `visualization_msgs/MarkerArray` | RViz 骨架；`enable_markers` |
+| `/hands/joint_names` | `std_msgs/String` | 逗号分隔关节名顺序 |
+| `/controllers/left/pose`、`/controllers/right/pose` | `geometry_msgs/PoseStamped` | Pointer Pose；`enable_controller_topics` |
+| `/controllers/left/input`、`/controllers/right/input` | `sensor_msgs/Joy` | 轴/按键见上表；`enable_controller_topics` |
+| `/head/pose` | `geometry_msgs/PoseStamped` | 头部位姿；`enable_head_topics` |
+| `/diagnostics` | `diagnostic_msgs/DiagnosticArray` | 帧率、丢帧、解析错误等；`enable_diagnostics` |
+
+**TF（`enable_tf: true`）**
+
+```text
+world
+├── left_wrist
+├── right_wrist
+├── left_controller_endpoint
+├── right_controller_endpoint
+└── head
+```
+
+子坐标系名可由参数 `left_wrist_frame`、`right_wrist_frame`、`left_controller_frame`、`right_controller_frame`、`head_frame`、`world_frame` 修改。
+
+**常用参数**
+
+| 参数 | 默认 | 含义 |
+|---|---:|---|
+| `transport_mode` | `tcp_server` | `udp` / `tcp_server` / `tcp_client` |
+| `host` / `port` | `0.0.0.0` / `8000` | 绑定或连接地址 |
+| `landmarks_are_wrist_relative` | `true` | 发布前将关键点变到世界系 |
+| `qos_reliability` | `best_effort` | `view_hands` 启动时覆盖为 `reliable` |
+| `enable_tf` / `enable_markers` / `enable_pose_array` | `true` / `true` / `false` | 输出开关 |
+| `enable_controller_topics` / `enable_head_topics` | `true` / `true` | 控制器与头部输出开关 |
+
+验证示例：
+
+```bash
+ros2 topic echo /controllers/left/input --once    # Joy：扳机/按键
+ros2 topic echo /hands/joint_names --once
+ros2 run tf2_ros tf2_echo world left_controller_endpoint
+```
+
+### 仅 SDK、ROS 2 不覆盖的部分
+
+- WebRTC 视频回传（`VideoService`、Orbbec/webcam/MuJoCo host）→ 只在 Python SDK / Quest 视频模块。
+- `pinch_distance` / `grip_value` / `extract_arm_target` 等遥操作几何量 → 只在 SDK；ROS 侧需自行订阅 Topic 后计算。
 
 ## 环境要求
 
@@ -149,6 +282,41 @@ ros2 launch hand_tracking_sdk_ros2 bridge.launch.py
 
 详细 Topic、参数和验证命令见 [ROS 2 包 README](hand-tracking-sdk-ros2-main/README.md)。
 
+### 6. 视频回传（WebRTC）与 Orbbec Gemini 336
+
+主机通过 **既有 WebRTC 链路**（信令 `WS:8765` + H.264）把头显外的画面推回 Quest 面板；协议与手部/手柄遥测分离，Quest 端勾选 Video 即可，无需改 APK 协议。
+
+常用示例（在 `hand-tracking-sdk-main` 下）：
+
+```bash
+# 无相机冒烟
+uv run examples/video/test_pattern_video_host.py --verbose
+
+# USB 摄像头
+uv run examples/video/webcam_video_host.py --webcam-index 0 --preset 720p --verbose
+
+# Orbbec Gemini 336（RGB-D 相机；此处只推 RGB 彩色，不推深度）
+# 与 ROS2 / 遥测并行时必须关掉 host 自带的 mocap TCP，避免抢占 :8000
+uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp
+```
+
+**与 `view_hands.launch.py` 同时开：**
+
+| 终端 | 命令 | 端口 |
+|---|---|---:|
+| ROS2 + RViz | `ros2 launch hand_tracking_sdk_ros2 view_hands.launch.py` | TCP `8000` |
+| Orbbec 视频 | `uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp` | WS `8765` |
+
+Quest 无线填写：协议选 **TCP (Wireless)**，IP 填主机局域网地址（如 `hostname -I`），端口 `8000`，勾选 **Video**（视频信令用同一 IP 的 `8765`）。不能用广播 IP `255.255.255.255`。
+
+Gemini 336 在 Linux 上会暴露多个 `/dev/videoN`（RGB / IR / Depth）。host 会按色彩丰富度自动选 RGB；若画面发灰/发黑白，多半选到了 IR，可强制：
+
+```bash
+uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp --webcam-index 6
+```
+
+更多脚本与参数见 [视频回传示例](hand-tracking-sdk-main/examples/video/README.md)。
+
 ## 从源码构建 APK
 
 用 Unity Hub 安装 Unity `6000.0.65f1` 及 Android Build Support（包含 SDK、NDK、OpenJDK），然后将 `hand_tracking_streamer/` 作为项目打开，切换到 Android 平台并执行 Build。
@@ -201,6 +369,9 @@ colcon test-result --verbose --all
 - TCP 无法连接：先启动主机 TCP Server；有线模式还需执行 `adb reverse tcp:8000 tcp:8000`。
 - 坐标方向不正确：HTS 原始数据是 Unity 左手坐标系，使用 SDK/ROS 2 的坐标转换后再消费。
 - RViz 有 Topic 但无画面：使用 `view_hands.launch.py`，它会为 RViz 将 QoS 覆盖为 `reliable`。
+- `address already in use`（`8000`/`8765`）：同一端口只能有一个监听进程；ROS2 与视频 host 并行时，视频侧加 `--disable-mocap-tcp`。
+- Video 报 `signaling connection closed by host`：确认主机已启动视频 host，Quest 填的是具体主机 IP，且安装的是含视频信令修复的 APK；成功时主机日志应出现 `recv type=hello` → `offer` → `playing`。
+- Orbbec 画面黑白：当前推的是错误 V4L2 节点上的 IR；重启 `orbbec_gemini_video_host.py` 或加 `--webcam-index 6` 强制 RGB。
 
 ## 许可证与引用
 

@@ -136,13 +136,15 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
     """Orbbec Gemini UVC RGB source with timed V4L2 node discovery.
 
     Orbbec devices expose multiple `/dev/videoN` nodes (RGB/IR/depth/metadata).
-    Opening the wrong node can hang or return no frames, so this adapter probes
-    candidates with a timeout and keeps the first index that yields HxWx3 frames.
+    IR often appears as HxWx3 with near-identical channels (looks black-and-white),
+    so discovery scores colorfulness and prefers a true RGB node.
     """
 
-    # Prefer index 2 first: Gemini 336 color stream on this host.
-    _DEFAULT_CANDIDATES = (2, 0, 1, 3, 4, 5, 6, 7)
+    # Gemini 336 on this host: IR often lands on early indexes; RGB nearer to 6.
+    _DEFAULT_CANDIDATES = (6, 4, 2, 0, 1, 3, 5, 7)
     _PROBE_TIMEOUT_S = 3.0
+    # Mean |R-G|+|G-B|+|R-B|; IR duplicated to 3ch is typically ~0.
+    _MIN_COLOR_SCORE = 3.0
 
     def __init__(
         self,
@@ -171,34 +173,58 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         return list(self._DEFAULT_CANDIDATES)
 
     @staticmethod
-    def _probe_index(index: int) -> tuple[bool, str, Any | None]:
-        """Blocking probe: open + read one frame. Returns (ok, detail, capture)."""
+    def _color_score(frame: Any) -> float:
+        """Higher means more likely true RGB (not IR grayscale in 3 channels)."""
+        import numpy as np
+
+        if frame is None or frame.ndim != 3 or frame.shape[2] < 3:
+            return 0.0
+        # OpenCV delivers BGR; channel differences still measure chroma.
+        b = frame[:, :, 0].astype(np.float32)
+        g = frame[:, :, 1].astype(np.float32)
+        r = frame[:, :, 2].astype(np.float32)
+        return float(np.mean(np.abs(r - g) + np.abs(g - b) + np.abs(r - b)))
+
+    @classmethod
+    def _probe_index(cls, index: int) -> tuple[bool, str, float, Any | None]:
+        """Blocking probe: open + read one frame.
+
+        Returns (ok, detail, color_score, capture). Caller owns a successful capture.
+        """
         import cv2
 
         capture = cv2.VideoCapture(index, cv2.CAP_V4L2)
         if not capture.isOpened():
             capture.release()
-            return False, "open_failed", None
+            return False, "open_failed", 0.0, None
         ok, frame = capture.read()
         if not ok or frame is None:
             capture.release()
-            return False, "read_failed", None
+            return False, "read_failed", 0.0, None
         if frame.ndim != 3 or frame.shape[2] < 3:
             capture.release()
-            return False, f"bad_shape={getattr(frame, 'shape', None)}", None
-        return True, f"shape={tuple(frame.shape)}", capture
+            return False, f"bad_shape={getattr(frame, 'shape', None)}", 0.0, None
+        score = cls._color_score(frame)
+        h, w = frame.shape[:2]
+        detail = f"shape={w}x{h}x{frame.shape[2]} color={score:.2f}"
+        if score < cls._MIN_COLOR_SCORE:
+            capture.release()
+            return False, f"ir_or_gray({detail})", score, None
+        return True, detail, score, capture
 
     def _open_selected(self) -> Any:
         """Blocking discovery + configure capture for streaming."""
         import cv2
 
         probe_log: list[str] = []
+        best: tuple[float, int, Any, str] | None = None  # score, index, capture, detail
+
         for index in self._candidate_indices():
             # Fresh executor per candidate so a hung open does not block the next probe.
             executor = ThreadPoolExecutor(max_workers=1)
             try:
                 future = executor.submit(self._probe_index, index)
-                ok, detail, capture = future.result(timeout=self._PROBE_TIMEOUT_S)
+                ok, detail, score, capture = future.result(timeout=self._PROBE_TIMEOUT_S)
             except TimeoutError:
                 probe_log.append(f"{index}:timeout>{self._PROBE_TIMEOUT_S:.0f}s")
                 executor.shutdown(wait=False, cancel_futures=True)
@@ -212,22 +238,36 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
                 probe_log.append(f"{index}:{detail}")
                 continue
 
-            capture.set(cv2.CAP_PROP_FRAME_WIDTH, float(self._format.width))
-            capture.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self._format.height))
-            capture.set(cv2.CAP_PROP_FPS, float(self._format.fps))
-            self._selected_index = index
-            if self._log_hook is not None:
-                self._log_hook(
-                    f"orbbec UVC RGB selected index={index} detail={detail} "
-                    f"probed=[{', '.join(probe_log)}]"
-                )
-            return capture
+            probe_log.append(f"{index}:ok({detail})")
+            if best is None or score > best[0]:
+                if best is not None:
+                    best[2].release()
+                best = (score, index, capture, detail)
+            else:
+                capture.release()
 
-        raise RuntimeError(
-            "Failed to find Orbbec UVC RGB node. "
-            f"Probe results: [{', '.join(probe_log) or 'none'}]. "
-            "Try --webcam-index N with a known color node (often 2)."
-        )
+            # Preferred index that already looks like RGB: take it immediately.
+            if self._preferred_index >= 0 and index == self._preferred_index:
+                break
+
+        if best is None:
+            raise RuntimeError(
+                "Failed to find Orbbec UVC RGB node (skipped IR/gray nodes). "
+                f"Probe results: [{', '.join(probe_log) or 'none'}]. "
+                "Try --webcam-index N with a known color node (often 6 on Gemini 336)."
+            )
+
+        score, index, capture, detail = best
+        capture.set(cv2.CAP_PROP_FRAME_WIDTH, float(self._format.width))
+        capture.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self._format.height))
+        capture.set(cv2.CAP_PROP_FPS, float(self._format.fps))
+        self._selected_index = index
+        if self._log_hook is not None:
+            self._log_hook(
+                f"orbbec UVC RGB selected index={index} detail={detail} "
+                f"probed=[{', '.join(probe_log)}]"
+            )
+        return capture
 
     async def start(self) -> None:
         loop = asyncio.get_running_loop()
