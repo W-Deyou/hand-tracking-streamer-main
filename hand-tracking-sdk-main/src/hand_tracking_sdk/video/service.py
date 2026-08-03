@@ -408,7 +408,8 @@ class VideoService:
     _PRESET_MAP: dict[str, tuple[int, int, int]] = {
         "480p": (640, 480, 60),
         "720p": (1280, 720, 60),
-        "1080p": (1920, 1080, 60),
+        # 30 fps: soft H.264 zerolatency stays real-time; 60 previously spiked latency.
+        "1080p": (1920, 1080, 30),
     }
 
     def _parse_preset(self, preset: str) -> tuple[int, int, int]:

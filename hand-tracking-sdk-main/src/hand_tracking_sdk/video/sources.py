@@ -160,6 +160,8 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         self._log_hook = log_hook
         self._capture: Any = None
         self._selected_index: int | None = None
+        # Single worker keeps all OpenCV capture calls on one OS thread.
+        self._io_executor = ThreadPoolExecutor(max_workers=1)
 
     @property
     def selected_device_index(self) -> int | None:
@@ -258,25 +260,101 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
             )
 
         score, index, capture, detail = best
-        capture.set(cv2.CAP_PROP_FRAME_WIDTH, float(self._format.width))
-        capture.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self._format.height))
-        capture.set(cv2.CAP_PROP_FPS, float(self._format.fps))
+        self._configure_capture(capture)
         self._selected_index = index
         if self._log_hook is not None:
             self._log_hook(
-                f"orbbec UVC RGB selected index={index} detail={detail} "
-                f"probed=[{', '.join(probe_log)}]"
+                f"orbbec UVC RGB selected index={index} "
+                f"format={self._format.width}x{self._format.height}@{self._format.fps} "
+                f"probe={detail} probed=[{', '.join(probe_log)}]"
             )
         return capture
 
+    def _configure_capture(self, capture: Any) -> None:
+        """Negotiate MJPG at the requested size (avoid accidental 1080p overload)."""
+        import cv2
+
+        target_w = self._format.width
+        target_h = self._format.height
+        target_fps = self._format.fps
+        target_area = target_w * target_h
+        # YUYV typically caps at 640x480; MJPG unlocks 720p/1080p.
+        # Only try modes at or below the requested preset so 720p stays real-time.
+        ladder = [(1920, 1080), (1280, 720), (640, 480)]
+        sizes: list[tuple[int, int]] = [(target_w, target_h)]
+        for width, height in ladder:
+            if (width, height) == (target_w, target_h):
+                continue
+            if width * height <= target_area:
+                sizes.append((width, height))
+
+        attempts: list[tuple[str, int, int]] = []
+        for width, height in sizes:
+            attempts.append(("MJPG", width, height))
+        for width, height in sizes:
+            attempts.append(("YUYV", width, height))
+
+        for fourcc, width, height in attempts:
+            capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+            capture.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*fourcc))
+            capture.set(cv2.CAP_PROP_FRAME_WIDTH, float(width))
+            capture.set(cv2.CAP_PROP_FRAME_HEIGHT, float(height))
+            capture.set(cv2.CAP_PROP_FPS, float(target_fps))
+            frame = None
+            ok = False
+            for _ in range(5):
+                ok, frame = capture.read()
+                if ok and frame is not None and frame.ndim == 3:
+                    break
+            if not ok or frame is None or frame.ndim != 3:
+                continue
+            got_h, got_w = int(frame.shape[0]), int(frame.shape[1])
+            if self._color_score(frame) < self._MIN_COLOR_SCORE:
+                continue
+            self._format = VideoFormat(width=got_w, height=got_h, fps=target_fps)
+            if self._log_hook is not None:
+                self._log_hook(
+                    f"orbbec capture mode fourcc={fourcc} "
+                    f"requested={width}x{height} actual={got_w}x{got_h}"
+                )
+            return
+
+        if self._log_hook is not None:
+            self._log_hook(
+                "orbbec capture mode negotiation failed; "
+                f"keeping requested {target_w}x{target_h}@{target_fps}"
+            )
+
+    def _read_rgb_frame(self) -> Any:
+        import cv2
+
+        if self._capture is None:
+            raise RuntimeError("Orbbec UVC source not started.")
+        # Prefer freshest frame: grab once more after BUFFERSIZE=1 to cut USB lag.
+        self._capture.grab()
+        ok, frame_bgr = self._capture.retrieve()
+        if not ok or frame_bgr is None:
+            ok, frame_bgr = self._capture.read()
+        if not ok or frame_bgr is None:
+            raise RuntimeError(
+                f"Failed to read Orbbec frame from index {self._selected_index}."
+            )
+        return cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
+
     async def start(self) -> None:
         loop = asyncio.get_running_loop()
-        self._capture = await loop.run_in_executor(None, self._open_selected)
+        self._capture = await loop.run_in_executor(self._io_executor, self._open_selected)
 
     async def stop(self) -> None:
-        if self._capture is not None:
-            self._capture.release()
-            self._capture = None
+        def _release() -> None:
+            if self._capture is not None:
+                self._capture.release()
+                self._capture = None
+
+        loop = asyncio.get_running_loop()
+        await loop.run_in_executor(self._io_executor, _release)
+        self._io_executor.shutdown(wait=False, cancel_futures=True)
+        self._io_executor = ThreadPoolExecutor(max_workers=1)
         self._selected_index = None
 
     def get_format(self) -> VideoFormat:
@@ -284,17 +362,9 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
 
     async def next_frame(self) -> Any:
         import av
-        import cv2
 
-        if self._capture is None:
-            raise RuntimeError("Orbbec UVC source not started.")
-
-        ok, frame_bgr = self._capture.read()
-        if not ok:
-            raise RuntimeError(
-                f"Failed to read Orbbec frame from index {self._selected_index}."
-            )
-        frame_rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
+        loop = asyncio.get_running_loop()
+        frame_rgb = await loop.run_in_executor(self._io_executor, self._read_rgb_frame)
         return av.VideoFrame.from_ndarray(frame_rgb, format="rgb24")
 
 

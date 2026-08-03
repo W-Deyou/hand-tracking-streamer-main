@@ -5,8 +5,8 @@ so the Quest app can display them with no client changes.
 
 Usage::
 
-    uv run examples/video/orbbec_gemini_video_host.py
-    uv run examples/video/orbbec_gemini_video_host.py --webcam-index 2 --preset 720p
+    uv run examples/video/orbbec_gemini_video_host.py --disable-mocap-tcp
+    uv run examples/video/orbbec_gemini_video_host.py --webcam-index 6 --preset 720p
 """
 
 from __future__ import annotations
@@ -20,12 +20,16 @@ from hand_tracking_sdk.video.service import VideoServiceConfig
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = build_base_parser("Host video service (Orbbec Gemini UVC RGB source).")
+    parser = build_base_parser(
+        "Host video service (Orbbec Gemini UVC RGB source).",
+        # 720p+high bitrate: 1080p soft-encode dropped to ~8 fps (host logs).
+        default_preset="720p",
+    )
     parser.add_argument(
         "--webcam-index",
         type=int,
         default=-1,
-        help="Preferred V4L2 device index; -1 auto-discovers RGB (tries 2 first).",
+        help="Preferred V4L2 device index; -1 auto-discovers RGB (often index 6).",
     )
     return parser.parse_args()
 

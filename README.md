@@ -31,9 +31,23 @@ flowchart LR
 | 目录 | 技术栈 | 作用 |
 |---|---|---|
 | `hand_tracking_streamer/` | Unity 6000.0.65f1、OpenXR、Meta XR SDK | Quest 端采集、可视化、网络发送和视频接收 |
-| `hand-tracking-sdk-main/` | Python 3.10+ | 协议解析、UDP/TCP 客户端、帧组装、坐标转换、可视化与 WebRTC 视频服务 |
-| `hand-tracking-sdk-ros2-main/` | ROS 2、Python | 将 SDK 帧发布为 ROS Topic、TF、Marker 和诊断信息 |
+| `hand-tracking-sdk-main/` | Python 3.10+ | **底层 SDK**：协议解析、UDP/TCP、帧组装、坐标转换、可视化与 WebRTC 视频 |
+| `hand-tracking-sdk-ros2-main/` | ROS 2、Python | **基于上述 SDK 的 ROS 2 封装**：内部调用 `HTSClient` 收帧，再发布 Topic/TF/Marker/诊断 |
 | `scripts/` | Python 3.13、NumPy、Matplotlib | 不依赖 SDK 的基础收包、绘图和到达间隔诊断工具 |
+
+依赖关系（不要把 ROS 2 包当成另一套解析器）：
+
+```text
+hand_tracking_streamer (Quest APK)
+        │  UDP/TCP 遥测
+        ▼
+hand-tracking-sdk-main  (hand_tracking_sdk：HTSClient / HandFrame / ControllerFrame / …)
+        │  复用传输、解析、组帧
+        ▼
+hand-tracking-sdk-ros2-main  (hand_tracking_sdk_ros2：bridge_node → Topic / TF / RViz)
+```
+
+`FrameRuntime`（`hand-tracking-sdk-ros2-main/.../runtime.py`）在节点内直接构造 `HTSClient`；`adapters.py` 只做 SDK 帧 → ROS 消息映射。因此安装 ROS 2 包前，须先把 `hand-tracking-sdk` 装进 **与 `ros2` 相同的 Python**。视频回传仍只走 Python SDK 的 `VideoService`，ROS 2 包不打包视频。
 
 数据默认采用 Unity 左手坐标系。接入机器人或其他右手坐标系前，应使用 SDK 的转换函数，或由 ROS 2 桥接包完成坐标归一化。完整字段定义见 [CONNECTIONS.md](CONNECTIONS.md)。
 
@@ -296,8 +310,10 @@ uv run examples/video/test_pattern_video_host.py --verbose
 uv run examples/video/webcam_video_host.py --webcam-index 0 --preset 720p --verbose
 
 # Orbbec Gemini 336（RGB-D 相机；此处只推 RGB 彩色，不推深度）
+# 默认 720p MJPEG（清晰度远好于 640x480，帧率优于 1080p 软编码）
 # 与 ROS2 / 遥测并行时必须关掉 host 自带的 mocap TCP，避免抢占 :8000
 uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp
+# 可选：--preset 1080p（更细但更卡）或 --webcam-index 6
 ```
 
 **与 `view_hands.launch.py` 同时开：**

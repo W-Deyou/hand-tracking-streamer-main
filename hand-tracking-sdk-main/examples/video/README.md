@@ -33,8 +33,10 @@ uv run examples/video/test_pattern_video_host.py --verbose
 # USB webcam:
 uv run examples/video/webcam_video_host.py --webcam-index 0 --preset 720p
 
-# Orbbec Gemini 336 RGB (RGB-D device; this host streams colour only):
+# Orbbec Gemini 336 RGB (RGB-D device; this host streams colour only).
+# Default 720p MJPG: sharper than YUYV 640x480, far smoother than 1080p software encode.
 uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp
+# Optional: --preset 1080p (higher detail, lower FPS on CPU encode)
 
 # MuJoCo hand retargeting (Shadow Hand):
 uv run examples/video/shadow_hand_video_host.py --mocap-tcp-port 5555
