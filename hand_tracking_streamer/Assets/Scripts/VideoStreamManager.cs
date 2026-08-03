@@ -64,7 +64,12 @@ public class VideoStreamManager : MonoBehaviour
         _signalingClient.OnDisconnected += () => EnqueueMainThread(() =>
         {
             statsOverlay?.SetSignalingState("disconnected");
-            if (!_isStopping && _state != SessionState.Idle)
+            // Ignore disconnects while still connecting: ConnectAsync cleans up any
+            // prior socket and must not be treated as a host-side close.
+            if (!_isStopping
+                && _state != SessionState.Idle
+                && _state != SessionState.SignalingConnecting
+                && _state != SessionState.Stopping)
             {
                 FailFatal("Video signaling connection closed by host.");
             }
@@ -144,6 +149,11 @@ public class VideoStreamManager : MonoBehaviour
 
         if (_signalingClient != null)
         {
+            try
+            {
+                await _signalingClient.DisconnectAsync(raiseDisconnected: false);
+            }
+            catch { }
             _signalingClient.Dispose();
             _signalingClient = null;
         }

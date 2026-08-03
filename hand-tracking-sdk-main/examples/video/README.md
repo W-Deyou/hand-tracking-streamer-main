@@ -16,6 +16,7 @@ pip install hand-tracking-sdk[video,sim]   # + MuJoCo sim hosts
 |--------|--------|-------------|
 | `test_pattern_video_host.py` | Test pattern | Synthetic colour bars — no hardware needed |
 | `webcam_video_host.py` | USB webcam | Streams a local camera feed |
+| `orbbec_gemini_video_host.py` | Orbbec Gemini UVC | Auto-finds RGB `/dev/videoN`, streams via WebRTC |
 | `inspire_hand_video_host.py` | MuJoCo | Bimanual Inspire Hand with vector retargeting |
 | `shadow_hand_video_host.py` | MuJoCo | Bimanual Shadow Hand E3M5 with vector retargeting |
 | `aloha_video_host.py` | MuJoCo | ALOHA 2 bimanual arms with IK (requires `mink`) |
@@ -25,6 +26,11 @@ pip install hand-tracking-sdk[video,sim]   # + MuJoCo sim hosts
 ```bash
 # Simplest — no dependencies beyond the SDK:
 uv run examples/video/test_pattern_video_host.py
+
+# Orbbec Gemini 336 (or similar) RGB over existing WebRTC:
+uv run examples/video/orbbec_gemini_video_host.py --verbose
+# Optional: force color node (often index 2 on Gemini 336)
+# uv run examples/video/orbbec_gemini_video_host.py --webcam-index 2
 
 # MuJoCo hand retargeting (Shadow Hand):
 uv run examples/video/shadow_hand_video_host.py --mocap-tcp-port 5555

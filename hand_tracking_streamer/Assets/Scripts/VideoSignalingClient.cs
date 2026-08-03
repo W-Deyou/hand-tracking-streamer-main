@@ -30,7 +30,9 @@ public sealed class VideoSignalingClient : IDisposable
     {
         try
         {
-            await DisconnectAsync();
+            // Pre-connect cleanup must not raise OnDisconnected: VideoStreamManager
+            // treats that as "closed by host" and aborts before hello is sent.
+            await DisconnectAsync(raiseDisconnected: false);
             _cts = new CancellationTokenSource();
             _socket = new ClientWebSocket();
             using var connectCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token);
@@ -60,8 +62,10 @@ public sealed class VideoSignalingClient : IDisposable
         await _socket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, _cts.Token);
     }
 
-    public async Task DisconnectAsync()
+    public async Task DisconnectAsync(bool raiseDisconnected = true)
     {
+        bool hadSocket = _socket != null;
+
         if (_cts != null)
         {
             try { _cts.Cancel(); } catch { }
@@ -89,12 +93,20 @@ public sealed class VideoSignalingClient : IDisposable
             _receiveLoopTask = null;
         }
 
-        OnDisconnected?.Invoke();
+        if (raiseDisconnected && hadSocket)
+        {
+            OnDisconnected?.Invoke();
+        }
     }
 
     public void Dispose()
     {
-        _ = DisconnectAsync();
+        // Best-effort sync cleanup path; prefer await DisconnectAsync() from callers.
+        try
+        {
+            DisconnectAsync(raiseDisconnected: false).GetAwaiter().GetResult();
+        }
+        catch { }
     }
 
     private async Task ReceiveLoopAsync(CancellationToken token)

@@ -7,7 +7,11 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from typing import Any
 
-from hand_tracking_sdk.video.schemas import SignalingMessage, parse_signaling_message
+from hand_tracking_sdk.video.schemas import (
+    SignalingMessage,
+    make_signaling_message,
+    parse_signaling_message,
+)
 
 
 @dataclass(slots=True)
@@ -49,7 +53,17 @@ class VideoSignalingServer:
     async def start(self) -> None:
         """Start WebSocket server."""
         websockets = self._import_websockets()
-        self._server = await websockets.serve(self._handle_client, self._host, self._port)
+        # Quest/Unity ClientWebSocket on Wi-Fi often fails websockets' default
+        # keepalive ping/pong, which closes the socket with 1011 and surfaces as
+        # "Video signaling connection closed by host" on the headset.
+        self._server = await websockets.serve(
+            self._handle_client,
+            self._host,
+            self._port,
+            ping_interval=None,
+            ping_timeout=None,
+            close_timeout=5,
+        )
 
     async def stop(self) -> None:
         """Stop server and close all active clients."""
@@ -88,11 +102,25 @@ class VideoSignalingServer:
             if self._on_connect is not None:
                 await self._on_connect(connection)
             async for raw in websocket:
-                message = parse_signaling_message(str(raw))
-                connection.session_id = message.session_id
-                async with self._lock:
-                    self._session_map[message.session_id] = connection
-                await self._on_message(connection, message)
+                try:
+                    message = parse_signaling_message(str(raw))
+                    connection.session_id = message.session_id
+                    async with self._lock:
+                        self._session_map[message.session_id] = connection
+                    await self._on_message(connection, message)
+                except Exception as exc:
+                    # Keep the socket open; one bad envelope must not tear down
+                    # the Quest session without a visible host-side reason.
+                    try:
+                        await websocket.send(
+                            make_signaling_message(
+                                type="error",
+                                session_id=connection.session_id or "",
+                                payload={"code": "bad_message", "message": str(exc)},
+                            ).to_json()
+                        )
+                    except Exception:
+                        pass
         finally:
             async with self._lock:
                 if connection in self._connections:

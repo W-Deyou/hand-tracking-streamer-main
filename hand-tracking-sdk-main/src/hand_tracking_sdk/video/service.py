@@ -11,6 +11,7 @@ from hand_tracking_sdk.video.schemas import SignalingMessage, make_signaling_mes
 from hand_tracking_sdk.video.signaling import SignalingConnection, VideoSignalingServer
 from hand_tracking_sdk.video.sources import (
     MujocoSourceAdapter,
+    OrbbecUvcSourceAdapter,
     TestPatternSourceAdapter,
     VideoSourceAdapter,
     WebcamSourceAdapter,
@@ -337,7 +338,7 @@ class VideoService:
             self._sender = None
             self._log("sender stopped")
 
-    _VALID_SOURCES = ("test", "webcam", "mujoco")
+    _VALID_SOURCES = ("test", "webcam", "orbbec", "mujoco")
 
     def _build_source(self) -> VideoSourceAdapter:
         width, height, fps = self._parse_preset(self._config.preset)
@@ -365,6 +366,14 @@ class VideoService:
                 width=width,
                 height=height,
                 fps=fps,
+            )
+        if source == "orbbec":
+            return OrbbecUvcSourceAdapter(
+                device_index=self._config.webcam_index,
+                width=width,
+                height=height,
+                fps=fps,
+                log_hook=self._config.log_hook or (self._log if self._config.verbose else None),
             )
         return TestPatternSourceAdapter(width=width, height=height, fps=fps)
 

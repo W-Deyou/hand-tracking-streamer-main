@@ -132,6 +132,132 @@ class WebcamSourceAdapter(VideoSourceAdapter):
         return av.VideoFrame.from_ndarray(frame_rgb, format="rgb24")
 
 
+class OrbbecUvcSourceAdapter(VideoSourceAdapter):
+    """Orbbec Gemini UVC RGB source with timed V4L2 node discovery.
+
+    Orbbec devices expose multiple `/dev/videoN` nodes (RGB/IR/depth/metadata).
+    Opening the wrong node can hang or return no frames, so this adapter probes
+    candidates with a timeout and keeps the first index that yields HxWx3 frames.
+    """
+
+    # Prefer index 2 first: Gemini 336 color stream on this host.
+    _DEFAULT_CANDIDATES = (2, 0, 1, 3, 4, 5, 6, 7)
+    _PROBE_TIMEOUT_S = 3.0
+
+    def __init__(
+        self,
+        *,
+        device_index: int = -1,
+        width: int = 1280,
+        height: int = 720,
+        fps: int = 30,
+        log_hook: Callable[[str], None] | None = None,
+    ) -> None:
+        self._format = VideoFormat(width=width, height=height, fps=fps)
+        self._preferred_index = device_index
+        self._log_hook = log_hook
+        self._capture: Any = None
+        self._selected_index: int | None = None
+
+    @property
+    def selected_device_index(self) -> int | None:
+        return self._selected_index
+
+    def _candidate_indices(self) -> list[int]:
+        if self._preferred_index >= 0:
+            ordered = [self._preferred_index]
+            ordered.extend(i for i in self._DEFAULT_CANDIDATES if i != self._preferred_index)
+            return ordered
+        return list(self._DEFAULT_CANDIDATES)
+
+    @staticmethod
+    def _probe_index(index: int) -> tuple[bool, str, Any | None]:
+        """Blocking probe: open + read one frame. Returns (ok, detail, capture)."""
+        import cv2
+
+        capture = cv2.VideoCapture(index, cv2.CAP_V4L2)
+        if not capture.isOpened():
+            capture.release()
+            return False, "open_failed", None
+        ok, frame = capture.read()
+        if not ok or frame is None:
+            capture.release()
+            return False, "read_failed", None
+        if frame.ndim != 3 or frame.shape[2] < 3:
+            capture.release()
+            return False, f"bad_shape={getattr(frame, 'shape', None)}", None
+        return True, f"shape={tuple(frame.shape)}", capture
+
+    def _open_selected(self) -> Any:
+        """Blocking discovery + configure capture for streaming."""
+        import cv2
+
+        probe_log: list[str] = []
+        for index in self._candidate_indices():
+            # Fresh executor per candidate so a hung open does not block the next probe.
+            executor = ThreadPoolExecutor(max_workers=1)
+            try:
+                future = executor.submit(self._probe_index, index)
+                ok, detail, capture = future.result(timeout=self._PROBE_TIMEOUT_S)
+            except TimeoutError:
+                probe_log.append(f"{index}:timeout>{self._PROBE_TIMEOUT_S:.0f}s")
+                executor.shutdown(wait=False, cancel_futures=True)
+                continue
+            except Exception as exc:
+                probe_log.append(f"{index}:error={exc}")
+                executor.shutdown(wait=False, cancel_futures=True)
+                continue
+            executor.shutdown(wait=False, cancel_futures=True)
+            if not ok or capture is None:
+                probe_log.append(f"{index}:{detail}")
+                continue
+
+            capture.set(cv2.CAP_PROP_FRAME_WIDTH, float(self._format.width))
+            capture.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self._format.height))
+            capture.set(cv2.CAP_PROP_FPS, float(self._format.fps))
+            self._selected_index = index
+            if self._log_hook is not None:
+                self._log_hook(
+                    f"orbbec UVC RGB selected index={index} detail={detail} "
+                    f"probed=[{', '.join(probe_log)}]"
+                )
+            return capture
+
+        raise RuntimeError(
+            "Failed to find Orbbec UVC RGB node. "
+            f"Probe results: [{', '.join(probe_log) or 'none'}]. "
+            "Try --webcam-index N with a known color node (often 2)."
+        )
+
+    async def start(self) -> None:
+        loop = asyncio.get_running_loop()
+        self._capture = await loop.run_in_executor(None, self._open_selected)
+
+    async def stop(self) -> None:
+        if self._capture is not None:
+            self._capture.release()
+            self._capture = None
+        self._selected_index = None
+
+    def get_format(self) -> VideoFormat:
+        return self._format
+
+    async def next_frame(self) -> Any:
+        import av
+        import cv2
+
+        if self._capture is None:
+            raise RuntimeError("Orbbec UVC source not started.")
+
+        ok, frame_bgr = self._capture.read()
+        if not ok:
+            raise RuntimeError(
+                f"Failed to read Orbbec frame from index {self._selected_index}."
+            )
+        frame_rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
+        return av.VideoFrame.from_ndarray(frame_rgb, format="rgb24")
+
+
 class MujocoSourceAdapter(VideoSourceAdapter):
     """MuJoCo offscreen renderer source adapter."""
 
