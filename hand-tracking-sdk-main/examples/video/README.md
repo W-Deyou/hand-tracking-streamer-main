@@ -34,9 +34,13 @@ uv run examples/video/test_pattern_video_host.py --verbose
 uv run examples/video/webcam_video_host.py --webcam-index 0 --preset 720p
 
 # Orbbec Gemini 336 RGB (RGB-D device; this host streams colour only).
-# Default 720p MJPG: sharper than YUYV 640x480, far smoother than 1080p software encode.
-uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp
-# Optional: --preset 1080p (higher detail, lower FPS on CPU encode)
+# Default 1080p MJPG at 30 fps with adaptive 4-12 Mbps H.264.
+.venv/bin/python examples/video/orbbec_gemini_video_host.py \
+  --webcam-index 6 \
+  --preset 1080p \
+  --verbose \
+  --disable-mocap-tcp
+# Optional fallback: --preset 720p
 
 # MuJoCo hand retargeting (Shadow Hand):
 uv run examples/video/shadow_hand_video_host.py --mocap-tcp-port 5555
@@ -47,7 +51,7 @@ uv run examples/video/shadow_hand_video_host.py --mocap-tcp-port 5555
 | Flag | Default | Meaning |
 |------|---------|---------|
 | `--tcp-host` / `--tcp-port` | `0.0.0.0` / `8765` | WebSocket signaling bind |
-| `--preset` | `720p` | `480p` / `720p` / `1080p` |
+| `--preset` | `720p` (Orbbec: `1080p`) | `480p` / `720p` / `1080p` |
 | `--mocap-tcp-host` / `--mocap-tcp-port` | `0.0.0.0` / `8000` | Quest telemetry TCP sink (non-sim hosts) |
 | `--disable-mocap-tcp` | off | Do **not** listen on `:8000` (required when ROS2 bridge owns `:8000`) |
 | `--webcam-index` | `0` (webcam) / `-1` (Orbbec auto) | V4L2 device index |
@@ -66,12 +70,32 @@ later node (commonly index `6` on the machines used in this repo). The Orbbec
 host scores candidates by channel colourfulness and skips IR/gray nodes.
 
 ```bash
-# Auto RGB (preferred):
+# Auto-detect the RGB node:
 uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp
 
-# Force colour node if auto-pick fails or the image is gray:
-uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp --webcam-index 6
+# Confirmed command on the current Gemini 336 workstation (/dev/video6 is RGB):
+.venv/bin/python examples/video/orbbec_gemini_video_host.py \
+  --webcam-index 6 \
+  --preset 1080p \
+  --verbose \
+  --disable-mocap-tcp
 ```
+
+On the current i9-14900HX workstation, the same command can be restricted to
+the performance CPUs while ROS 2 / RViz is active:
+
+```bash
+taskset -c 0-15 \
+  .venv/bin/python examples/video/orbbec_gemini_video_host.py \
+  --webcam-index 6 \
+  --preset 1080p \
+  --verbose \
+  --disable-mocap-tcp
+```
+
+CPU numbering is host-specific. Check `lscpu -e` before copying the `taskset`
+range to another machine. Do not narrow this host to `4-11`: tests showed
+ongoing source overwrites at 1080p30, while `0-15` sustained 30 fps.
 
 Successful host logs look like:
 

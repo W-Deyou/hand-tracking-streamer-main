@@ -64,6 +64,13 @@ class _FakeSender:
         )()
 
 
+def test_720p_preset_uses_30_fps() -> None:
+    service = VideoService(VideoServiceConfig(preset="720p"))
+
+    assert service._parse_preset("720p") == (1280, 720, 30)
+    assert service._parse_preset("1080p") == (1920, 1080, 30)
+
+
 def test_video_service_hello_offer_stop_flow() -> None:
     fake_sender = _FakeSender()
     service = VideoService(
@@ -78,10 +85,12 @@ def test_video_service_hello_offer_stop_flow() -> None:
 
     async def _run() -> None:
         await service._on_message(
-            connection, SignalingMessage(type="hello", session_id=session_id, payload={})  # type: ignore[arg-type]
+            connection,
+            SignalingMessage(type="hello", session_id=session_id, payload={}),  # type: ignore[arg-type]
         )
         await service._on_message(
-            connection, SignalingMessage(type="start_video", session_id=session_id, payload={})  # type: ignore[arg-type]
+            connection,
+            SignalingMessage(type="start_video", session_id=session_id, payload={}),  # type: ignore[arg-type]
         )
         await service._on_message(
             connection,  # type: ignore[arg-type]
@@ -100,7 +109,8 @@ def test_video_service_hello_offer_stop_flow() -> None:
             ),
         )
         await service._on_message(
-            connection, SignalingMessage(type="stop_video", session_id=session_id, payload={})  # type: ignore[arg-type]
+            connection,
+            SignalingMessage(type="stop_video", session_id=session_id, payload={}),  # type: ignore[arg-type]
         )
 
     asyncio.run(_run())

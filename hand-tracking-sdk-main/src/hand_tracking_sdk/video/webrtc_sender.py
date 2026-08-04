@@ -20,6 +20,9 @@ class VideoSenderStats:
     bitrate_kbps: float
     frame_drops: int
     rtt_ms: float | None
+    source_overwrites: int = 0
+    stale_frame_drops: int = 0
+    capture_age_ms: float | None = None
 
 
 class _AdapterVideoTrack:  # Runtime subclass after aiortc import.
@@ -35,14 +38,20 @@ class _AdapterVideoTrack:  # Runtime subclass after aiortc import.
 
     async def recv(self) -> Any:
         frame = await self._source.next_frame()
-        frame.pts = self._pts
-        frame.time_base = self._time_base
-        self._pts += 1
+        if frame.pts is None or frame.time_base is None:
+            frame.pts = self._pts
+            frame.time_base = self._time_base
+            self._pts += 1
         return frame
 
 
 class VideoWebRTCSender:
     """One-to-one sender peer for host->Quest video."""
+
+    _DEFAULT_BITRATE_BPS = 10_000_000
+    _MIN_BITRATE_BPS = 4_000_000
+    _MAX_BITRATE_BPS = 12_000_000
+    _GOP_SIZE = 30
 
     def __init__(
         self,
@@ -68,7 +77,7 @@ class VideoWebRTCSender:
 
     async def start(self) -> None:
         """Start the source and create the outbound peer/video track."""
-        self._pin_webrtc_encode_bitrate()
+        self._configure_webrtc_encoding()
         await self._source.start()
         self._pc = self._new_peer_connection()
         self._add_video_track()
@@ -154,11 +163,17 @@ class VideoWebRTCSender:
             self._stats_prev_t = now
             self._bytes_sent = bytes_sent
             self._frames_sent = frames_sent
+            source_stats = self._source.get_runtime_stats()
             return VideoSenderStats(
                 fps=fps,
                 bitrate_kbps=bitrate_kbps,
-                frame_drops=self._frame_drops,
+                frame_drops=(
+                    self._frame_drops + source_stats.overwritten_frames + source_stats.stale_frames
+                ),
                 rtt_ms=rtt_ms,
+                source_overwrites=source_stats.overwritten_frames,
+                stale_frame_drops=source_stats.stale_frames,
+                capture_age_ms=source_stats.latest_frame_age_ms,
             )
 
     def _new_peer_connection(self) -> Any:
@@ -209,9 +224,7 @@ class VideoWebRTCSender:
                 except Exception as exc:
                     import traceback
 
-                    self._sender._log(
-                        f"recv() error: {exc}\n{''.join(traceback.format_exc())}"
-                    )
+                    self._sender._log(f"recv() error: {exc}\n{''.join(traceback.format_exc())}")
                     raise
                 self._sender._frames_sent += 1
                 if frame is None:
@@ -261,60 +274,32 @@ class VideoWebRTCSender:
         except Exception:
             return
 
-    def _pin_webrtc_encode_bitrate(self) -> None:
-        """Ignore REMB underestimates and pin a low-latency encode ceiling.
-
-        Evidence:
-        - Live Quest REMB crushed send rate to ~150 kbps; after pin, ~2.5 Mbps at
-          ~15 fps (host logs) — still soft; Wi-Fi 7 BE70 is not the bottleneck.
-        - aiortc applies REMB in RTCRtpSender → Encoder.target_bitrate
-          (aiortc/rtcrtpsender.py + codecs/h264.py).
-        - Huawei XIHE-BE70 / BE7: Wi-Fi 7 BE6500 (~6.4 Gbps class, Huawei).
-        - User target: 1080p + ~20 Mbps; NVENC/QSV unavailable on this host
-          (avcodec_open2 denied / not implemented) → libx264 zerolatency CBR.
-        - Mirror aiortc Vp8Encoder CBR (maxrate + small bufsize) for hold without
-          large VBV lag.
-        """
-        pinned_bps = 20_000_000
+    def _configure_webrtc_encoding(self) -> None:
+        """Configure bounded adaptive bitrate and low-latency H.264 encoding."""
         try:
             import aiortc.codecs.h264 as h264_mod
             import aiortc.codecs.vpx as vpx_mod
 
-            for mod in (h264_mod, vpx_mod):
-                mod.DEFAULT_BITRATE = pinned_bps
-                mod.MIN_BITRATE = pinned_bps
-                mod.MAX_BITRATE = pinned_bps
+            codec_modules: tuple[Any, Any] = (h264_mod, vpx_mod)
+            for mod in codec_modules:
+                mod.DEFAULT_BITRATE = self._DEFAULT_BITRATE_BPS
+                mod.MIN_BITRATE = self._MIN_BITRATE_BPS
+                mod.MAX_BITRATE = self._MAX_BITRATE_BPS
 
-            self._install_pinned_bitrate_property(h264_mod.H264Encoder, pinned_bps)
-            self._install_pinned_bitrate_property(vpx_mod.Vp8Encoder, pinned_bps)
-            self._install_h264_low_latency_cbr(h264_mod, pinned_bps)
+            self._install_h264_low_latency_cbr(h264_mod)
 
             self._log(
-                "webrtc encode bitrate pinned "
-                f"bps={pinned_bps} (ignore REMB; zerolatency CBR)"
+                "webrtc adaptive bitrate configured "
+                f"default={self._DEFAULT_BITRATE_BPS} "
+                f"min={self._MIN_BITRATE_BPS} max={self._MAX_BITRATE_BPS} "
+                f"gop={self._GOP_SIZE}"
             )
         except Exception as exc:
-            self._log(f"bitrate pin failed: {exc}")
+            self._log(f"encoder configuration failed: {exc}")
             return
 
-    def _install_pinned_bitrate_property(self, encoder_cls: Any, pinned_bps: int) -> None:
-        """Replace target_bitrate so REMB writes cannot lower encode quality."""
-        if getattr(encoder_cls, "_hts_bitrate_pinned", False):
-            return
-        attr_name = f"_{encoder_cls.__name__}__target_bitrate"
-
-        def _get(enc_self: Any) -> int:
-            return int(getattr(enc_self, attr_name, pinned_bps))
-
-        def _set(enc_self: Any, bitrate: int) -> None:
-            # Drop REMB; always publish the pinned ceiling.
-            setattr(enc_self, attr_name, pinned_bps)
-
-        encoder_cls.target_bitrate = property(_get, _set)
-        encoder_cls._hts_bitrate_pinned = True
-
-    def _install_h264_low_latency_cbr(self, h264_mod: Any, pinned_bps: int) -> None:
-        """Replace aiortc H264Encoder._encode_frame with zerolatency CBR at pinned rate.
+    def _install_h264_low_latency_cbr(self, h264_mod: Any) -> None:
+        """Replace aiortc H264Encoder._encode_frame with bounded low-latency CBR.
 
         Fork of aiortc/codecs/h264.py H264Encoder._encode_frame; only rate/options change.
         """
@@ -329,11 +314,14 @@ class VideoWebRTCSender:
         max_fps = int(getattr(h264_mod, "MAX_FRAME_RATE", 30))
 
         def _encode_frame(enc_self: Any, frame: Any, force_keyframe: bool) -> Any:
-            setattr(enc_self, "_H264Encoder__target_bitrate", pinned_bps)
+            target_bps = max(
+                self._MIN_BITRATE_BPS,
+                min(int(enc_self.target_bitrate), self._MAX_BITRATE_BPS),
+            )
             if enc_self.codec and (
                 frame.width != enc_self.codec.width
                 or frame.height != enc_self.codec.height
-                or abs(pinned_bps - int(enc_self.codec.bit_rate))
+                or abs(target_bps - int(enc_self.codec.bit_rate))
                 / max(int(enc_self.codec.bit_rate), 1)
                 > 0.1
             ):
@@ -350,18 +338,20 @@ class VideoWebRTCSender:
                 enc_self.codec = av.CodecContext.create("libx264", "w")
                 enc_self.codec.width = frame.width
                 enc_self.codec.height = frame.height
-                enc_self.codec.bit_rate = pinned_bps
+                enc_self.codec.bit_rate = target_bps
                 enc_self.codec.pix_fmt = "yuv420p"
                 enc_self.codec.framerate = fractions.Fraction(max_fps, 1)
                 enc_self.codec.time_base = fractions.Fraction(1, max_fps)
-                # maxrate+bufsize mirrors aiortc Vp8Encoder CBR; bufsize~100ms.
-                # ultrafast: cut encode latency vs veryfast (1080p was ~8 fps).
+                enc_self.codec.gop_size = self._GOP_SIZE
                 enc_self.codec.options = {
                     "level": "41",
                     "tune": "zerolatency",
                     "preset": "ultrafast",
-                    "maxrate": str(pinned_bps),
-                    "bufsize": str(max(pinned_bps // 10, 1)),
+                    "maxrate": str(target_bps),
+                    "bufsize": str(max(target_bps // 10, 1)),
+                    "x264-params": (
+                        f"keyint={self._GOP_SIZE}:min-keyint={self._GOP_SIZE}:scenecut=0"
+                    ),
                 }
                 enc_self.codec.profile = "Baseline"
 

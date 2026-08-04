@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import asyncio
+import fractions
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import Future, ThreadPoolExecutor
 from dataclasses import dataclass
+from threading import Event, Lock
 from time import monotonic, monotonic_ns
 from typing import Any
 
@@ -18,6 +20,18 @@ class VideoFormat:
     width: int
     height: int
     fps: int
+
+
+@dataclass(frozen=True, slots=True)
+class VideoSourceStats:
+    """Runtime counters for a latency-sensitive video source."""
+
+    frames_captured: int = 0
+    frames_delivered: int = 0
+    overwritten_frames: int = 0
+    stale_frames: int = 0
+    capture_errors: int = 0
+    latest_frame_age_ms: float | None = None
 
 
 class VideoSourceAdapter(ABC):
@@ -38,6 +52,10 @@ class VideoSourceAdapter(ABC):
     @abstractmethod
     def get_format(self) -> VideoFormat:
         """Return source format."""
+
+    def get_runtime_stats(self) -> VideoSourceStats:
+        """Return source counters when the adapter exposes them."""
+        return VideoSourceStats()
 
 
 class TestPatternSourceAdapter(VideoSourceAdapter):
@@ -143,6 +161,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
     # Gemini 336 on this host: IR often lands on early indexes; RGB nearer to 6.
     _DEFAULT_CANDIDATES = (6, 4, 2, 0, 1, 3, 5, 7)
     _PROBE_TIMEOUT_S = 3.0
+    _RTP_CLOCK_RATE = 90_000
     # Mean |R-G|+|G-B|+|R-B|; IR duplicated to 3ch is typically ~0.
     _MIN_COLOR_SCORE = 3.0
 
@@ -160,8 +179,25 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         self._log_hook = log_hook
         self._capture: Any = None
         self._selected_index: int | None = None
-        # Single worker keeps all OpenCV capture calls on one OS thread.
+        # The single worker continuously drains V4L2. Consumers read a separate
+        # one-frame slot, so encoding or networking can never build a camera queue.
         self._io_executor = ThreadPoolExecutor(max_workers=1)
+        self._capture_future: Future[None] | None = None
+        self._capture_stop = Event()
+        self._frame_lock = Lock()
+        self._frame_ready: asyncio.Event | None = None
+        self._event_loop: asyncio.AbstractEventLoop | None = None
+        self._latest_frame_rgb: Any = None
+        self._latest_capture_ns = 0
+        self._latest_sequence = 0
+        self._consumed_sequence = 0
+        self._capture_error: Exception | None = None
+        self._pts_epoch_ns: int | None = None
+        self._frames_captured = 0
+        self._frames_delivered = 0
+        self._overwritten_frames = 0
+        self._stale_frames = 0
+        self._capture_errors = 0
 
     @property
     def selected_device_index(self) -> int | None:
@@ -218,6 +254,28 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         """Blocking discovery + configure capture for streaming."""
         import cv2
 
+        if self._preferred_index >= 0:
+            capture = cv2.VideoCapture(self._preferred_index, cv2.CAP_V4L2)
+            if not capture.isOpened():
+                capture.release()
+                raise RuntimeError(
+                    f"Failed to open preferred Orbbec RGB node /dev/video{self._preferred_index}."
+                )
+            try:
+                # Configure before the first read. Gemini can stall when a probe
+                # starts streaming and the mode is changed afterward.
+                self._configure_capture(capture)
+            except Exception:
+                capture.release()
+                raise
+            self._selected_index = self._preferred_index
+            if self._log_hook is not None:
+                self._log_hook(
+                    f"orbbec UVC RGB selected preferred index={self._preferred_index} "
+                    f"format={self._format.width}x{self._format.height}@{self._format.fps}"
+                )
+            return capture
+
         probe_log: list[str] = []
         best: tuple[float, int, Any, str] | None = None  # score, index, capture, detail
 
@@ -226,7 +284,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
             executor = ThreadPoolExecutor(max_workers=1)
             try:
                 future = executor.submit(self._probe_index, index)
-                ok, detail, score, capture = future.result(timeout=self._PROBE_TIMEOUT_S)
+                ok, detail, score, probed_capture = future.result(timeout=self._PROBE_TIMEOUT_S)
             except TimeoutError:
                 probe_log.append(f"{index}:timeout>{self._PROBE_TIMEOUT_S:.0f}s")
                 executor.shutdown(wait=False, cancel_futures=True)
@@ -236,7 +294,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
                 executor.shutdown(wait=False, cancel_futures=True)
                 continue
             executor.shutdown(wait=False, cancel_futures=True)
-            if not ok or capture is None:
+            if not ok or probed_capture is None:
                 probe_log.append(f"{index}:{detail}")
                 continue
 
@@ -244,9 +302,9 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
             if best is None or score > best[0]:
                 if best is not None:
                     best[2].release()
-                best = (score, index, capture, detail)
+                best = (score, index, probed_capture, detail)
             else:
-                capture.release()
+                probed_capture.release()
 
             # Preferred index that already looks like RGB: take it immediately.
             if self._preferred_index >= 0 and index == self._preferred_index:
@@ -296,7 +354,8 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
 
         for fourcc, width, height in attempts:
             capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-            capture.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*fourcc))
+            cv2_module: Any = cv2
+            capture.set(cv2.CAP_PROP_FOURCC, cv2_module.VideoWriter_fourcc(*fourcc))
             capture.set(cv2.CAP_PROP_FRAME_WIDTH, float(width))
             capture.set(cv2.CAP_PROP_FRAME_HEIGHT, float(height))
             capture.set(cv2.CAP_PROP_FPS, float(target_fps))
@@ -325,47 +384,162 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
                 f"keeping requested {target_w}x{target_h}@{target_fps}"
             )
 
-    def _read_rgb_frame(self) -> Any:
+    def _read_rgb_frame(self) -> tuple[Any, int]:
         import cv2
 
         if self._capture is None:
             raise RuntimeError("Orbbec UVC source not started.")
-        # Prefer freshest frame: grab once more after BUFFERSIZE=1 to cut USB lag.
-        self._capture.grab()
+        ok = self._capture.grab()
+        capture_ns = self._capture_timestamp_ns(self._capture, cv2)
+        if not ok:
+            raise RuntimeError(f"Failed to grab Orbbec frame from index {self._selected_index}.")
         ok, frame_bgr = self._capture.retrieve()
         if not ok or frame_bgr is None:
             ok, frame_bgr = self._capture.read()
+            capture_ns = self._capture_timestamp_ns(self._capture, cv2)
         if not ok or frame_bgr is None:
-            raise RuntimeError(
-                f"Failed to read Orbbec frame from index {self._selected_index}."
-            )
-        return cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
+            raise RuntimeError(f"Failed to read Orbbec frame from index {self._selected_index}.")
+        return cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB), capture_ns
 
-    async def start(self) -> None:
-        loop = asyncio.get_running_loop()
-        self._capture = await loop.run_in_executor(self._io_executor, self._open_selected)
+    @staticmethod
+    def _capture_timestamp_ns(capture: Any, cv2: Any) -> int:
+        """Use the V4L2 timestamp when OpenCV exposes the monotonic clock."""
+        dequeue_ns = monotonic_ns()
+        try:
+            timestamp_ms = float(capture.get(cv2.CAP_PROP_POS_MSEC))
+        except Exception:
+            return dequeue_ns
+        timestamp_ns = int(timestamp_ms * 1_000_000.0)
+        if timestamp_ns <= 0 or abs(dequeue_ns - timestamp_ns) > 5_000_000_000:
+            return dequeue_ns
+        return timestamp_ns
 
-    async def stop(self) -> None:
-        def _release() -> None:
+    def _notify_frame_ready(self) -> None:
+        if self._event_loop is None or self._frame_ready is None:
+            return
+        try:
+            self._event_loop.call_soon_threadsafe(self._frame_ready.set)
+        except RuntimeError:
+            return
+
+    def _capture_loop(self) -> None:
+        try:
+            while not self._capture_stop.is_set():
+                frame_rgb, capture_ns = self._read_rgb_frame()
+                with self._frame_lock:
+                    if self._latest_sequence > self._consumed_sequence:
+                        self._overwritten_frames += 1
+                    self._latest_frame_rgb = frame_rgb
+                    self._latest_capture_ns = capture_ns
+                    self._latest_sequence += 1
+                    self._frames_captured += 1
+                self._notify_frame_ready()
+        except Exception as exc:
+            if not self._capture_stop.is_set():
+                with self._frame_lock:
+                    self._capture_error = exc
+                    self._capture_errors += 1
+                if self._log_hook is not None:
+                    self._log_hook(f"orbbec capture loop failed: {exc}")
+        finally:
             if self._capture is not None:
                 self._capture.release()
                 self._capture = None
+            self._notify_frame_ready()
 
+    async def start(self) -> None:
         loop = asyncio.get_running_loop()
-        await loop.run_in_executor(self._io_executor, _release)
+        self._event_loop = loop
+        self._frame_ready = asyncio.Event()
+        self._capture_stop.clear()
+        with self._frame_lock:
+            self._latest_frame_rgb = None
+            self._latest_capture_ns = 0
+            self._latest_sequence = 0
+            self._consumed_sequence = 0
+            self._capture_error = None
+            self._pts_epoch_ns = None
+            self._frames_captured = 0
+            self._frames_delivered = 0
+            self._overwritten_frames = 0
+            self._stale_frames = 0
+            self._capture_errors = 0
+        self._capture = await loop.run_in_executor(self._io_executor, self._open_selected)
+        self._capture_future = self._io_executor.submit(self._capture_loop)
+
+    async def stop(self) -> None:
+        self._capture_stop.set()
+        self._notify_frame_ready()
+        if self._capture_future is not None:
+            try:
+                await asyncio.wait_for(
+                    asyncio.wrap_future(self._capture_future),
+                    timeout=max(2.0, 3.0 / max(1, self._format.fps)),
+                )
+            except TimeoutError:
+                if self._capture is not None:
+                    self._capture.release()
+            self._capture_future = None
         self._io_executor.shutdown(wait=False, cancel_futures=True)
         self._io_executor = ThreadPoolExecutor(max_workers=1)
         self._selected_index = None
+        self._frame_ready = None
+        self._event_loop = None
 
     def get_format(self) -> VideoFormat:
         return self._format
 
+    def get_runtime_stats(self) -> VideoSourceStats:
+        with self._frame_lock:
+            latest_age_ms = (
+                None
+                if self._latest_capture_ns <= 0
+                else max(0.0, (monotonic_ns() - self._latest_capture_ns) / 1_000_000.0)
+            )
+            return VideoSourceStats(
+                frames_captured=self._frames_captured,
+                frames_delivered=self._frames_delivered,
+                overwritten_frames=self._overwritten_frames,
+                stale_frames=self._stale_frames,
+                capture_errors=self._capture_errors,
+                latest_frame_age_ms=latest_age_ms,
+            )
+
     async def next_frame(self) -> Any:
         import av
 
-        loop = asyncio.get_running_loop()
-        frame_rgb = await loop.run_in_executor(self._io_executor, self._read_rgb_frame)
-        return av.VideoFrame.from_ndarray(frame_rgb, format="rgb24")
+        if self._frame_ready is None:
+            raise RuntimeError("Orbbec UVC source not started.")
+
+        max_age_ns = int((2.0 / max(1, self._format.fps)) * 1_000_000_000)
+        while True:
+            await self._frame_ready.wait()
+            self._frame_ready.clear()
+            with self._frame_lock:
+                if self._capture_error is not None:
+                    raise RuntimeError("Orbbec capture loop stopped.") from self._capture_error
+                if self._latest_sequence <= self._consumed_sequence:
+                    if self._capture_stop.is_set():
+                        raise RuntimeError("Orbbec UVC source stopped.")
+                    continue
+                frame_rgb = self._latest_frame_rgb
+                capture_ns = self._latest_capture_ns
+                self._consumed_sequence = self._latest_sequence
+                age_ns = max(0, monotonic_ns() - capture_ns)
+                if age_ns > max_age_ns:
+                    self._stale_frames += 1
+                    continue
+                if self._pts_epoch_ns is None:
+                    self._pts_epoch_ns = capture_ns
+                pts = round(
+                    (capture_ns - self._pts_epoch_ns) * self._RTP_CLOCK_RATE / 1_000_000_000
+                )
+                self._frames_delivered += 1
+
+            frame = av.VideoFrame.from_ndarray(frame_rgb, format="rgb24")
+            frame.pts = pts
+            frame.time_base = fractions.Fraction(1, self._RTP_CLOCK_RATE)
+            return frame
 
 
 class MujocoSourceAdapter(VideoSourceAdapter):
@@ -482,14 +656,16 @@ class MujocoSourceAdapter(VideoSourceAdapter):
             t3 = monotonic_ns()
             ns_to_ms = 1e-6
             assert self._perf_hook is not None
-            self._perf_hook({
-                "pre_step_ms": (t1 - t0) * ns_to_ms,
-                "physics_ms": (t2 - t1) * ns_to_ms,
-                "render_ms": (t3 - t2) * ns_to_ms,
-                "total_ms": (t3 - t0) * ns_to_ms,
-                "n_physics_steps": n_steps,
-                "frame_interval_ms": dt * 1000.0,
-            })
+            self._perf_hook(
+                {
+                    "pre_step_ms": (t1 - t0) * ns_to_ms,
+                    "physics_ms": (t2 - t1) * ns_to_ms,
+                    "render_ms": (t3 - t2) * ns_to_ms,
+                    "total_ms": (t3 - t0) * ns_to_ms,
+                    "n_physics_steps": n_steps,
+                    "frame_interval_ms": dt * 1000.0,
+                }
+            )
 
         return pixels
 

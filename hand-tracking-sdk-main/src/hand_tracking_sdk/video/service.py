@@ -179,8 +179,7 @@ class VideoService:
                 )
                 await self._sender.start()
                 self._log(
-                    f"sender started source={self._config.source} "
-                    f"preset={self._config.preset}"
+                    f"sender started source={self._config.source} preset={self._config.preset}"
                 )
             except Exception as exc:
                 await self._emit_error(connection, session_id, "sender_start_failed", str(exc))
@@ -274,7 +273,11 @@ class VideoService:
                     "stats "
                     f"session={self._active_session_id} "
                     f"fps={stats.fps:.1f} bitrate_kbps={stats.bitrate_kbps:.1f} "
-                    f"drops={stats.frame_drops} rtt_ms={stats.rtt_ms}"
+                    f"drops={stats.frame_drops} "
+                    f"overwrites={getattr(stats, 'source_overwrites', 0)} "
+                    f"stale={getattr(stats, 'stale_frame_drops', 0)} "
+                    f"capture_age_ms={getattr(stats, 'capture_age_ms', None)} "
+                    f"rtt_ms={stats.rtt_ms}"
                 )
             except Exception:
                 continue
@@ -294,6 +297,9 @@ class VideoService:
                     "fps": round(stats.fps, 2),
                     "bitrate_kbps": round(stats.bitrate_kbps, 2),
                     "frame_drops": stats.frame_drops,
+                    "source_overwrites": getattr(stats, "source_overwrites", 0),
+                    "stale_frame_drops": getattr(stats, "stale_frame_drops", 0),
+                    "capture_age_ms": getattr(stats, "capture_age_ms", None),
                     "rtt_ms": None if stats.rtt_ms is None else round(stats.rtt_ms, 2),
                 },
             ),
@@ -344,10 +350,7 @@ class VideoService:
         width, height, fps = self._parse_preset(self._config.preset)
         source = self._config.source
         if source not in self._VALID_SOURCES:
-            raise ValueError(
-                f"Unknown source {source!r}; "
-                f"expected one of {self._VALID_SOURCES}"
-            )
+            raise ValueError(f"Unknown source {source!r}; expected one of {self._VALID_SOURCES}")
         if source == "mujoco":
             if not self._config.mj_model_path:
                 raise ValueError("mujoco source requires mj_model_path (--mj-model).")
@@ -403,12 +406,13 @@ class VideoService:
 
     _VALID_PRESETS = ("480p", "720p", "1080p")
 
-    # FPS is best-effort (software encoding is the bottleneck).  The value
-    # here only sets the RTP time_base for timestamp calculation.
+    # FPS is best-effort (software encoding is the bottleneck). The value is
+    # used by both capture configuration and RTP timestamp calculation.
     _PRESET_MAP: dict[str, tuple[int, int, int]] = {
         "480p": (640, 480, 60),
-        "720p": (1280, 720, 60),
-        # 30 fps: soft H.264 zerolatency stays real-time; 60 previously spiked latency.
+        # Keep more bits per frame and avoid capture/encoder pacing mismatch.
+        "720p": (1280, 720, 30),
+        # Soft H.264 zerolatency stays real-time; 60 previously spiked latency.
         "1080p": (1920, 1080, 30),
     }
 
@@ -416,10 +420,7 @@ class VideoService:
         normalized = preset.lower()
         result = self._PRESET_MAP.get(normalized)
         if result is None:
-            raise ValueError(
-                f"Unknown preset {preset!r}; "
-                f"expected one of {self._VALID_PRESETS}"
-            )
+            raise ValueError(f"Unknown preset {preset!r}; expected one of {self._VALID_PRESETS}")
         return result
 
     def _parse_fps(self, preset: str) -> int:

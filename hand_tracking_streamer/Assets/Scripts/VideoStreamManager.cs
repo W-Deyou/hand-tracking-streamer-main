@@ -97,6 +97,7 @@ public class VideoStreamManager : MonoBehaviour
         videoReceiver.OnLocalIceCandidate += OnLocalIceCandidate;
         videoReceiver.OnRemoteTexture += OnRemoteTexture;
         videoReceiver.OnPeerStateChanged += OnPeerStateChanged;
+        videoReceiver.OnStats += OnReceiverStats;
         videoReceiver.OnError += FailFatal;
 
         await _signalingClient.SendAsync("hello", _sessionId, $"{{\"app_version\":\"{Application.version}\",\"video_preset\":\"{preset}\",\"client_name\":\"quest\"}}");
@@ -143,6 +144,7 @@ public class VideoStreamManager : MonoBehaviour
             videoReceiver.OnLocalIceCandidate -= OnLocalIceCandidate;
             videoReceiver.OnRemoteTexture -= OnRemoteTexture;
             videoReceiver.OnPeerStateChanged -= OnPeerStateChanged;
+            videoReceiver.OnStats -= OnReceiverStats;
             videoReceiver.OnError -= FailFatal;
             videoReceiver.ClosePeer();
         }
@@ -223,6 +225,19 @@ public class VideoStreamManager : MonoBehaviour
     {
         statsOverlay?.SetPeerState(state);
         LogDebug($"peer state: {state}");
+    }
+
+    private void OnReceiverStats(VideoReceiverStatsSnapshot stats)
+    {
+        statsOverlay?.SetReceiverStats(stats);
+        LogDebug(
+            $"receiver {stats.Width}x{stats.Height}@{stats.Fps:F1} " +
+            $"jitter_buffer={stats.JitterBufferMs:F1}ms " +
+            $"target={stats.JitterTargetMs:F1}ms decode={stats.DecodeMs:F1}ms " +
+            $"processing={stats.ProcessingMs:F1}ms dropped={stats.FramesDropped} " +
+            $"lost={stats.PacketsLost} discarded={stats.PacketsDiscarded} " +
+            $"nack={stats.NackCount} " +
+            $"pli={stats.PliCount} freezes={stats.FreezeCount}");
     }
 
     private async void HandleEnvelope(VideoSignalingClient.Envelope envelope)
@@ -336,9 +351,18 @@ public class VideoStreamManager : MonoBehaviour
             float fps = root.Value<float?>("fps") ?? 0f;
             float bitrate = root.Value<float?>("bitrate_kbps") ?? 0f;
             int drops = root.Value<int?>("frame_drops") ?? 0;
+            int overwrites = root.Value<int?>("source_overwrites") ?? 0;
+            int staleDrops = root.Value<int?>("stale_frame_drops") ?? 0;
+            float captureAge = root["capture_age_ms"]?.Type == JTokenType.Null
+                ? -1f
+                : (root.Value<float?>("capture_age_ms") ?? -1f);
             float rtt = root["rtt_ms"]?.Type == JTokenType.Null ? -1f : (root.Value<float?>("rtt_ms") ?? -1f);
             statsOverlay?.SetStats(fps, bitrate, drops, rtt);
-            LogDebug($"stats fps={fps:F1} bitrate={bitrate:F0} drops={drops} rtt={rtt:F1}");
+            statsOverlay?.SetSourceStats(overwrites, staleDrops, captureAge);
+            LogDebug(
+                $"stats fps={fps:F1} bitrate={bitrate:F0} drops={drops} " +
+                $"overwrites={overwrites} stale={staleDrops} " +
+                $"capture_age={captureAge:F1}ms rtt={rtt:F1}");
         }
         catch { }
     }

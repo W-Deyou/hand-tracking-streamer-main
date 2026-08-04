@@ -22,8 +22,9 @@ from hand_tracking_sdk.video.service import VideoServiceConfig
 def _parse_args() -> argparse.Namespace:
     parser = build_base_parser(
         "Host video service (Orbbec Gemini UVC RGB source).",
-        # 720p+high bitrate: 1080p soft-encode dropped to ~8 fps (host logs).
-        default_preset="720p",
+        # 1080p/30 fps with bounded adaptive bitrate prioritizes detail without
+        # the long recovery stalls caused by a fixed 20 Mbps stream.
+        default_preset="1080p",
     )
     parser.add_argument(
         "--webcam-index",

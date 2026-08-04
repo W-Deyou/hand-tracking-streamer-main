@@ -12,7 +12,11 @@ public class VideoStatsOverlay : MonoBehaviour
     private float _fps;
     private float _bitrateKbps;
     private int _frameDrops;
+    private int _sourceOverwrites;
+    private int _staleFrameDrops;
+    private float _captureAgeMs = -1f;
     private float _rttMs = -1f;
+    private VideoReceiverStatsSnapshot _receiverStats;
     private string _lastError = string.Empty;
     private string _preset = "720p30";
 
@@ -55,6 +59,20 @@ public class VideoStatsOverlay : MonoBehaviour
         Refresh();
     }
 
+    public void SetSourceStats(int overwrites, int staleFrameDrops, float captureAgeMs)
+    {
+        _sourceOverwrites = overwrites;
+        _staleFrameDrops = staleFrameDrops;
+        _captureAgeMs = captureAgeMs;
+        Refresh();
+    }
+
+    public void SetReceiverStats(VideoReceiverStatsSnapshot stats)
+    {
+        _receiverStats = stats;
+        Refresh();
+    }
+
     public void SetError(string error)
     {
         _lastError = error;
@@ -73,7 +91,14 @@ public class VideoStatsOverlay : MonoBehaviour
             $"FPS: {_fps:F1}\n" +
             $"Bitrate: {_bitrateKbps:F0} kbps\n" +
             $"Drops: {_frameDrops}\n" +
+            $"Source overwrite/stale: {_sourceOverwrites}/{_staleFrameDrops}\n" +
+            $"Capture age: {(_captureAgeMs < 0 ? "n/a" : _captureAgeMs.ToString("F1"))} ms\n" +
             $"RTT: {(_rttMs < 0 ? "n/a" : _rttMs.ToString("F1"))} ms\n" +
+            $"Receive: {_receiverStats.Width}x{_receiverStats.Height}@{_receiverStats.Fps:F1}\n" +
+            $"Jitter actual/target: {_receiverStats.JitterBufferMs:F1}/{_receiverStats.JitterTargetMs:F1} ms\n" +
+            $"Decode/process: {_receiverStats.DecodeMs:F1}/{_receiverStats.ProcessingMs:F1} ms\n" +
+            $"RX drop/lost/discard: {_receiverStats.FramesDropped}/{_receiverStats.PacketsLost}/{_receiverStats.PacketsDiscarded}\n" +
+            $"NACK/PLI/freeze: {_receiverStats.NackCount}/{_receiverStats.PliCount}/{_receiverStats.FreezeCount}\n" +
             $"Error: {(_lastError == string.Empty ? "-" : _lastError)}";
     }
 }

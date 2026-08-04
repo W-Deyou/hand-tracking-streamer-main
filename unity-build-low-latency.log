@@ -1,0 +1,1762 @@
+Unity Editor version:    6000.0.65f1 (a18e2220bd50)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              YES
+System name:             Linux
+Distro version:          #136~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul  3 16:29:11 UTC 
+Kernel version:          6.8.0-136-generic
+Architecture:            x86_64
+Window Protocol:         Wayland (XWayland)
+Available memory:        31809 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Initialize udev device monitor.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-wdy" at "2026-08-04T01:39:27.954823Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              49c7c4eff77443188c5cc2ae8816f0d7
+  Correlation Id:          35c34de858513aea58e58b315fa1c40b
+  External correlation Id: 6674636770610273373
+  Machine Id:              +AIq2vyuQDMVkAxZUmxXOEtn3O8=
+
+COMMAND LINE ARGUMENTS:
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-wdy" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Unity
+-batchmode
+-nographics
+-quit
+-projectPath
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer
+-executeMethod
+CodexAndroidBuild.BuildApk
+-apkPath
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer.apk
+-logFile
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-wdy-notifications" at "2026-08-04T01:39:27.956729Z"
+/home/wdy/wang_dy/hand-tracking-streamer-main/unity-build-low-latency.log
+[Licensing::Module] Error: Access token is unavailable; failed to update
+Successfully changed project path to: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer
+
+(process:155299): Gtk-CRITICAL **: 09:39:27.956: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+
+(process:155299): Gtk-CRITICAL **: 09:39:27.957: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 15669740420231-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [123465582327104]  Target information:
+
+Player connection [123465582327104]  * "[IP] 192.168.3.11 [Port] 55504 [Flags] 2 [Guid] 293138573 [EditorId] 293138573 [Version] 1048832 [Id] LinuxEditor(16,198.18.0.1) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [123465582327104]  * "[IP] 198.18.0.1 [Port] 55504 [Flags] 2 [Guid] 293138573 [EditorId] 293138573 [Version] 1048832 [Id] LinuxEditor(16,198.18.0.1) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [123465582327104] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [123465582327104] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-155299" after 0.2 seconds.
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[Licensing::Client] Successfully resolved entitlement details
+Refreshing native plugins compatible for Editor in 1.88 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.65f1 (a18e2220bd50)
+[Subsystems] Discovering subsystems at path /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Shader 'Meta/MRUK/Scene/HighlightsAndShadows': fallback shader 'Off' not found
+Initialize mono
+Mono path[0] = '/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Managed'
+Mono path[1] = '/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56299
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.001181 seconds.
+- Loaded All Assemblies, in  0.282 seconds
+Native extension for LinuxStandalone target not found
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 151 ms
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.447 seconds
+Domain Reload Profiling: 729ms
+	BeginReloadAssembly (68ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (32ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (44ms)
+	LoadAllAssembliesAndSetupDomain (132ms)
+		LoadAssemblies (67ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (129ms)
+			TypeCache.Refresh (128ms)
+				TypeCache.ScanAssembly (116ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (447ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (419ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (220ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (56ms)
+			ProcessInitializeOnLoadAttributes (89ms)
+			ProcessInitializeOnLoadMethodAttributes (50ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+Package Manager log level set to [2]
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 76 packages:
+  Packages from [https://packages.unity.com]:
+    com.meta.xr.sdk.all@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.sdk.all@ce6efd8df4dc)
+    com.unity.ai.navigation@2.0.14 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.ai.navigation@134dd6a3b97b)
+    com.unity.collab-proxy@2.13.3 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.collab-proxy@4f3be89e8675)
+    com.unity.ide.rider@3.0.38 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.ide.rider@1f60b3138684)
+    com.unity.ide.visualstudio@2.0.26 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.19.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.timeline@1.8.12 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.11 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.visualscripting@8bed5ad90189)
+    com.unity.webrtc@3.0.0-pre.8 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.webrtc@cd5330803ce2)
+    com.unity.xr.hands@1.8.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.xr.hands@ed65bce01132)
+    com.unity.xr.openxr@1.17.1 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.xr.openxr@58837b2992e0)
+    com.unity.xr.core-utils@2.5.3 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.xr.core-utils@f0450cbac8d6)
+    com.unity.xr.management@4.5.3 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.xr.management@574ebfb1e976)
+    com.unity.xr.legacyinputhelpers@2.1.12 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.xr.legacyinputhelpers@b7579e86f3b4)
+    com.unity.mathematics@1.3.2 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.editorcoroutines@1.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.editorcoroutines@7d48783e7b8c)
+    com.unity.collections@2.6.2 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.collections@aea9d3bd5e19)
+    com.meta.xr.sdk.core@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.sdk.core@e9f929748630)
+    com.meta.xr.sdk.audio@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.sdk.audio@2d4a62e92bfb)
+    com.meta.xr.sdk.voice@71.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.sdk.voice@b496f38703e7)
+    com.meta.xr.simulator@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.simulator@dd003f206ffc)
+    com.meta.xr.sdk.haptics@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.sdk.haptics@8756922b2427)
+    com.meta.xr.mrutilitykit@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.mrutilitykit@25f9a1a2fd4d)
+    com.meta.xr.sdk.platform@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.sdk.platform@b512726bfcf7)
+    com.meta.xr.sdk.interaction@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.sdk.interaction@0b18fe126659)
+    com.meta.xr.sdk.interaction.ovr@72.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.meta.xr.sdk.interaction.ovr@1f082c58882e)
+    com.unity.searcher@4.9.3 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.searcher@1e17ce91558d)
+    com.unity.burst@1.8.27 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.burst@973857688024)
+    com.unity.nuget.mono-cecil@1.11.5 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.nuget.mono-cecil@d78732e851eb)
+    com.unity.test-framework.performance@3.2.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.test-framework.performance@0840f58e4562)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.2d.sprite@ca6f53efbb87)
+    com.unity.multiplayer.center@1.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.multiplayer.center@f5e57a8bed06)
+    com.unity.render-pipelines.universal@17.0.4 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.render-pipelines.universal@b774104533b8)
+    com.unity.test-framework@1.6.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.test-framework@e1842c748223)
+    com.unity.ugui@2.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.ugui@4ec1b5e949c1)
+    com.unity.modules.accessibility@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.accessibility)
+    com.unity.modules.ai@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vehicles@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.render-pipelines.core@17.0.4 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.render-pipelines.core@fe2e6aaf4466)
+    com.unity.shadergraph@17.0.4 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.shadergraph@75fb85f8858e)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.render-pipelines.universal-config@e48fefd716b5)
+    com.unity.modules.vr@1.0.0 (location: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.modules.vr)
+    com.unity.rendering.light-transport@1.0.1 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.rendering.light-transport@fd597d1a9e15)
+    com.unity.textmeshpro@5.0.0 (location: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.textmeshpro@53f43edfd2e0)
+[Subsystems] Looking for new subsystems at path /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.xr.openxr@58837b2992e0
+[Subsystems] Novel subsystem found at Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/UnitySubsystemsManifest.json
+[Subsystems] Discovering subsystems at path /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Assets
+[Subsystems] Discovering subsystems at path /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/PackageCache/com.unity.xr.openxr@58837b2992e0
+[Subsystems] No descriptors matched for  examples in Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/UnitySubsystemsManifest.json.
+[Subsystems] 1 'inputs' descriptors matched in Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/UnitySubsystemsManifest.json
+[Subsystems] 1 'displays' descriptors matched in Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/UnitySubsystemsManifest.json
+[Subsystems] No descriptors matched for  meshings in Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/UnitySubsystemsManifest.json.
+[Package Manager] Done registering packages in 0.01 seconds
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-52833c86374855dc9e4c14882ddabe0c
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 34.1178ms
+Starting: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@973857688024/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@d78732e851eb/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 32.1704ms
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s271ms
+[1250/1743  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.25 seconds), 1 items updated, 1743 evaluated
+Total cache size 0
+Total cache size after purge 0, took 00:00:00.0044466
+AssetDatabase: script compilation time: 0.711934s
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.757 seconds
+'Packages/com.meta.xr.sdk.core/Editor/BuildingBlocks/BlocksWindowDetailsExt.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+'Packages/com.meta.xr.sdk.core/Editor/BuildingBlocks/BlocksWindow.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+Refreshing native plugins compatible for Editor in 3.41 ms, found 2 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for Android target not found
+Refreshing native plugins compatible for Editor in 3.93 ms, found 2 plugins.
+Platform is not currently supported by OVRPlugin
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OVRPlugin:get_version () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs:75)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:get_SdkVersion () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:48)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:.ctor (double,string,string) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:62)
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager:.cctor () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRProjectSetup/UPSTContentManager.cs:42)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorAssemblies.cs:118)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs Line: 75)
+
+Platform is not currently supported by OVRPlugin
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OVRPlugin:get_version () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs:75)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:get_SdkVersion () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:48)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:.ctor (double,string,string) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:62)
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager:.cctor () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRProjectSetup/UPSTContentManager.cs:42)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorAssemblies.cs:118)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs Line: 75)
+
+Platform is not currently supported by OVRPlugin
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OVRPlugin:get_version () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs:75)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:get_SdkVersion () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:48)
+Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:127)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<System.ValueTuple`2<bool, string>>:Start<Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17> (Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17&)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:DownloadContent ()
+Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:73)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<System.ValueTuple`2<bool, string>>:Start<Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12> (Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12&)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:RefreshAndLoad ()
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<Reload>d__7:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRProjectSetup/UPSTContentManager.cs:68)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<bool>:Start<Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<Reload>d__7> (Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<Reload>d__7&)
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager:Reload (bool)
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<InitializeAsync>d__5:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRProjectSetup/UPSTContentManager.cs:50)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start<Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<InitializeAsync>d__5> (Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<InitializeAsync>d__5&)
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager:InitializeAsync ()
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager:.cctor () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRProjectSetup/UPSTContentManager.cs:44)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorAssemblies.cs:118)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs Line: 75)
+
+Platform is not currently supported by OVRPlugin
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OVRPlugin:get_version () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs:75)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:get_SdkVersion () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:48)
+Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:127)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<System.ValueTuple`2<bool, string>>:Start<Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17> (Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17&)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:DownloadContent ()
+Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:73)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<System.ValueTuple`2<bool, string>>:Start<Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12> (Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12&)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:RefreshAndLoad ()
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<Reload>d__7:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRProjectSetup/UPSTContentManager.cs:68)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<bool>:Start<Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<Reload>d__7> (Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<Reload>d__7&)
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager:Reload (bool)
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<InitializeAsync>d__5:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRProjectSetup/UPSTContentManager.cs:50)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start<Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<InitializeAsync>d__5> (Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager/<InitializeAsync>d__5&)
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager:InitializeAsync ()
+Oculus.VR.Editor.OVRProjectSetup.UPSTContentManager:.cctor () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRProjectSetup/UPSTContentManager.cs:44)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorAssemblies.cs:118)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs Line: 75)
+
+Platform is not currently supported by OVRPlugin
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OVRPlugin:get_version () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs:75)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:get_SdkVersion () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:48)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:.ctor (double,string,string) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:62)
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager:.cctor () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/BuildingBlocks/BlocksContentManager.cs:47)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorAssemblies.cs:118)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs Line: 75)
+
+Platform is not currently supported by OVRPlugin
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OVRPlugin:get_version () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs:75)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:get_SdkVersion () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:48)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:.ctor (double,string,string) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:62)
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager:.cctor () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/BuildingBlocks/BlocksContentManager.cs:47)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorAssemblies.cs:118)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs Line: 75)
+
+Platform is not currently supported by OVRPlugin
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OVRPlugin:get_version () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs:75)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:get_SdkVersion () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:48)
+Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:127)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<System.ValueTuple`2<bool, string>>:Start<Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17> (Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17&)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:DownloadContent ()
+Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:73)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<System.ValueTuple`2<bool, string>>:Start<Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12> (Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12&)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:RefreshAndLoad ()
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<Reload>d__8:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/BuildingBlocks/BlocksContentManager.cs:68)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<bool>:Start<Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<Reload>d__8> (Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<Reload>d__8&)
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager:Reload (bool)
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<InitializeAsync>d__7:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/BuildingBlocks/BlocksContentManager.cs:55)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start<Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<InitializeAsync>d__7> (Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<InitializeAsync>d__7&)
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager:InitializeAsync ()
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager:.cctor () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/BuildingBlocks/BlocksContentManager.cs:49)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorAssemblies.cs:118)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs Line: 75)
+
+Platform is not currently supported by OVRPlugin
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OVRPlugin:get_version () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs:75)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:get_SdkVersion () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:48)
+Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:127)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<System.ValueTuple`2<bool, string>>:Start<Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17> (Oculus.VR.Editor.Utils.RemoteContentDownloader/<DownloadContent>d__17&)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:DownloadContent ()
+Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/Utils/RemoteContentManager.cs:73)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<System.ValueTuple`2<bool, string>>:Start<Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12> (Oculus.VR.Editor.Utils.RemoteContentDownloader/<RefreshAndLoad>d__12&)
+Oculus.VR.Editor.Utils.RemoteContentDownloader:RefreshAndLoad ()
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<Reload>d__8:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/BuildingBlocks/BlocksContentManager.cs:68)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<bool>:Start<Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<Reload>d__8> (Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<Reload>d__8&)
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager:Reload (bool)
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<InitializeAsync>d__7:MoveNext () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/BuildingBlocks/BlocksContentManager.cs:55)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start<Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<InitializeAsync>d__7> (Meta.XR.BuildingBlocks.Editor.BlocksContentManager/<InitializeAsync>d__7&)
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager:InitializeAsync ()
+Meta.XR.BuildingBlocks.Editor.BlocksContentManager:.cctor () (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/BuildingBlocks/BlocksContentManager.cs:49)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorAssemblies.cs:118)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Scripts/OVRPlugin.cs Line: 75)
+
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.368 seconds
+Domain Reload Profiling: 4121ms
+	BeginReloadAssembly (136ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (12ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (41ms)
+	RebuildCommonClasses (32ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (25ms)
+	LoadAllAssembliesAndSetupDomain (553ms)
+		LoadAssemblies (294ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (314ms)
+			TypeCache.Refresh (217ms)
+				TypeCache.ScanAssembly (201ms)
+			BuildScriptInfoCaches (78ms)
+			ResolveRequiredComponents (15ms)
+	FinalizeReload (3369ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (3026ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (21ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (168ms)
+			ProcessInitializeOnLoadAttributes (2709ms)
+			ProcessInitializeOnLoadMethodAttributes (119ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (4ms)
+Start importing Assets/XR/Settings/OpenXR Package Settings.asset using Guid(179847081f15de845a12ab065cc9e644) (NativeFormatImporter) -> (artifact id: 'afc87e43b05ee4769bd978d8f82f387b') in 0.00742471 seconds
+Refreshing native plugins compatible for Editor in 3.85 ms, found 2 plugins.
+Preloading 1 native plugins for Editor in 0.04 ms.
+Asset Pipeline Refresh (id=2de930012f88fa525bf461119ff9847e): Total: 7.433 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=2 ms, native=5147 ms
+		Asset DB Callback time: managed=724 ms, native=18 ms
+		Scripting: domain reloads=1, domain reload time=757 ms, compile time=714 ms, other=68 ms
+		Project Asset Count: scripts=2703, non-scripts=4275
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 7.514ms
+	ApplyChangesToAssetFolders: 0.451ms
+	Scan: 1317.094ms
+	OnSourceAssetsModified: 0.007ms
+	CategorizeAssetsWithTransientArtifact: 65.996ms
+	ProcessAssetsWithTransientArtifactChanges: 114.759ms
+	CategorizeAssets: 114.148ms
+	ImportOutOfDateAssets: 3402.415ms (2674.794ms without children)
+		ImportManagerImport: 8.765ms (1.136ms without children)
+			ImportInProcess: 7.630ms
+		CompileScripts: 713.917ms
+		ReloadNativeAssets: 0.073ms
+		UnloadImportedAssets: 1.253ms
+		ReloadImportedAssets: 0.098ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 2.183ms
+		InitializingProgressBar: 0.007ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 1.324ms
+	PostProcessAllAssets: 729.703ms
+	Hotreload: 6.370ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
+	UnloadStreamsBegin: 1.365ms
+	PersistCurrentRevisions: 0.325ms
+	UnloadStreamsEnd: 0.002ms
+	GenerateScriptTypeHashes: 15.463ms
+	Untracked: 1672.847ms
+
+Application.AssetDatabase Initial Refresh End
+Shader 'Oculus/OVRMRCameraFrameLit': fallback shader 'Alpha-Diffuse' not found
+Scanning for USB devices : 2.713ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-hand-tracking-streamer
+Unloading 130 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 9800 unused Assets / (19.5 MB). Loaded Objects now: 10387.
+Memory consumption went from 259.6 MB to 240.1 MB.
+Total: 25.335865 ms (FindLiveObjects: 1.732471 ms CreateObjectMapping: 1.152989 ms MarkObjects: 15.177236 ms  DeleteObjects: 7.271687 ms)
+
+1 URP assets included in build
+- Mobile_RPAsset - Assets/Settings/Mobile_RPAsset.asset
+	 - Mobile_Renderer - Assets/Settings/Mobile_Renderer.asset - UnityEngine.Rendering.Universal.UniversalRendererData
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.Rendering.Universal.URPPreprocessBuild:LogIncludedAssets (System.Collections.Generic.List`1<UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset>) (at ./Library/PackageCache/com.unity.render-pipelines.universal@b774104533b8/Editor/BuildProcessors/URPPreprocessBuild.cs:52)
+UnityEditor.Rendering.Universal.URPPreprocessBuild:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at ./Library/PackageCache/com.unity.render-pipelines.universal@b774104533b8/Editor/BuildProcessors/URPPreprocessBuild.cs:30)
+UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass17_0:<OnBuildPreProcess>b__1 (UnityEditor.Build.IPreprocessBuildWithReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:509)
+UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPreprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuild>,System.Action`1<UnityEditor.Build.IPreprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPreprocessBuildWithReport>,bool) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:475)
+UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:507)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.unity.render-pipelines.universal@b774104533b8/Editor/BuildProcessors/URPPreprocessBuild.cs Line: 52)
+
+[ISDK] Hand Skeleton Version is set to OpenXR
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Oculus.Interaction.Editor.LogSkeletonVersion:LogHandSkeletonVersion () (at ./Library/PackageCache/com.meta.xr.sdk.interaction@0b18fe126659/Editor/PackageUpgradeOpenXR.cs:305)
+Oculus.Interaction.Editor.LogSkeletonVersion:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at ./Library/PackageCache/com.meta.xr.sdk.interaction@0b18fe126659/Editor/PackageUpgradeOpenXR.cs:299)
+UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass17_0:<OnBuildPreProcess>b__1 (UnityEditor.Build.IPreprocessBuildWithReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:509)
+UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPreprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuild>,System.Action`1<UnityEditor.Build.IPreprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPreprocessBuildWithReport>,bool) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:475)
+UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:507)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.interaction@0b18fe126659/Editor/PackageUpgradeOpenXR.cs Line: 305)
+
+Using the Screen Space Ambient Occlusion render feature results in significant performance overhead when the application is running natively on device. Disabling or removing that render feature is recommended.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.XR.OpenXR.OpenXRProjectValidation:LogBuildValidationIssues (UnityEditor.BuildTargetGroup) (at ./Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/OpenXRProjectValidation.cs:491)
+UnityEditor.XR.OpenXR.OpenXRProjectValidationBuildStep:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at ./Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Editor/OpenXRProjectValidationRulesSetup.cs:263)
+UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass17_0:<OnBuildPreProcess>b__1 (UnityEditor.Build.IPreprocessBuildWithReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:509)
+UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPreprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuild>,System.Action`1<UnityEditor.Build.IPreprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPreprocessBuildWithReport>,bool) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:475)
+UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:507)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/OpenXRProjectValidation.cs Line: 491)
+
+[Optional] Latency Optimization is recommended to be set to <b>Prioritize Input Polling</b> when Meta Quest support is enabled.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.XR.OpenXR.OpenXRProjectValidation:LogBuildValidationIssues (UnityEditor.BuildTargetGroup) (at ./Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/OpenXRProjectValidation.cs:491)
+UnityEditor.XR.OpenXR.OpenXRProjectValidationBuildStep:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at ./Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Editor/OpenXRProjectValidationRulesSetup.cs:263)
+UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass17_0:<OnBuildPreProcess>b__1 (UnityEditor.Build.IPreprocessBuildWithReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:509)
+UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPreprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuild>,System.Action`1<UnityEditor.Build.IPreprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPreprocessBuildWithReport>,bool) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:475)
+UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:507)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.unity.xr.openxr@58837b2992e0/Runtime/OpenXRProjectValidation.cs Line: 491)
+
+Start importing Assets/XR/Settings/OpenXR Package Settings.asset using Guid(179847081f15de845a12ab065cc9e644) (NativeFormatImporter) -> (artifact id: 'afc87e43b05ee4769bd978d8f82f387b') in 0.001841408 seconds
+Refreshing native plugins compatible for Editor in 3.08 ms, found 2 plugins.
+Preloading 1 native plugins for Editor in 0.04 ms.
+Asset Pipeline Refresh (id=fded34d06b985f908aeab5477c28f54e): Total: 0.073 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[Meta] libopenxr_loader.so from other packages will be disabled because of enabled MetaXRFeature: Packages/com.unity.xr.openxr/Runtime/MockRuntime/android/arm64/libopenxr_loader.so
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:LogFormat (UnityEngine.LogType,string,object[])
+UnityEngine.Debug:LogFormat (string,object[])
+OVRGradleGeneration:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs:181)
+UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass17_0:<OnBuildPreProcess>b__1 (UnityEditor.Build.IPreprocessBuildWithReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:509)
+UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPreprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuild>,System.Action`1<UnityEditor.Build.IPreprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPreprocessBuildWithReport>,bool) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:475)
+UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:507)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs Line: 181)
+
+[Meta] libopenxr_loader.so from other packages will be disabled because of enabled MetaXRFeature: Packages/com.unity.xr.openxr/RuntimeLoaders/android/openxr_loader.aar
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:LogFormat (UnityEngine.LogType,string,object[])
+UnityEngine.Debug:LogFormat (string,object[])
+OVRGradleGeneration:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs:181)
+UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass17_0:<OnBuildPreProcess>b__1 (UnityEditor.Build.IPreprocessBuildWithReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:509)
+UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPreprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuild>,System.Action`1<UnityEditor.Build.IPreprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPreprocessBuildWithReport>,bool) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:475)
+UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:507)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs Line: 181)
+
+[Meta] Native plugin included in build because of enabled MetaXRFeature: Packages/com.meta.xr.sdk.core/Plugins/AndroidOpenXR/OVRPlugin.aar
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:LogFormat (UnityEngine.LogType,string,object[])
+UnityEngine.Debug:LogFormat (string,object[])
+OVRGradleGeneration:OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs:170)
+UnityEditor.Build.BuildPipelineInterfaces/<>c__DisplayClass17_0:<OnBuildPreProcess>b__1 (UnityEditor.Build.IPreprocessBuildWithReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:509)
+UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair<UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPreprocessBuildWithReport> (System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuild>,System.Action`1<UnityEditor.Build.IPreprocessBuild>,System.Collections.Generic.List`1<UnityEditor.Build.IPreprocessBuildWithReport>,System.Action`1<UnityEditor.Build.IPreprocessBuildWithReport>,bool) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:475)
+UnityEditor.Build.BuildPipelineInterfaces:OnBuildPreProcess (UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/BuildPipelineInterfaces.cs:507)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs Line: 170)
+
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '5c574d90c9f65425a84954b66c0a8133') in 0.00128548 seconds
+Start importing ProjectSettings/GraphicsSettings.asset using Guid(00000000000000006100000000000000) (LibraryAssetImporter) -> (artifact id: '7971743a43fa757e955096692620268d') in 0.000619026 seconds
+Start importing Assets/Settings/UniversalRenderPipelineGlobalSettings.asset using Guid(18dc0cd2c080841dea60987a38ce93fa) (NativeFormatImporter) -> (artifact id: 'cd803d43115c640ab749b526bedaaa8f') in 0.001042023 seconds
+Start importing Assets/Settings/Mobile_RPAsset.asset using Guid(5e6cbd92db86f4b18aec3ed561671858) (NativeFormatImporter) -> (artifact id: '281561d5ab107c78efd9c6178f1fc871') in 0.000629993 seconds
+Shader 'Meta/MRUK/Scene/HighlightsAndShadows': fallback shader 'Off' not found
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Refreshing native plugins compatible for Editor in 3.61 ms, found 2 plugins.
+Preloading 1 native plugins for Editor in 0.05 ms.
+Asset Pipeline Refresh (id=ef2dae928f12b8a47829d676abd4fdd5): Total: 0.499 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=4 (actual=4, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=450 ms
+		Asset DB Callback time: managed=19 ms, native=29 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=2703, non-scripts=4275
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 0.001ms
+	ApplyChangesToAssetFolders: 0.225ms
+	Scan: 285.513ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.009ms
+	ProcessAssetsWithTransientArtifactChanges: 0.153ms
+	CategorizeAssets: 141.769ms
+	ImportOutOfDateAssets: 15.293ms (2.547ms without children)
+		ImportManagerImport: 4.576ms (0.541ms without children)
+			ImportInProcess: 4.008ms
+			UpdateCategorizedAssets: 0.026ms
+		ReloadNativeAssets: 0.460ms
+		UnloadImportedAssets: 2.694ms
+		ReloadImportedAssets: 0.000ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 3.241ms
+		InitializingProgressBar: 0.004ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.005ms
+		OnDemandSchedulerStart: 1.766ms
+	PostProcessAllAssets: 480.384ms
+	Hotreload: 4.096ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.599ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.589ms
+	UnloadStreamsEnd: 0.002ms
+	Untracked: -429.401ms
+
+DisplayProgressbar: Checking prerequisites
+PlayerSettings->Active Input Handling is set to Both, this is unsupported on Android and might cause issues with input and application performance. Please choose only one active input handling.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Android.PostProcessor.Tasks.CheckPrerequisites:ValidateInputHandling () (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/Tasks/CheckPrerequisites.cs:116)
+UnityEditor.Android.PostProcessor.Tasks.CheckPrerequisites:Execute (UnityEditor.Android.PostProcessor.PostProcessorContext) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/Tasks/CheckPrerequisites.cs:64)
+UnityEditor.Android.PostProcessor.PostProcessRunner:RunAllTasks (UnityEditor.Android.PostProcessor.PostProcessorContext) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/AndroidPostProcessor.cs:112)
+UnityEditor.Android.PostProcessAndroidPlayer:PrepareForBuild (UnityEditor.BuildOptions,UnityEditor.BuildTarget) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessAndroidPlayer.cs:60)
+UnityEditor.Android.AndroidBuildPostprocessor:PrepareForBuild (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1174)
+UnityEditor.PostprocessBuildPlayer:PrepareForBuild (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:86)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/Tasks/CheckPrerequisites.cs Line: 116)
+
+Android PostProcess task "Checking prerequisites" took 59.6003 ms
+DisplayProgressbar: Detect Java Development Kit (JDK)
+Android PostProcess task "Detect Java Development Kit (JDK)" took 205.5165 ms
+DisplayProgressbar: Detecting Android SDK
+AndroidSDKTools:
+
+	root          : /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK
+	cmdline-tools : /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK/cmdline-tools/16.0
+	platform-tools: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK/platform-tools
+	build-tools   : /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK/build-tools/36.0.0
+
+	adb           : /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK/platform-tools/adb
+
+Android PostProcess task "Detecting Android SDK" took 1598.0557 ms
+DisplayProgressbar: Detect Android NDK
+Android PostProcess task "Detect Android NDK" took 1.3164 ms
+Android PostProcess task "Trying to find a suitable Android device" took 0.437 ms
+DisplayProgressbar: Check resources
+Android PostProcess task "Check resources" took 0.1613 ms
+DisplayProgressbar: Check Android Player Settings
+Android PostProcess task "Check Android Player Settings" took 0.2835 ms
+Launched and connected shader compiler UnityShaderCompiler after 0.05 seconds
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.8560ms
+Starting: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aESkipCompile.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
+WorkingDir: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s130ms
+*** Tundra build success (0.06 seconds), 0 items updated, 3 evaluated
+Total cache size 0
+Total cache size after purge 0, took 00:00:00.0048589
+Asset Pipeline Refresh (id=044ef83ea40fd5fb0bae32c0e5568dd6): Total: 0.275 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+[ScriptCompilation] Requested script compilation because: Recompiling scripts for player build.
+BuildPlayer: start building target 13
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.3264ms
+Starting: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aP.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
+WorkingDir: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@973857688024/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@d78732e851eb/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 4.2706ms
+ExitCode: 0 Duration: 0s318ms
+[742/964    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[797/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.WitAi.dll
+[798/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.Samples.dll
+[800/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.WitAi.Conduit.dll
+[801/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll
+[802/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.ConformanceAutomation.dll
+[806/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.MetaQuestSupport.dll
+[807/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Wit.Composer.dll
+[811/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.TestTooling.dll
+[813/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.Management.dll
+[814/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.DocCodeExamples.dll
+[819/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.GPUDriven.Runtime.dll
+[820/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll
+[821/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Rendering.LightTransport.Runtime.dll
+[823/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Haptics.dll
+[824/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+[826/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.WebRTC.dll
+[831/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Collections.dll
+[832/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.ImmersiveDebugger.dll
+[833/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.SpatialTracking.dll
+[834/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.VoiceSDK.Mic.Common.dll
+[835/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/VoiceSDK.Dictation.Runtime.dll
+[836/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.BuildingBlocks.dll
+[837/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.MockRuntime.dll
+[838/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.UI.dll
+[840/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Platform.dll
+[841/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll
+[842/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll
+[843/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.Audio.dll
+[844/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Timeline.dll
+[845/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Voice.Hub.Runtime.dll
+[846/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.TextMeshPro.dll
+[847/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Shared.dll
+[848/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Multiplayer.Center.Common.dll
+[849/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.UnityXR.dll
+[850/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.ImmersiveDebugger.Interface.dll
+[851/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.State.dll
+[852/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.VoiceSDK.Mic.Other.dll
+[853/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.EnvironmentDepth.dll
+[854/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Net.endel.nativewebsocket.dll
+[855/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.MultiplayerBlocks.Shared.dll
+[856/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/AssistantVoiceCommandCommon.dll
+[857/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Voice.Opus.dll
+[858/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.AI.Navigation.dll
+[859/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Assembly-CSharp.dll
+[860/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.dll
+[861/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Voice.NLayer.dll
+[862/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/VoiceSDK.Runtime.dll
+[863/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.OVR.dll
+[864/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/VoiceSDK.Runtime.Composer.dll
+[865/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.RuntimeDebugger.dll
+[866/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/VoiceSDK.Telemetry.Runtime.dll
+[867/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InputSystem.dll
+[868/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Config.Runtime.dll
+[869/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.AI.Navigation.pdb
+[870/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Wit.Dictation.pdb
+[871/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Voice.Opus.pdb
+[872/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.RuntimeDebugger.pdb
+[873/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.VoiceSDK.Mic.Common.pdb
+[874/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.CoreUtils.pdb
+[875/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.Hands.dll
+[876/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.ConformanceAutomation.pdb
+[877/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.pdb
+[878/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.MockRuntime.pdb
+[879/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.Flow.dll
+[880/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.pdb
+[881/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.VoiceSDK.Mic.Other.pdb
+[882/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.dll
+[883/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.Core.pdb
+[884/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Voice.Hub.Runtime.pdb
+[885/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Platform.pdb
+[886/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.DocCodeExamples.pdb
+[887/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.WitAi.Lib.pdb
+[888/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Voice.NLayer.pdb
+[889/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.2D.Runtime.pdb
+[890/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.TestTooling.pdb
+[891/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Wit.Composer.pdb
+[892/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.VR.dll
+[893/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.WitAi.pdb
+[894/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll
+[895/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.pdb
+[896/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.MetaQuestSupport.pdb
+[897/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Timeline.pdb
+[898/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.SpatialTracking.pdb
+[899/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.MultiplayerBlocks.Shared.pdb
+[900/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.OVR.pdb
+[901/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.pdb
+[902/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.WitAi.TTS.pdb
+[903/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.ImmersiveDebugger.pdb
+[904/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Collections.pdb
+[905/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.pdb
+[906/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/VoiceSDK.Telemetry.Runtime.pdb
+[907/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.UnityXR.pdb
+[908/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.pdb
+[909/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.TextMeshPro.pdb
+[910/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Rendering.LightTransport.Runtime.pdb
+[911/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/AssistantCoreSDKRuntime.pdb
+[912/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InputSystem.ForUI.pdb
+[913/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.Hands.pdb
+[914/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.pdb
+[915/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Haptics.pdb
+[916/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.VR.pdb
+[917/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.State.pdb
+[918/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InputSystem.pdb
+[919/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/VoiceSDK.Runtime.Composer.pdb
+[920/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.Management.pdb
+[921/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.EnvironmentDepth.pdb
+[922/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.pdb
+[923/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Multiplayer.Center.Common.pdb
+[924/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.ImmersiveDebugger.Interface.pdb
+[925/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/VoiceSDK.Dictation.Runtime.pdb
+[926/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Net.endel.nativewebsocket.pdb
+[927/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/VoiceSDK.Runtime.pdb
+[928/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/meta.xr.mrutilitykit.pdb
+[929/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.BuildingBlocks.DepthAPI.pdb
+[930/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.BuildingBlocks.pdb
+[931/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.pdb
+[932/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Shared.pdb
+[933/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Config.Runtime.pdb
+[934/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.OculusQuestSupport.pdb
+[935/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.WitAi.Conduit.pdb
+[936/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.pdb
+[937/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.WebRTC.pdb
+[938/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.pdb
+[939/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.GPUDriven.Runtime.pdb
+[940/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/AssistantCoreSDKRuntime.dll
+[941/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.Features.OculusQuestSupport.dll
+[942/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Assembly-CSharp.pdb
+[943/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.2D.Runtime.dll
+[944/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InputSystem.ForUI.dll
+[945/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.BuildingBlocks.DepthAPI.dll
+[946/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.dll
+[947/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll
+[948/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.WitAi.TTS.dll
+[949/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.XR.Audio.pdb
+[950/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.OVR.Samples.pdb
+[951/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.OpenXR.dll
+[952/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.Wit.Dictation.dll
+[953/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.Flow.pdb
+[954/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.UI.pdb
+[955/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.OVR.Samples.dll
+[956/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.XR.CoreUtils.dll
+[957/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Oculus.Interaction.Samples.pdb
+[958/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/meta.xr.mrutilitykit.dll
+[959/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Meta.WitAi.Lib.dll
+[960/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/AssistantVoiceCommandCommon.pdb
+[961/964    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.Core.dll
+*** Tundra build success (0.25 seconds), 147 items updated, 964 evaluated
+Total cache size 0
+Total cache size after purge 0, took 00:00:00.0003551
+Not rebuilding Data files -- no changes
+
+
+Mono dependencies included in the build
+Dependency assembly - Meta.XR.ImmersiveDebugger.dll
+Dependency assembly - System.Security.Cryptography.Hashing.dll
+Dependency assembly - Meta.WitAi.Lib.dll
+Dependency assembly - Meta.XR.MultiplayerBlocks.Shared.dll
+Dependency assembly - Oculus.Platform.dll
+Dependency assembly - System.IO.FileSystem.AccessControl.dll
+Dependency assembly - System.EnterpriseServices.dll
+Dependency assembly - Unity.RenderPipelines.Core.ShaderLibrary.dll
+Dependency assembly - System.Reflection.Emit.dll
+Dependency assembly - System.Security.Cryptography.Hashing.Algorithms.dll
+Dependency assembly - System.Transactions.dll
+Dependency assembly - Unity.RenderPipeline.Universal.ShaderLibrary.dll
+Dependency assembly - Unity.Timeline.dll
+Dependency assembly - System.Diagnostics.Contracts.dll
+Dependency assembly - System.Security.Cryptography.Cng.dll
+Dependency assembly - System.ServiceModel.Routing.dll
+Dependency assembly - System.ObjectModel.dll
+Dependency assembly - System.Runtime.Handles.dll
+Dependency assembly - I18N.Rare.dll
+Dependency assembly - System.Runtime.CompilerServices.Unsafe.dll
+Dependency assembly - System.Runtime.Serialization.Formatters.dll
+Dependency assembly - Unity.RenderPipelines.GPUDriven.Runtime.dll
+Dependency assembly - System.Xml.Xsl.Primitives.dll
+Dependency assembly - System.Threading.Tasks.Parallel.dll
+Dependency assembly - System.Collections.dll
+Dependency assembly - VoiceSDK.Dictation.Runtime.dll
+Dependency assembly - System.Drawing.Design.dll
+Dependency assembly - System.Configuration.dll
+Dependency assembly - System.IO.Hashing.dll
+Dependency assembly - Meta.Voice.NLayer.dll
+Dependency assembly - Oculus.VR.dll
+Dependency assembly - System.Net.Sockets.dll
+Dependency assembly - System.Runtime.DurableInstancing.dll
+Dependency assembly - System.Runtime.InteropServices.RuntimeInformation.dll
+Dependency assembly - Assembly-CSharp.dll
+Dependency assembly - System.IO.FileSystem.dll
+Dependency assembly - System.Linq.dll
+Dependency assembly - System.Runtime.InteropServices.WindowsRuntime.dll
+Dependency assembly - System.ComponentModel.DataAnnotations.dll
+Dependency assembly - System.Xml.XPath.dll
+Dependency assembly - System.Numerics.Vectors.dll
+Dependency assembly - System.DirectoryServices.dll
+Dependency assembly - System.Security.SecureString.dll
+Dependency assembly - Unity.XR.OpenXR.dll
+Dependency assembly - System.Security.dll
+Dependency assembly - System.ComponentModel.EventBasedAsync.dll
+Dependency assembly - System.Diagnostics.StackTrace.dll
+Dependency assembly - System.Security.Cryptography.ProtectedData.dll
+Dependency assembly - System.Resources.ResourceManager.dll
+Dependency assembly - System.Net.AuthenticationManager.dll
+Dependency assembly - System.Security.Cryptography.Algorithms.dll
+Dependency assembly - Oculus.Interaction.OVR.Samples.dll
+Dependency assembly - Unity.XR.OpenXR.Features.OculusQuestSupport.dll
+Dependency assembly - Meta.VoiceSDK.Mic.Other.dll
+Dependency assembly - Meta.Wit.Dictation.dll
+Dependency assembly - System.Security.Principal.Windows.dll
+Dependency assembly - System.Xml.XmlDocument.dll
+Dependency assembly - System.Drawing.dll
+Dependency assembly - Meta.Net.endel.nativewebsocket.dll
+Dependency assembly - System.ServiceModel.Web.dll
+Dependency assembly - System.ComponentModel.Primitives.dll
+Dependency assembly - System.Data.Services.Client.dll
+Dependency assembly - Meta.XR.EnvironmentDepth.dll
+Dependency assembly - System.Linq.Queryable.dll
+Dependency assembly - System.Runtime.Loader.dll
+Dependency assembly - System.Security.Cryptography.Encryption.dll
+Dependency assembly - Unity.VisualScripting.DocCodeExamples.dll
+Dependency assembly - VoiceSDK.Runtime.dll
+Dependency assembly - System.Resources.Reader.dll
+Dependency assembly - System.Net.Cache.dll
+Dependency assembly - System.Net.WebSockets.dll
+Dependency assembly - System.Xml.ReaderWriter.dll
+Dependency assembly - Microsoft.Win32.Registry.dll
+Dependency assembly - Meta.XR.ImmersiveDebugger.Interface.dll
+Dependency assembly - System.Collections.Concurrent.dll
+Dependency assembly - System.Diagnostics.TextWriterTraceListener.dll
+Dependency assembly - System.Security.Cryptography.Encryption.ECDsa.dll
+Dependency assembly - System.Security.Cryptography.Encryption.Aes.dll
+Dependency assembly - Mono.Data.Tds.dll
+Dependency assembly - System.ComponentModel.dll
+Dependency assembly - System.Linq.Expressions.dll
+Dependency assembly - System.Net.WebHeaderCollection.dll
+Dependency assembly - System.Data.Common.dll
+Dependency assembly - System.ServiceModel.Security.dll
+Dependency assembly - System.Runtime.InteropServices.dll
+Dependency assembly - System.Security.AccessControl.dll
+Dependency assembly - Oculus.Interaction.OVR.dll
+Dependency assembly - Meta.WitAi.TTS.dll
+Dependency assembly - System.Core.dll
+Dependency assembly - System.Collections.NonGeneric.dll
+Dependency assembly - System.Security.Cryptography.OpenSsl.dll
+Dependency assembly - System.Json.dll
+Dependency assembly - System.Runtime.Caching.dll
+Dependency assembly - System.IO.FileSystem.Primitives.dll
+Dependency assembly - Unity.RenderPipelines.Core.Runtime.Shared.dll
+Dependency assembly - Unity.RenderPipelines.Universal.Runtime.dll
+Dependency assembly - System.Memory.dll
+Dependency assembly - System.Threading.AccessControl.dll
+Dependency assembly - System.AppContext.dll
+Dependency assembly - Meta.VoiceSDK.Mic.Common.dll
+Dependency assembly - Mono.Security.dll
+Dependency assembly - Unity.XR.OpenXR.Features.MetaQuestSupport.dll
+Dependency assembly - System.ServiceProcess.ServiceController.dll
+Dependency assembly - System.Web.dll
+Dependency assembly - System.Net.NameResolution.dll
+Dependency assembly - Unity.RenderPipelines.Universal.Shaders.dll
+Dependency assembly - System.Console.dll
+Dependency assembly - System.dll
+Dependency assembly - System.Reflection.Primitives.dll
+Dependency assembly - Unity.XR.Hands.dll
+Dependency assembly - System.Runtime.Numerics.dll
+Dependency assembly - Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+Dependency assembly - System.Threading.Thread.dll
+Dependency assembly - UnityEngine.XR.LegacyInputHelpers.dll
+Dependency assembly - Unity.XR.OpenXR.Features.ConformanceAutomation.dll
+Dependency assembly - System.Data.Services.dll
+Dependency assembly - System.IO.Compression.ZipFile.dll
+Dependency assembly - System.Net.ServicePoint.dll
+Dependency assembly - I18N.dll
+Dependency assembly - Unity.Burst.Unsafe.dll
+Dependency assembly - System.ComponentModel.Annotations.dll
+Dependency assembly - System.Design.dll
+Dependency assembly - System.Windows.Forms.dll
+Dependency assembly - Unity.Rendering.LightTransport.Runtime.dll
+Dependency assembly - Oculus.Interaction.UnityXR.dll
+Dependency assembly - System.Configuration.Install.dll
+Dependency assembly - System.Diagnostics.Tracing.dll
+Dependency assembly - System.Security.Claims.dll
+Dependency assembly - System.Buffers.dll
+Dependency assembly - System.Windows.dll
+Dependency assembly - Meta.XR.BuildingBlocks.dll
+Dependency assembly - System.ServiceModel.Duplex.dll
+Dependency assembly - System.Runtime.Serialization.dll
+Dependency assembly - System.IO.Compression.dll
+Dependency assembly - System.Reflection.dll
+Dependency assembly - System.Reflection.Emit.Lightweight.dll
+Dependency assembly - System.Net.Security.dll
+Dependency assembly - System.Diagnostics.Debug.dll
+Dependency assembly - System.IO.MemoryMappedFiles.dll
+Dependency assembly - System.Reflection.Context.dll
+Dependency assembly - System.ComponentModel.TypeConverter.dll
+Dependency assembly - System.Web.Services.dll
+Dependency assembly - System.Net.Utilities.dll
+Dependency assembly - System.Windows.Forms.DataVisualization.dll
+Dependency assembly - Meta.XR.Audio.dll
+Dependency assembly - System.Net.WebSockets.Client.dll
+Dependency assembly - System.Resources.ReaderWriter.dll
+Dependency assembly - System.Web.RegularExpressions.dll
+Dependency assembly - System.IdentityModel.Selectors.dll
+Dependency assembly - System.Threading.Tasks.Extensions.dll
+Dependency assembly - System.Messaging.dll
+Dependency assembly - netstandard.dll
+Dependency assembly - System.Security.Cryptography.Pkcs.dll
+Dependency assembly - System.Diagnostics.TraceSource.dll
+Dependency assembly - System.Reflection.Emit.ILGeneration.dll
+Dependency assembly - Meta.Voice.Hub.Runtime.dll
+Dependency assembly - System.Management.dll
+Dependency assembly - Unity.Multiplayer.Center.Common.dll
+Dependency assembly - System.Security.Cryptography.X509Certificates.dll
+Dependency assembly - System.Runtime.Serialization.Formatters.Soap.dll
+Dependency assembly - Unity.XR.OpenXR.TestTooling.dll
+Dependency assembly - System.Globalization.Calendars.dll
+Dependency assembly - System.Xml.XPath.XDocument.dll
+Dependency assembly - System.Collections.Specialized.dll
+Dependency assembly - System.ValueTuple.dll
+Dependency assembly - System.ServiceModel.Discovery.dll
+Dependency assembly - System.ServiceModel.Primitives.dll
+Dependency assembly - System.Threading.Overlapped.dll
+Dependency assembly - System.Linq.Parallel.dll
+Dependency assembly - System.Globalization.dll
+Dependency assembly - System.Web.Extensions.Design.dll
+Dependency assembly - Oculus.Interaction.dll
+Dependency assembly - System.Xml.Serialization.dll
+Dependency assembly - System.Text.Encoding.Extensions.dll
+Dependency assembly - System.Reflection.TypeExtensions.dll
+Dependency assembly - System.Threading.dll
+Dependency assembly - System.Data.SqlClient.dll
+Dependency assembly - AssistantVoiceCommandCommon.dll
+Dependency assembly - UnityEngine.UI.dll
+Dependency assembly - System.Xml.XmlSerializer.dll
+Dependency assembly - meta.xr.mrutilitykit.dll
+Dependency assembly - System.Data.DataSetExtensions.dll
+Dependency assembly - System.Data.Linq.dll
+Dependency assembly - System.Data.OracleClient.dll
+Dependency assembly - System.ServiceModel.dll
+Dependency assembly - Unity.Collections.dll
+Dependency assembly - System.IO.dll
+Dependency assembly - System.Threading.Timer.dll
+Dependency assembly - System.Security.Principal.dll
+Dependency assembly - System.Dynamic.Runtime.dll
+Dependency assembly - System.Security.Cryptography.Primitives.dll
+Dependency assembly - System.ServiceModel.NetTcp.dll
+Dependency assembly - System.Diagnostics.FileVersionInfo.dll
+Dependency assembly - System.Net.Ping.dll
+Dependency assembly - Unity.VisualScripting.State.dll
+Dependency assembly - System.IdentityModel.dll
+Dependency assembly - Meta.Wit.Composer.dll
+Dependency assembly - Unity.RenderPipelines.Universal.Config.Runtime.dll
+Dependency assembly - System.Runtime.dll
+Dependency assembly - System.Security.Cryptography.Encryption.ECDiffieHellman.dll
+Dependency assembly - Mono.Data.Sqlite.dll
+Dependency assembly - I18N.CJK.dll
+Dependency assembly - System.Xaml.dll
+Dependency assembly - System.IO.Compression.FileSystem.dll
+Dependency assembly - System.ServiceModel.Http.dll
+Dependency assembly - VoiceSDK.Telemetry.Runtime.dll
+Dependency assembly - System.Security.Cryptography.DeriveBytes.dll
+Dependency assembly - I18N.West.dll
+Dependency assembly - System.Diagnostics.Tools.dll
+Dependency assembly - Unity.TextMeshPro.dll
+Dependency assembly - mscorlib.dll
+Dependency assembly - System.Data.dll
+Dependency assembly - System.Numerics.dll
+Dependency assembly - Meta.WitAi.Conduit.dll
+Dependency assembly - Accessibility.dll
+Dependency assembly - Unity.InputSystem.ForUI.dll
+Dependency assembly - System.Security.Cryptography.RandomNumberGenerator.dll
+Dependency assembly - System.Xml.Linq.dll
+Dependency assembly - System.Net.Primitives.dll
+Dependency assembly - System.Diagnostics.TraceEvent.dll
+Dependency assembly - System.Xml.XDocument.dll
+Dependency assembly - AssistantCoreSDKRuntime.dll
+Dependency assembly - Unity.VisualScripting.Flow.dll
+Dependency assembly - Unity.XR.OpenXR.Features.RuntimeDebugger.dll
+Dependency assembly - System.Security.Cryptography.Csp.dll
+Dependency assembly - Unity.AI.Navigation.dll
+Dependency assembly - I18N.Other.dll
+Dependency assembly - System.Reflection.Extensions.dll
+Dependency assembly - System.Resources.Writer.dll
+Dependency assembly - System.Web.DynamicData.dll
+Dependency assembly - System.ComponentModel.Composition.dll
+Dependency assembly - Meta.XR.BuildingBlocks.DepthAPI.dll
+Dependency assembly - Unity.XR.CoreUtils.dll
+Dependency assembly - System.ServiceModel.Activation.dll
+Dependency assembly - UnityEngine.SpatialTracking.dll
+Dependency assembly - Unity.Burst.dll
+Dependency assembly - System.Xml.dll
+Dependency assembly - System.IO.Pipes.dll
+Dependency assembly - Unity.XR.Management.dll
+Dependency assembly - System.Threading.ThreadPool.dll
+Dependency assembly - Unity.RenderPipelines.Universal.2D.Runtime.dll
+Dependency assembly - Unity.VisualScripting.Core.dll
+Dependency assembly - System.Data.Entity.dll
+Dependency assembly - System.Threading.Tasks.dll
+Dependency assembly - System.Security.Cryptography.Encoding.dll
+Dependency assembly - Unity.XR.OpenXR.Features.MockRuntime.dll
+Dependency assembly - System.IO.FileSystem.Watcher.dll
+Dependency assembly - System.Net.dll
+Dependency assembly - Oculus.Haptics.dll
+Dependency assembly - System.Net.HttpListener.dll
+Dependency assembly - System.Web.ApplicationServices.dll
+Dependency assembly - Microsoft.Win32.Registry.AccessControl.dll
+Dependency assembly - System.Text.Encoding.CodePages.dll
+Dependency assembly - System.IO.IsolatedStorage.dll
+Dependency assembly - Unity.Collections.LowLevel.ILSupport.dll
+Dependency assembly - System.Text.Encoding.dll
+Dependency assembly - System.Net.Mail.dll
+Dependency assembly - Meta.WitAi.dll
+Dependency assembly - System.IO.FileSystem.DriveInfo.dll
+Dependency assembly - System.Net.Http.WebRequest.dll
+Dependency assembly - System.Drawing.Primitives.dll
+Dependency assembly - System.Security.Cryptography.RSA.dll
+Dependency assembly - System.Diagnostics.Process.dll
+Dependency assembly - Unity.RenderPipelines.Core.Runtime.dll
+Dependency assembly - Unity.Mathematics.dll
+Dependency assembly - System.Reflection.DispatchProxy.dll
+Dependency assembly - System.ServiceProcess.dll
+Dependency assembly - System.Runtime.Serialization.Xml.dll
+Dependency assembly - Microsoft.Win32.Primitives.dll
+Dependency assembly - System.Net.Requests.dll
+Dependency assembly - System.Xml.XPath.XmlDocument.dll
+Dependency assembly - I18N.MidEast.dll
+Dependency assembly - Newtonsoft.Json.dll
+Dependency assembly - System.Runtime.Serialization.Json.dll
+Dependency assembly - System.Text.RegularExpressions.dll
+Dependency assembly - VoiceSDK.Runtime.Composer.dll
+Dependency assembly - Oculus.Interaction.Samples.dll
+Dependency assembly - System.Net.Http.dll
+Dependency assembly - System.Runtime.Remoting.dll
+Dependency assembly - System.IO.UnmanagedMemoryStream.dll
+Dependency assembly - System.Runtime.CompilerServices.VisualC.dll
+Dependency assembly - System.Globalization.Extensions.dll
+Dependency assembly - Microsoft.CSharp.dll
+Dependency assembly - Meta.Voice.Opus.dll
+Dependency assembly - Unity.InputSystem.dll
+Dependency assembly - Unity.WebRTC.dll
+Dependency assembly - Unity.VisualScripting.Antlr3.Runtime.dll
+Dependency assembly - System.Runtime.Serialization.Primitives.dll
+Dependency assembly - System.Net.NetworkInformation.dll
+Dependency assembly - System.DirectoryServices.Protocols.dll
+Dependency assembly - System.Web.Extensions.dll
+Dependency assembly - System.Runtime.Extensions.dll
+Dependency assembly - System.ServiceModel.Internals.dll
+
+Compressed texture splah image is used as splash image. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1235)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1239)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1239)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1239)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1239)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1239)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1239)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1242)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1242)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1242)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1242)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1242)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+Compressed texture hts_icon is used as icon. This might compromise visual quality of the final image. Uncompressed format might be considered as better import option.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Utils.IconUtility:ExportImageToPath (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:82)
+UnityEditor.Utils.IconUtility:ExportImage (string,UnityEngine.Texture2D,UnityEditor.Utils.ImageDescription) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:118)
+UnityEditor.Utils.IconUtility:ExportIcon (string,string,UnityEditor.Utils.ImageDescription,int) (at /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs:145)
+UnityEditor.Android.AndroidBuildPostprocessor:AddIconsToBuild (UnityEditor.Modules.AddIconsArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:1242)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:266)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Utils/IconUtility.bindings.cs Line: 82)
+
+DisplayProgressbar: Initializing
+Android PostProcess task "Initializing" took 0.8835 ms
+DisplayProgressbar: Check gradle project collisions
+Android PostProcess task "Check gradle project collisions" took 0.2216 ms
+DisplayProgressbar: Preparing banner
+Android PostProcess task "Preparing banner" took 0.3386 ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.1549ms
+Plugin 'Packages/com.meta.xr.sdk.platform/Plugins/Android64/libovrplatformloader.so' is not 16KB-aligned. This may cause issues on ARM64 devices running Android 15+.
+More info: <a href="https://developer.android.com/guide/practices/page-sizes">https://developer.android.com/guide/practices/page-sizes</a>.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Android.AndroidBuildPostprocessor:CollectPlugin (string,Unity.Android.Types.AndroidGradleDependee,Unity.Android.Types.AndroidArchitecture,System.Collections.Generic.Dictionary`2<string, UnityEditor.Android.AndroidBuildPostprocessor/AndroidSourcePlugin>,bool) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:481)
+UnityEditor.Android.AndroidBuildPostprocessor:PluginsDataFor (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:549)
+UnityEditor.Modules.BeeBuildPostprocessor/<GetDataForBuildProgramFor>d__62:MoveNext () (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:545)
+UnityEditor.Android.AndroidBuildPostprocessor/<GetDataForBuildProgramFor>d__29:MoveNext () (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:734)
+System.Linq.Enumerable/WhereEnumerableIterator`1<object>:MoveNext ()
+Bee.BeeDriver.BeeDriver:WriteDataForBuildProgram (Bee.BeeDriver.InternalState,System.Threading.Tasks.TaskCompletionSource`1<int>) (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:99)
+Bee.BeeDriver.BeeDriver/<>c__DisplayClass0_0:<BuildAsync>g__WriteData|0 () (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:74)
+Bee.BeeDriver.BeeDriver:BuildAsync (Bee.BeeDriver.BuildRequest,System.Threading.CancellationToken) (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:77)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:750)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:38)
+UnityEditor.Android.AndroidBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:337)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:285)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs Line: 481)
+
+Plugin 'Packages/com.meta.xr.sdk.haptics/Plugins/libs/Android/ARM64/libhaptics_sdk.so' is not 16KB-aligned. This may cause issues on ARM64 devices running Android 15+.
+More info: <a href="https://developer.android.com/guide/practices/page-sizes">https://developer.android.com/guide/practices/page-sizes</a>.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Android.AndroidBuildPostprocessor:CollectPlugin (string,Unity.Android.Types.AndroidGradleDependee,Unity.Android.Types.AndroidArchitecture,System.Collections.Generic.Dictionary`2<string, UnityEditor.Android.AndroidBuildPostprocessor/AndroidSourcePlugin>,bool) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:481)
+UnityEditor.Android.AndroidBuildPostprocessor:PluginsDataFor (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:549)
+UnityEditor.Modules.BeeBuildPostprocessor/<GetDataForBuildProgramFor>d__62:MoveNext () (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:545)
+UnityEditor.Android.AndroidBuildPostprocessor/<GetDataForBuildProgramFor>d__29:MoveNext () (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:734)
+System.Linq.Enumerable/WhereEnumerableIterator`1<object>:MoveNext ()
+Bee.BeeDriver.BeeDriver:WriteDataForBuildProgram (Bee.BeeDriver.InternalState,System.Threading.Tasks.TaskCompletionSource`1<int>) (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:99)
+Bee.BeeDriver.BeeDriver/<>c__DisplayClass0_0:<BuildAsync>g__WriteData|0 () (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:74)
+Bee.BeeDriver.BeeDriver:BuildAsync (Bee.BeeDriver.BuildRequest,System.Threading.CancellationToken) (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:77)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:750)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:38)
+UnityEditor.Android.AndroidBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:337)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:285)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs Line: 481)
+
+Plugin 'Packages/com.meta.xr.sdk.audio/Runtime/Plugins/Android/libs/arm64-v8a/libMetaXRAudioUnity.so' is not 16KB-aligned. This may cause issues on ARM64 devices running Android 15+.
+More info: <a href="https://developer.android.com/guide/practices/page-sizes">https://developer.android.com/guide/practices/page-sizes</a>.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Android.AndroidBuildPostprocessor:CollectPlugin (string,Unity.Android.Types.AndroidGradleDependee,Unity.Android.Types.AndroidArchitecture,System.Collections.Generic.Dictionary`2<string, UnityEditor.Android.AndroidBuildPostprocessor/AndroidSourcePlugin>,bool) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:481)
+UnityEditor.Android.AndroidBuildPostprocessor:PluginsDataFor (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:549)
+UnityEditor.Modules.BeeBuildPostprocessor/<GetDataForBuildProgramFor>d__62:MoveNext () (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:545)
+UnityEditor.Android.AndroidBuildPostprocessor/<GetDataForBuildProgramFor>d__29:MoveNext () (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:734)
+System.Linq.Enumerable/WhereEnumerableIterator`1<object>:MoveNext ()
+Bee.BeeDriver.BeeDriver:WriteDataForBuildProgram (Bee.BeeDriver.InternalState,System.Threading.Tasks.TaskCompletionSource`1<int>) (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:99)
+Bee.BeeDriver.BeeDriver/<>c__DisplayClass0_0:<BuildAsync>g__WriteData|0 () (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:74)
+Bee.BeeDriver.BeeDriver:BuildAsync (Bee.BeeDriver.BuildRequest,System.Threading.CancellationToken) (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:77)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:750)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:38)
+UnityEditor.Android.AndroidBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:337)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:285)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs Line: 481)
+
+Plugin 'Packages/com.meta.xr.mrutilitykit/Plugins/arm64-v8a/libmrutilitykitshared.so' is not 16KB-aligned. This may cause issues on ARM64 devices running Android 15+.
+More info: <a href="https://developer.android.com/guide/practices/page-sizes">https://developer.android.com/guide/practices/page-sizes</a>.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Android.AndroidBuildPostprocessor:CollectPlugin (string,Unity.Android.Types.AndroidGradleDependee,Unity.Android.Types.AndroidArchitecture,System.Collections.Generic.Dictionary`2<string, UnityEditor.Android.AndroidBuildPostprocessor/AndroidSourcePlugin>,bool) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:481)
+UnityEditor.Android.AndroidBuildPostprocessor:PluginsDataFor (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:549)
+UnityEditor.Modules.BeeBuildPostprocessor/<GetDataForBuildProgramFor>d__62:MoveNext () (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:545)
+UnityEditor.Android.AndroidBuildPostprocessor/<GetDataForBuildProgramFor>d__29:MoveNext () (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:734)
+System.Linq.Enumerable/WhereEnumerableIterator`1<object>:MoveNext ()
+Bee.BeeDriver.BeeDriver:WriteDataForBuildProgram (Bee.BeeDriver.InternalState,System.Threading.Tasks.TaskCompletionSource`1<int>) (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:99)
+Bee.BeeDriver.BeeDriver/<>c__DisplayClass0_0:<BuildAsync>g__WriteData|0 () (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:74)
+Bee.BeeDriver.BeeDriver:BuildAsync (Bee.BeeDriver.BuildRequest,System.Threading.CancellationToken) (at /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:77)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:750)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:38)
+UnityEditor.Android.AndroidBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:337)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:285)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs Line: 481)
+
+Starting: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/bee_backend --ipc --dagfile="Library/Bee/Playerbe51d09a.dag" --profile="Library/Bee/backend1.traceevents" Player
+WorkingDir: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer
+DisplayProgressbar: Incremental Player Build
+[ 414/1973  0s] CopyFiles /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/xrmanifest.androidlib/AndroidManifest.xml
+[1972/1973  0s] ModifyAndroidProjectCallback /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/AndroidManifest.xml (+8 others)
+*** Tundra build success (0.16 seconds), 2 items updated, 1973 evaluated
+Total cache size 0
+Total cache size after purge 0, took 00:00:00.0003876
+DisplayProgressbar: Calling IPostGenerateGradleAndroidProject callbacks
+Calling IPostGenerateGradleAndroidProject callbacks on '/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary':
+    Call "UnityEditor.XR.OpenXR.OpenXRApiLayersBuildProcessorAndroid.OnPostGenerateGradleAndroidProject" from assembly 'Unity.XR.OpenXR.Editor'
+    Call "UnityEditor.XR.OpenXR.Features.OculusQuestSupport.ModifyAndroidManifestOculus.OnPostGenerateGradleAndroidProject" from assembly 'Unity.XR.OpenXR.Features.OculusQuestSupport.Editor'
+    Call "UnityEditor.XR.OpenXR.Features.MetaQuestSupport.ModifyAndroidManifestMeta.OnPostGenerateGradleAndroidProject" from assembly 'Unity.XR.OpenXR.Features.MetaQuestSupport.Editor'
+    Call "Unity.XR.Management.AndroidManifest.Editor.AndroidManifestBuildEventReceiver.OnPostGenerateGradleAndroidProject" from assembly 'Unity.XR.Management.Editor'
+ExitCode: 0 Duration: 0s322ms
+    Call "Meta.XR.MetaXRBootConfig.OnPostGenerateGradleAndroidProject" from assembly 'Oculus.VR'
+    Call "UnityEditor.XR.OpenXR.Features.MetaQuestSupport.MetaQuestFeatureBuildHooks.OnPostGenerateGradleAndroidProject" from assembly 'Unity.XR.OpenXR.Features.MetaQuestSupport.Editor'
+    Call "UnityEditor.XR.OpenXR.Features.SpaceWarpFeatureBuildHooks.OnPostGenerateGradleAndroidProject" from assembly 'Unity.XR.OpenXR.Editor'
+    Call "UnityEditor.XR.Hands.OpenXR.ModifyAndroidManifest.OnPostGenerateGradleAndroidProject" from assembly 'Unity.XR.Hands.Editor'
+    Call "OVRGradleGeneration.OnPostGenerateGradleAndroidProject" from assembly 'Oculus.VR.Editor'
+OVRGradleGeneration triggered.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OVRGradleGeneration:OnPostGenerateGradleAndroidProject (string) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs:277)
+UnityEditor.Android.PostProcessor.Tasks.ProcessGenerateProjectCallbacks:OnGeneratePlatformProjectPostprocess (string,bool) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/Tasks/ProcessGenerateProjectCallbacks.cs:41)
+UnityEditor.Android.PostProcessor.Tasks.ProcessGenerateProjectCallbacks:Execute (UnityEditor.Android.PostProcessor.PostProcessorContext) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/Tasks/ProcessGenerateProjectCallbacks.cs:67)
+UnityEditor.Android.PostProcessor.PostProcessRunner:RunAllTasks (UnityEditor.Android.PostProcessor.PostProcessorContext) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/AndroidPostProcessor.cs:112)
+UnityEditor.Android.PostProcessAndroidPlayer:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,AndroidPlayerBuildProgram.Data.AndroidPlayerBuildProgramOutput) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessAndroidPlayer.cs:302)
+UnityEditor.Android.AndroidBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:346)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:285)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs Line: 277)
+
+QuestFamily = True: Quest = False, Quest2 = True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:LogFormat (UnityEngine.LogType,string,object[])
+UnityEngine.Debug:LogFormat (string,object[])
+OVRGradleGeneration:OnPostGenerateGradleAndroidProject (string) (at ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs:285)
+UnityEditor.Android.PostProcessor.Tasks.ProcessGenerateProjectCallbacks:OnGeneratePlatformProjectPostprocess (string,bool) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/Tasks/ProcessGenerateProjectCallbacks.cs:41)
+UnityEditor.Android.PostProcessor.Tasks.ProcessGenerateProjectCallbacks:Execute (UnityEditor.Android.PostProcessor.PostProcessorContext) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/Tasks/ProcessGenerateProjectCallbacks.cs:67)
+UnityEditor.Android.PostProcessor.PostProcessRunner:RunAllTasks (UnityEditor.Android.PostProcessor.PostProcessorContext) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessor/AndroidPostProcessor.cs:112)
+UnityEditor.Android.PostProcessAndroidPlayer:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,AndroidPlayerBuildProgram.Data.AndroidPlayerBuildProgramOutput) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/PostProcessAndroidPlayer.cs:302)
+UnityEditor.Android.AndroidBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/ExtensionModule.cs:346)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:285)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+CodexAndroidBuild:BuildApk () (at Assets/Editor/CodexAndroidBuild.cs:42)
+
+(Filename: ./Library/PackageCache/com.meta.xr.sdk.core@e9f929748630/Editor/OVRGradleGeneration.cs Line: 285)
+
+Android PostProcess task "Calling IPostGenerateGradleAndroidProject callbacks" took 136.6739 ms
+DisplayProgressbar: Validate Gradle Project
+Android PostProcess task "Validate Gradle Project" took 0.5379 ms
+Android PostProcess task "Cloud Diagnostics Symbol Upload" took 0.342 ms
+DisplayProgressbar: Building Gradle project
+Starting: /home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/AndroidPlayer/OpenJDK/bin/java -classpath "/home/wdy/Unity/Hub/Editor/6000.0.65f1/Editor/Data/PlaybackEngines/AndroidPlayer/Tools/gradle/lib/gradle-launcher-8.13.jar" org.gradle.launcher.GradleMain "-Dorg.gradle.jvmargs=-Xmx1536m" "assembleRelease" 
+WorkingDir: /home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 2 is unloading

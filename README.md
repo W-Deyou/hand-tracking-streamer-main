@@ -300,7 +300,7 @@ ros2 launch hand_tracking_sdk_ros2 bridge.launch.py
 
 主机通过 **既有 WebRTC 链路**（信令 `WS:8765` + H.264）把头显外的画面推回 Quest 面板；协议与手部/手柄遥测分离，Quest 端勾选 Video 即可，无需改 APK 协议。
 
-常用示例（在 `hand-tracking-sdk-main` 下）：
+常用示例（先进入 `hand-tracking-sdk-main`）：
 
 ```bash
 # 无相机冒烟
@@ -310,10 +310,31 @@ uv run examples/video/test_pattern_video_host.py --verbose
 uv run examples/video/webcam_video_host.py --webcam-index 0 --preset 720p --verbose
 
 # Orbbec Gemini 336（RGB-D 相机；此处只推 RGB 彩色，不推深度）
-# 默认 720p MJPEG（清晰度远好于 640x480，帧率优于 1080p 软编码）
+# 默认 1080p MJPEG、30fps，H.264 在 4-12Mbps 范围内自适应
 # 与 ROS2 / 遥测并行时必须关掉 host 自带的 mocap TCP，避免抢占 :8000
-uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp
-# 可选：--preset 1080p（更细但更卡）或 --webcam-index 6
+.venv/bin/python examples/video/orbbec_gemini_video_host.py \
+  --webcam-index 6 \
+  --preset 1080p \
+  --verbose \
+  --disable-mocap-tcp
+# 可选降级：将 --preset 1080p 改为 --preset 720p
+```
+
+本机 i9-14900HX 在同时运行 ROS 2 / RViz 时，已验证可将视频进程放在性能核 `0-15`。CPU 编号与型号相关，其他主机应先用 `lscpu -e` 确认拓扑：
+
+```bash
+taskset -c 0-15 \
+  .venv/bin/python examples/video/orbbec_gemini_video_host.py \
+  --webcam-index 6 \
+  --preset 1080p \
+  --verbose \
+  --disable-mocap-tcp
+```
+
+在本机从仓库根目录一键启动 ROS 2 / RViz 和上述 Orbbec 视频，并在 `Ctrl+C` 时同时停止两者：
+
+```bash
+./start_run.sh
 ```
 
 **与 `view_hands.launch.py` 同时开：**
@@ -321,14 +342,15 @@ uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp
 | 终端 | 命令 | 端口 |
 |---|---|---:|
 | ROS2 + RViz | `ros2 launch hand_tracking_sdk_ros2 view_hands.launch.py` | TCP `8000` |
-| Orbbec 视频 | `uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp` | WS `8765` |
+| Orbbec 视频 | `.venv/bin/python examples/video/orbbec_gemini_video_host.py --webcam-index 6 --preset 1080p --verbose --disable-mocap-tcp` | WS `8765` |
 
 Quest 无线填写：协议选 **TCP (Wireless)**，IP 填主机局域网地址（如 `hostname -I`），端口 `8000`，勾选 **Video**（视频信令用同一 IP 的 `8765`）。不能用广播 IP `255.255.255.255`。
 
 Gemini 336 在 Linux 上会暴露多个 `/dev/videoN`（RGB / IR / Depth）。host 会按色彩丰富度自动选 RGB；若画面发灰/发黑白，多半选到了 IR，可强制：
 
 ```bash
-uv run examples/video/orbbec_gemini_video_host.py --verbose --disable-mocap-tcp --webcam-index 6
+.venv/bin/python examples/video/orbbec_gemini_video_host.py \
+  --webcam-index 6 --preset 1080p --verbose --disable-mocap-tcp
 ```
 
 更多脚本与参数见 [视频回传示例](hand-tracking-sdk-main/examples/video/README.md)。
