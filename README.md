@@ -68,7 +68,7 @@ hand-tracking-sdk-ros2-main  (hand_tracking_sdk_ros2：bridge_node → Topic / T
 | 坐标转换 | Unity 左手原始输出 | `convert_*`、`unity_left_to_flu_*` 等 | 桥接内固定映射为 FLU |
 | 遥操作辅助 | — | `pinch_distance` / `grip_value` / `extract_arm_target` / `finger_curl_angles` | —（不发布） |
 | Rerun / RViz 可视化 | 头显内骨架/射线 | `RerunVisualizer` | `view_hands.launch.py` + Marker |
-| 主机→Quest 视频 | Video 开关 + WebRTC 接收 | `VideoService`（`test`/`webcam`/`orbbec`/`mujoco`） | —（无视频 Topic） |
+| 主机→Quest 视频 | Video 开关 + WebRTC 接收 | `VideoService`（`test`/`webcam`/`uvc`/`orbbec`/`mujoco`） | —（无视频 Topic） |
 | 运行诊断 | Debug Info | `HTSClient.get_stats()` | `/diagnostics` |
 
 ### 控制器轴与按键（两边一致）
@@ -105,7 +105,7 @@ Quest 在 Controller Input 模式下发送 `controller pose` + `controller input
 | 坐标 | `convert_hand_frame_unity_left_to_right`、`convert_controller_frame_unity_left_to_right`、`unity_left_to_flu_*`、`unity_left_to_rfu_*` | 见 `convert.py` |
 | 遥操作 | `pinch_distance`、`grip_value`、`extract_arm_target`、`finger_curl_angles` | 见 `teleop.py` |
 | 可视化 | `RerunVisualizer` | 示例 `examples/visualize_rerun.py` |
-| 视频回传 | `VideoService` / `VideoServiceConfig` | `source`=`test`/`webcam`/`orbbec`/`mujoco`；信令默认 `:8765`；示例 `examples/video/*` |
+| 视频回传 | `VideoService` / `VideoServiceConfig` | `source`=`test`/`webcam`/`uvc`/`orbbec`/`mujoco`；信令默认 `:8765`；示例 `examples/video/*` |
 
 最小收帧示例：
 
@@ -297,64 +297,40 @@ ros2 launch hand_tracking_sdk_ros2 bridge.launch.py
 
 详细 Topic、参数和验证命令见 [ROS 2 包 README](hand-tracking-sdk-ros2-main/README.md)。
 
-### 6. 视频回传（WebRTC）与 Orbbec Gemini 336
+### 6. 一键启动视频、ROS 2 与 RViz
 
-主机通过 **既有 WebRTC 链路**（信令 `WS:8765` + H.264）把头显外的画面推回 Quest 面板；协议与手部/手柄遥测分离，Quest 端勾选 Video 即可，无需改 APK 协议。
+在仓库根目录运行：
 
-常用示例（先进入 `hand-tracking-sdk-main`）：
+| 命令 | 简短说明 |
+|---|---|
+| `./start_run.sh` | 自动选择在线相机；两台都在线时优先 Orbbec |
+| `./start_run.sh auto` | 与不带参数相同 |
+| `./start_run.sh rgb` | 只使用 RYS RGB 相机，不在线则退出 |
+| `./start_run.sh orbbec` | 只使用 Orbbec Gemini 336，并自动查找 RGB 节点 |
+| `./stop_run.sh` | 停止本项目的视频、ROS 2 和 RViz 进程，释放端口 `8000`、`8765` |
+| `./stop_run.sh --dry-run` | 只显示将要停止的进程，不实际终止 |
 
-```bash
-# 无相机冒烟
-uv run examples/video/test_pattern_video_host.py --verbose
-
-# USB 摄像头
-uv run examples/video/webcam_video_host.py --webcam-index 0 --preset 720p --verbose
-
-# Orbbec Gemini 336（RGB-D 相机；此处只推 RGB 彩色，不推深度）
-# 默认 1080p MJPEG、30fps，H.264 在 4-12Mbps 范围内自适应
-# 与 ROS2 / 遥测并行时必须关掉 host 自带的 mocap TCP，避免抢占 :8000
-.venv/bin/python examples/video/orbbec_gemini_video_host.py \
-  --webcam-index 6 \
-  --preset 1080p \
-  --verbose \
-  --disable-mocap-tcp
-# 可选降级：将 --preset 1080p 改为 --preset 720p
-```
-
-本机 i9-14900HX 在同时运行 ROS 2 / RViz 时，已验证可将视频进程放在性能核 `0-15`。CPU 编号与型号相关，其他主机应先用 `lscpu -e` 确认拓扑：
+切换相机时先停止当前链路，再选择目标相机：
 
 ```bash
-taskset -c 0-15 \
-  .venv/bin/python examples/video/orbbec_gemini_video_host.py \
-  --webcam-index 6 \
-  --preset 1080p \
-  --verbose \
-  --disable-mocap-tcp
+./stop_run.sh
+./start_run.sh rgb       # 切换到 RYS RGB
+# 或
+./start_run.sh orbbec    # 切换到 Orbbec
 ```
 
-在本机从仓库根目录一键启动 ROS 2 / RViz 和上述 Orbbec 视频，并在 `Ctrl+C` 时同时停止两者：
+`auto` 模式的选择规则：只有一台支持的相机在线时使用该相机；两台同时在线时默认使用 Orbbec。RYS RGB 使用稳定的 `/dev/v4l/by-id/` 路径，Orbbec 会从多个 V4L2 节点中识别其 MJPEG RGB 节点。
+
+需要覆盖自动识别结果时：
 
 ```bash
-./start_run.sh
+CAMERA_DEVICE=/dev/v4l/by-id/usb-...-video-index0 ./start_run.sh rgb
+ORBBEC_INDEX=6 ./start_run.sh orbbec
 ```
 
-**与 `view_hands.launch.py` 同时开：**
+默认视频为 1080p、30 fps，使用 WebRTC H.264，信令端口为 `8765`；ROS 2 遥测使用 TCP `8000`。Quest 端填写主机局域网 IP、端口 `8000`，勾选 **Video**。不要填写广播地址 `255.255.255.255`。
 
-| 终端 | 命令 | 端口 |
-|---|---|---:|
-| ROS2 + RViz | `ros2 launch hand_tracking_sdk_ros2 view_hands.launch.py` | TCP `8000` |
-| Orbbec 视频 | `.venv/bin/python examples/video/orbbec_gemini_video_host.py --webcam-index 6 --preset 1080p --verbose --disable-mocap-tcp` | WS `8765` |
-
-Quest 无线填写：协议选 **TCP (Wireless)**，IP 填主机局域网地址（如 `hostname -I`），端口 `8000`，勾选 **Video**（视频信令用同一 IP 的 `8765`）。不能用广播 IP `255.255.255.255`。
-
-Gemini 336 在 Linux 上会暴露多个 `/dev/videoN`（RGB / IR / Depth）。host 会按色彩丰富度自动选 RGB；若画面发灰/发黑白，多半选到了 IR，可强制：
-
-```bash
-.venv/bin/python examples/video/orbbec_gemini_video_host.py \
-  --webcam-index 6 --preset 1080p --verbose --disable-mocap-tcp
-```
-
-更多脚本与参数见 [视频回传示例](hand-tracking-sdk-main/examples/video/README.md)。
+只运行视频 host、测试图或普通 USB 摄像头时，见 [视频回传示例](hand-tracking-sdk-main/examples/video/README.md)。
 
 ## 从源码构建 APK
 

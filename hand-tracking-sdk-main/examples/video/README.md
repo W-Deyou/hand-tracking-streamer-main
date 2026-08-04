@@ -19,6 +19,7 @@ uv sync --extra video
 |--------|--------|-------------|
 | `test_pattern_video_host.py` | Test pattern | Synthetic colour bars — no hardware needed |
 | `webcam_video_host.py` | USB webcam | Streams a local camera feed |
+| `uvc_video_host.py` | UVC RGB camera | Low-latency MJPEG capture using a stable device path |
 | `orbbec_gemini_video_host.py` | Orbbec Gemini UVC | Auto-picks **RGB** `/dev/videoN`, streams via WebRTC |
 | `inspire_hand_video_host.py` | MuJoCo | Bimanual Inspire Hand with vector retargeting |
 | `shadow_hand_video_host.py` | MuJoCo | Bimanual Shadow Hand E3M5 with vector retargeting |
@@ -27,11 +28,26 @@ uv sync --extra video
 ## Quick start
 
 ```bash
+# Full ROS + RViz + video chain from the repository root:
+./start_run.sh            # Auto: use an online camera; prefer Orbbec if both are online
+./start_run.sh auto       # Same as above
+./start_run.sh rgb        # Require the RYS RGB camera
+./start_run.sh orbbec     # Require Orbbec and auto-discover its RGB node
+./stop_run.sh             # Stop video, ROS 2 and RViz; release ports 8000/8765
+./stop_run.sh --dry-run   # Preview matching processes without stopping them
+
 # Simplest — no camera required:
 uv run examples/video/test_pattern_video_host.py --verbose
 
 # USB webcam:
 uv run examples/video/webcam_video_host.py --webcam-index 0 --preset 720p
+
+# Low-latency UVC RGB camera (stable path survives /dev/videoN renumbering):
+.venv/bin/python examples/video/uvc_video_host.py \
+  --video-device /dev/v4l/by-id/usb-RYS_RGB_RGB_Camera_200901010001-video-index0 \
+  --preset 1080p \
+  --verbose \
+  --disable-mocap-tcp
 
 # Orbbec Gemini 336 RGB (RGB-D device; this host streams colour only).
 # Default 1080p MJPG at 30 fps with adaptive 4-12 Mbps H.264.
@@ -55,9 +71,19 @@ uv run examples/video/shadow_hand_video_host.py --mocap-tcp-port 5555
 | `--mocap-tcp-host` / `--mocap-tcp-port` | `0.0.0.0` / `8000` | Quest telemetry TCP sink (non-sim hosts) |
 | `--disable-mocap-tcp` | off | Do **not** listen on `:8000` (required when ROS2 bridge owns `:8000`) |
 | `--webcam-index` | `0` (webcam) / `-1` (Orbbec auto) | V4L2 device index |
+| `--video-device` | unset | Stable V4L2 capture path accepted by `uvc_video_host.py` |
 | `--verbose` | off | Detailed `[video-service]` logs |
 
 Quest: enable **Video**, set a concrete host LAN IP (not `255.255.255.255`), signaling is `ws://<HOST_IP>:8765`.
+
+## RYS RGB UVC camera
+
+The `0bda:5161` camera exposes a capture node (`video-index0`) and a metadata
+node (`video-index1`). Use the capture node. It supports 1920x1080 MJPEG at
+30 fps, but its default `exposure_dynamic_framerate=1` reduces measured output
+to about 20 fps in indoor light. `start_run.sh` disables that control before
+starting the stream and uses the stable by-id path shown above. Override it with
+`CAMERA_DEVICE=/dev/v4l/by-id/... ./start_run.sh rgb` when needed.
 
 ## Orbbec Gemini 336
 
@@ -68,6 +94,8 @@ On Linux the device exposes several `/dev/videoN` nodes with the same name.
 Early indexes are often **IR** (looks black-and-white); colour is typically a
 later node (commonly index `6` on the machines used in this repo). The Orbbec
 host scores candidates by channel colourfulness and skips IR/gray nodes.
+Use `ORBBEC_INDEX=6 ./start_run.sh orbbec` to bypass discovery when the RGB node
+is already known.
 
 ```bash
 # Auto-detect the RGB node:
@@ -128,7 +156,7 @@ Wireless Quest: **TCP (Wireless)**, host IP from `hostname -I`, port `8000`, Vid
 | `_retarget.py` | Lightweight vector-based finger retargeting for MuJoCo |
 
 SDK source adapters live under
-`src/hand_tracking_sdk/video/` (`VideoService`, `OrbbecUvcSourceAdapter`, WebRTC sender).
+`src/hand_tracking_sdk/video/` (`VideoService`, `UvcCameraSourceAdapter`, WebRTC sender).
 
 ## Assets
 

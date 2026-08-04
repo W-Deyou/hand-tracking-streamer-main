@@ -6,6 +6,7 @@ from typing import Any
 
 from hand_tracking_sdk.video.schemas import SignalingMessage
 from hand_tracking_sdk.video.service import VideoService, VideoServiceConfig
+from hand_tracking_sdk.video.sources import UvcCameraSourceAdapter
 from hand_tracking_sdk.video.webrtc_sender import VideoSenderStats
 
 
@@ -70,6 +71,18 @@ def test_720p_preset_uses_30_fps() -> None:
 
     assert service._parse_preset("720p") == (1280, 720, 30)
     assert service._parse_preset("1080p") == (1920, 1080, 30)
+
+
+def test_uvc_source_accepts_stable_device_path() -> None:
+    device_path = "/dev/v4l/by-id/example-video-index0"
+    service = VideoService(
+        VideoServiceConfig(source="uvc", preset="1080p", video_device=device_path)
+    )
+
+    source = service._build_source()
+
+    assert isinstance(source, UvcCameraSourceAdapter)
+    assert source.selected_device_path == device_path
 
 
 def test_video_service_hello_offer_stop_flow() -> None:

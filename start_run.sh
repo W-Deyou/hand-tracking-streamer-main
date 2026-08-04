@@ -6,13 +6,41 @@ ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 SDK_DIR="${ROOT_DIR}/hand-tracking-sdk-main"
 ROS_SETUP="${ROOT_DIR}/ros-ws/install/setup.bash"
 SDK_PYTHON="${SDK_DIR}/.venv/bin/python"
-VIDEO_HOST="${SDK_DIR}/examples/video/orbbec_gemini_video_host.py"
+RGB_CAMERA_DEVICE="${CAMERA_DEVICE:-/dev/v4l/by-id/usb-RYS_RGB_RGB_Camera_200901010001-video-index0}"
+ORBBEC_INDEX="${ORBBEC_INDEX:--1}"
 MOCAP_PORT=8000
 VIDEO_SIGNALING_PORT=8765
 QUEST_SETTINGS_PACKAGE="com.oculus.panelapp.settings"
 
+CAMERA_PROFILE="${1:-auto}"
+VIDEO_HOST=""
+CAMERA_LABEL=""
+CAMERA_DEVICE=""
+VIDEO_SOURCE_ARGS=()
 ROS_PID=""
 VIDEO_PID=""
+
+usage() {
+  echo "Usage: $0 [auto|rgb|orbbec]"
+  echo "  auto    Use any connected camera; prefer Orbbec when both are online (default)."
+  echo "  rgb     Use the RYS RGB camera stable by-id capture path."
+  echo "  orbbec  Auto-discover the Orbbec Gemini 336 RGB node."
+}
+
+if (($# > 1)); then
+  usage >&2
+  exit 2
+fi
+if [[ "${CAMERA_PROFILE}" == "-h" || "${CAMERA_PROFILE}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+if [[ "${CAMERA_PROFILE}" != "auto" && "${CAMERA_PROFILE}" != "rgb" &&
+  "${CAMERA_PROFILE}" != "orbbec" ]]; then
+  echo "Unknown camera profile: ${CAMERA_PROFILE}" >&2
+  usage >&2
+  exit 2
+fi
 
 source_setup() {
   local setup_file="$1"
@@ -75,12 +103,98 @@ stop_quest_wifi_scanner() {
   fi
 }
 
+is_orbbec_rgb_device() {
+  local device="$1"
+  local formats
+  local info
+
+  [[ -e "${device}" ]] || return 1
+  info="$(v4l2-ctl -d "${device}" --info 2>/dev/null || true)"
+  [[ "${info}" == *"Card type"*"Orbbec Gemini"* ]] || return 1
+  formats="$(v4l2-ctl -d "${device}" --list-formats-ext 2>/dev/null || true)"
+  [[ "${formats}" == *"'MJPG'"* ]]
+}
+
+find_orbbec_rgb_index() {
+  local device
+
+  for device in /dev/video*; do
+    if is_orbbec_rgb_device "${device}"; then
+      echo "${device#/dev/video}"
+      return 0
+    fi
+  done
+  return 1
+}
+
+orbbec_connected() {
+  find_orbbec_rgb_index >/dev/null
+}
+
+select_camera() {
+  if [[ "${CAMERA_PROFILE}" == "auto" ]]; then
+    if orbbec_connected; then
+      CAMERA_PROFILE="orbbec"
+    elif [[ -e "${RGB_CAMERA_DEVICE}" ]]; then
+      CAMERA_PROFILE="rgb"
+    else
+      echo "No supported RGB camera is connected." >&2
+      echo "Expected ${RGB_CAMERA_DEVICE} or an Orbbec Gemini 336." >&2
+      return 1
+    fi
+  fi
+
+  if [[ "${CAMERA_PROFILE}" == "rgb" ]]; then
+    VIDEO_HOST="${SDK_DIR}/examples/video/uvc_video_host.py"
+    CAMERA_DEVICE="${RGB_CAMERA_DEVICE}"
+    CAMERA_LABEL="RYS RGB camera (${CAMERA_DEVICE})"
+    VIDEO_SOURCE_ARGS=(--video-device "${CAMERA_DEVICE}")
+    return
+  fi
+
+  if ! orbbec_connected; then
+    echo "Orbbec Gemini 336 is not connected." >&2
+    return 1
+  fi
+  if [[ "${ORBBEC_INDEX}" == "-1" ]]; then
+    ORBBEC_INDEX="$(find_orbbec_rgb_index)"
+  elif ! is_orbbec_rgb_device "/dev/video${ORBBEC_INDEX}"; then
+    echo "/dev/video${ORBBEC_INDEX} is not an Orbbec MJPEG RGB node." >&2
+    return 1
+  fi
+  VIDEO_HOST="${SDK_DIR}/examples/video/orbbec_gemini_video_host.py"
+  CAMERA_LABEL="Orbbec Gemini 336 (/dev/video${ORBBEC_INDEX})"
+  VIDEO_SOURCE_ARGS=(--webcam-index "${ORBBEC_INDEX}")
+}
+
+configure_camera() {
+  if [[ "${CAMERA_PROFILE}" != "rgb" ]]; then
+    return
+  fi
+  if [[ ! -e "${CAMERA_DEVICE}" ]]; then
+    echo "Missing UVC camera capture device: ${CAMERA_DEVICE}" >&2
+    return 1
+  fi
+
+  # This camera defaults to dynamic exposure FPS and falls to about 20 FPS in
+  # normal indoor light even after accepting a 30 FPS format request.
+  if ! v4l2-ctl -d "${CAMERA_DEVICE}" \
+    --set-ctrl=exposure_dynamic_framerate=0 >/dev/null; then
+    echo "Failed to disable dynamic frame rate on ${CAMERA_DEVICE}" >&2
+    return 1
+  fi
+}
+
 cleanup() {
   local status=$?
   trap - EXIT INT TERM
 
   terminate_group "${VIDEO_PID}"
   terminate_group "${ROS_PID}"
+
+  # `setsid` may fork before exec, so the PID recorded by this shell can exit
+  # before its actual ROS/video session. Clean only this workspace's groups.
+  "${ROOT_DIR}/stop_run.sh" --quiet 2>/dev/null || true
 
   [[ -z "${VIDEO_PID}" ]] || wait "${VIDEO_PID}" 2>/dev/null || true
   [[ -z "${ROS_PID}" ]] || wait "${ROS_PID}" 2>/dev/null || true
@@ -118,12 +232,17 @@ if ! command -v ss >/dev/null 2>&1; then
   echo "ss was not found." >&2
   exit 1
 fi
+if ! command -v v4l2-ctl >/dev/null 2>&1; then
+  echo "v4l2-ctl was not found." >&2
+  exit 1
+fi
+select_camera
 if [[ ! -x "${SDK_PYTHON}" ]]; then
   echo "Missing SDK virtualenv Python: ${SDK_PYTHON}" >&2
   exit 1
 fi
 if [[ ! -f "${VIDEO_HOST}" ]]; then
-  echo "Missing Orbbec video host: ${VIDEO_HOST}" >&2
+  echo "Missing video host: ${VIDEO_HOST}" >&2
   exit 1
 fi
 
@@ -131,6 +250,7 @@ fi
 # partially started chain behind.
 assert_port_available "ROS 2 hand tracking" "${MOCAP_PORT}"
 assert_port_available "WebRTC signaling" "${VIDEO_SIGNALING_PORT}"
+configure_camera
 stop_quest_wifi_scanner
 
 echo "Starting ROS 2 hand tracking and RViz..."
@@ -140,12 +260,12 @@ echo "Starting ROS 2 hand tracking and RViz..."
 ) &
 ROS_PID=$!
 
-echo "Starting Orbbec Gemini 336 video (1080p30, NVENC H.264, /dev/video6, CPUs 0-15)..."
+echo "Starting ${CAMERA_LABEL} (1080p30 MJPEG, NVENC H.264, CPUs 0-15)..."
 (
   cd "${SDK_DIR}"
   exec setsid taskset -c 0-15 \
     "${SDK_PYTHON}" "${VIDEO_HOST}" \
-    --webcam-index 6 \
+    "${VIDEO_SOURCE_ARGS[@]}" \
     --preset 1080p \
     --encoder nvenc \
     --nvenc-preset p1 \

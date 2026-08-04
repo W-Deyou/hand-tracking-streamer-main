@@ -150,12 +150,13 @@ class WebcamSourceAdapter(VideoSourceAdapter):
         return av.VideoFrame.from_ndarray(frame_rgb, format="rgb24")
 
 
-class OrbbecUvcSourceAdapter(VideoSourceAdapter):
-    """Orbbec Gemini UVC RGB source with timed V4L2 node discovery.
+class UvcCameraSourceAdapter(VideoSourceAdapter):
+    """Low-latency UVC RGB source with timed V4L2 node discovery.
 
-    Orbbec devices expose multiple `/dev/videoN` nodes (RGB/IR/depth/metadata).
-    IR often appears as HxWx3 with near-identical channels (looks black-and-white),
-    so discovery scores colorfulness and prefers a true RGB node.
+    Some cameras expose multiple `/dev/videoN` nodes (RGB/IR/metadata). IR often
+    appears as HxWx3 with near-identical channels, so automatic discovery scores
+    colorfulness and prefers a true RGB node. A stable `/dev/v4l/by-id` path can
+    be supplied to bypass discovery and Linux video index changes.
     """
 
     # Gemini 336 on this host: IR often lands on early indexes; RGB nearer to 6.
@@ -169,6 +170,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         self,
         *,
         device_index: int = -1,
+        device_path: str | None = None,
         width: int = 1280,
         height: int = 720,
         fps: int = 30,
@@ -176,6 +178,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
     ) -> None:
         self._format = VideoFormat(width=width, height=height, fps=fps)
         self._preferred_index = device_index
+        self._device_path = device_path
         self._log_hook = log_hook
         self._capture: Any = None
         self._selected_index: int | None = None
@@ -188,6 +191,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         self._frame_ready: asyncio.Event | None = None
         self._event_loop: asyncio.AbstractEventLoop | None = None
         self._latest_frame_rgb: Any = None
+        self._latest_video_frame: Any = None
         self._latest_capture_ns = 0
         self._latest_sequence = 0
         self._consumed_sequence = 0
@@ -202,6 +206,10 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
     @property
     def selected_device_index(self) -> int | None:
         return self._selected_index
+
+    @property
+    def selected_device_path(self) -> str | None:
+        return self._device_path
 
     def _candidate_indices(self) -> list[int]:
         if self._preferred_index >= 0:
@@ -259,7 +267,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
             if not capture.isOpened():
                 capture.release()
                 raise RuntimeError(
-                    f"Failed to open preferred Orbbec RGB node /dev/video{self._preferred_index}."
+                    f"Failed to open preferred UVC RGB node /dev/video{self._preferred_index}."
                 )
             try:
                 # Configure before the first read. Gemini can stall when a probe
@@ -271,7 +279,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
             self._selected_index = self._preferred_index
             if self._log_hook is not None:
                 self._log_hook(
-                    f"orbbec UVC RGB selected preferred index={self._preferred_index} "
+                    f"UVC RGB selected preferred index={self._preferred_index} "
                     f"format={self._format.width}x{self._format.height}@{self._format.fps}"
                 )
             return capture
@@ -312,9 +320,9 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
 
         if best is None:
             raise RuntimeError(
-                "Failed to find Orbbec UVC RGB node (skipped IR/gray nodes). "
+                "Failed to find a UVC RGB node (skipped metadata/IR/gray nodes). "
                 f"Probe results: [{', '.join(probe_log) or 'none'}]. "
-                "Try --webcam-index N with a known color node (often 6 on Gemini 336)."
+                "Use --video-device with a stable /dev/v4l/by-id capture path."
             )
 
         score, index, capture, detail = best
@@ -322,7 +330,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         self._selected_index = index
         if self._log_hook is not None:
             self._log_hook(
-                f"orbbec UVC RGB selected index={index} "
+                f"UVC RGB selected index={index} "
                 f"format={self._format.width}x{self._format.height}@{self._format.fps} "
                 f"probe={detail} probed=[{', '.join(probe_log)}]"
             )
@@ -373,14 +381,14 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
             self._format = VideoFormat(width=got_w, height=got_h, fps=target_fps)
             if self._log_hook is not None:
                 self._log_hook(
-                    f"orbbec capture mode fourcc={fourcc} "
+                    f"UVC capture mode fourcc={fourcc} "
                     f"requested={width}x{height} actual={got_w}x{got_h}"
                 )
             return
 
         if self._log_hook is not None:
             self._log_hook(
-                "orbbec capture mode negotiation failed; "
+                "UVC capture mode negotiation failed; "
                 f"keeping requested {target_w}x{target_h}@{target_fps}"
             )
 
@@ -388,17 +396,17 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         import cv2
 
         if self._capture is None:
-            raise RuntimeError("Orbbec UVC source not started.")
+            raise RuntimeError("UVC camera source not started.")
         ok = self._capture.grab()
         capture_ns = self._capture_timestamp_ns(self._capture, cv2)
         if not ok:
-            raise RuntimeError(f"Failed to grab Orbbec frame from index {self._selected_index}.")
+            raise RuntimeError("Failed to grab a UVC camera frame.")
         ok, frame_bgr = self._capture.retrieve()
         if not ok or frame_bgr is None:
             ok, frame_bgr = self._capture.read()
             capture_ns = self._capture_timestamp_ns(self._capture, cv2)
         if not ok or frame_bgr is None:
-            raise RuntimeError(f"Failed to read Orbbec frame from index {self._selected_index}.")
+            raise RuntimeError("Failed to read a UVC camera frame.")
         return cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB), capture_ns
 
     @staticmethod
@@ -422,14 +430,56 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         except RuntimeError:
             return
 
-    def _capture_loop(self) -> None:
+    def _open_pyav_device(self) -> Any:
+        """Open a known UVC device without OpenCV's synchronous MJPEG bottleneck."""
+        import av
+
+        if self._device_path is None:
+            raise RuntimeError("A stable UVC device path is required.")
+        options = {
+            "video_size": f"{self._format.width}x{self._format.height}",
+            "framerate": str(self._format.fps),
+            "input_format": "mjpeg",
+            "fflags": "nobuffer",
+            "flags": "low_delay",
+        }
+        container = av.open(self._device_path, format="v4l2", mode="r", options=options)
+        stream = container.streams.video[0]
+        width = int(stream.codec_context.width)
+        height = int(stream.codec_context.height)
+        self._format = VideoFormat(width=width, height=height, fps=self._format.fps)
+        if self._log_hook is not None:
+            self._log_hook(
+                f"UVC capture mode backend=pyav fourcc=MJPG "
+                f"actual={width}x{height}@{self._format.fps}"
+            )
+            self._log_hook(
+                f"UVC RGB selected device={self._device_path} "
+                f"format={width}x{height}@{self._format.fps}"
+            )
+        return container
+
+    @staticmethod
+    def _video_frame_timestamp_ns(frame: Any) -> int:
+        dequeue_ns = monotonic_ns()
+        if frame.pts is None or frame.time_base is None:
+            return dequeue_ns
+        timestamp_ns = int(frame.pts * frame.time_base * 1_000_000_000)
+        if timestamp_ns <= 0 or abs(dequeue_ns - timestamp_ns) > 5_000_000_000:
+            return dequeue_ns
+        return timestamp_ns
+
+    def _capture_loop_pyav(self) -> None:
         try:
-            while not self._capture_stop.is_set():
-                frame_rgb, capture_ns = self._read_rgb_frame()
+            for frame in self._capture.decode(video=0):
+                if self._capture_stop.is_set():
+                    break
+                capture_ns = self._video_frame_timestamp_ns(frame)
                 with self._frame_lock:
                     if self._latest_sequence > self._consumed_sequence:
                         self._overwritten_frames += 1
-                    self._latest_frame_rgb = frame_rgb
+                    self._latest_video_frame = frame
+                    self._latest_frame_rgb = None
                     self._latest_capture_ns = capture_ns
                     self._latest_sequence += 1
                     self._frames_captured += 1
@@ -440,7 +490,33 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
                     self._capture_error = exc
                     self._capture_errors += 1
                 if self._log_hook is not None:
-                    self._log_hook(f"orbbec capture loop failed: {exc}")
+                    self._log_hook(f"UVC PyAV capture loop failed: {exc}")
+        finally:
+            if self._capture is not None:
+                self._capture.close()
+                self._capture = None
+            self._notify_frame_ready()
+
+    def _capture_loop(self) -> None:
+        try:
+            while not self._capture_stop.is_set():
+                frame_rgb, capture_ns = self._read_rgb_frame()
+                with self._frame_lock:
+                    if self._latest_sequence > self._consumed_sequence:
+                        self._overwritten_frames += 1
+                    self._latest_frame_rgb = frame_rgb
+                    self._latest_video_frame = None
+                    self._latest_capture_ns = capture_ns
+                    self._latest_sequence += 1
+                    self._frames_captured += 1
+                self._notify_frame_ready()
+        except Exception as exc:
+            if not self._capture_stop.is_set():
+                with self._frame_lock:
+                    self._capture_error = exc
+                    self._capture_errors += 1
+                if self._log_hook is not None:
+                    self._log_hook(f"UVC OpenCV capture loop failed: {exc}")
         finally:
             if self._capture is not None:
                 self._capture.release()
@@ -454,6 +530,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         self._capture_stop.clear()
         with self._frame_lock:
             self._latest_frame_rgb = None
+            self._latest_video_frame = None
             self._latest_capture_ns = 0
             self._latest_sequence = 0
             self._consumed_sequence = 0
@@ -464,8 +541,12 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
             self._overwritten_frames = 0
             self._stale_frames = 0
             self._capture_errors = 0
-        self._capture = await loop.run_in_executor(self._io_executor, self._open_selected)
-        self._capture_future = self._io_executor.submit(self._capture_loop)
+        if self._device_path is not None:
+            self._capture = await loop.run_in_executor(self._io_executor, self._open_pyav_device)
+            self._capture_future = self._io_executor.submit(self._capture_loop_pyav)
+        else:
+            self._capture = await loop.run_in_executor(self._io_executor, self._open_selected)
+            self._capture_future = self._io_executor.submit(self._capture_loop)
 
     async def stop(self) -> None:
         self._capture_stop.set()
@@ -478,7 +559,10 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
                 )
             except TimeoutError:
                 if self._capture is not None:
-                    self._capture.release()
+                    close = getattr(self._capture, "close", None)
+                    if close is None:
+                        close = self._capture.release
+                    close()
             self._capture_future = None
         self._io_executor.shutdown(wait=False, cancel_futures=True)
         self._io_executor = ThreadPoolExecutor(max_workers=1)
@@ -509,7 +593,7 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
         import av
 
         if self._frame_ready is None:
-            raise RuntimeError("Orbbec UVC source not started.")
+            raise RuntimeError("UVC camera source not started.")
 
         max_age_ns = int((2.0 / max(1, self._format.fps)) * 1_000_000_000)
         while True:
@@ -517,12 +601,13 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
             self._frame_ready.clear()
             with self._frame_lock:
                 if self._capture_error is not None:
-                    raise RuntimeError("Orbbec capture loop stopped.") from self._capture_error
+                    raise RuntimeError("UVC capture loop stopped.") from self._capture_error
                 if self._latest_sequence <= self._consumed_sequence:
                     if self._capture_stop.is_set():
-                        raise RuntimeError("Orbbec UVC source stopped.")
+                        raise RuntimeError("UVC camera source stopped.")
                     continue
                 frame_rgb = self._latest_frame_rgb
+                video_frame = self._latest_video_frame
                 capture_ns = self._latest_capture_ns
                 self._consumed_sequence = self._latest_sequence
                 age_ns = max(0, monotonic_ns() - capture_ns)
@@ -536,10 +621,18 @@ class OrbbecUvcSourceAdapter(VideoSourceAdapter):
                 )
                 self._frames_delivered += 1
 
-            frame = av.VideoFrame.from_ndarray(frame_rgb, format="rgb24")
+            frame = (
+                video_frame
+                if video_frame is not None
+                else av.VideoFrame.from_ndarray(frame_rgb, format="rgb24")
+            )
             frame.pts = pts
             frame.time_base = fractions.Fraction(1, self._RTP_CLOCK_RATE)
             return frame
+
+
+# Backwards-compatible name for existing Orbbec integrations.
+OrbbecUvcSourceAdapter = UvcCameraSourceAdapter
 
 
 class MujocoSourceAdapter(VideoSourceAdapter):

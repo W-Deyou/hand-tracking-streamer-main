@@ -9,7 +9,7 @@ from typing import Any
 
 import numpy as np
 
-from hand_tracking_sdk.video.sources import OrbbecUvcSourceAdapter
+from hand_tracking_sdk.video.sources import OrbbecUvcSourceAdapter, UvcCameraSourceAdapter
 
 
 class _FakeCapture:
@@ -48,6 +48,43 @@ def test_preferred_orbbec_node_is_configured_without_probe(monkeypatch: Any) -> 
     assert result is capture
     assert configured == [capture]
     assert source.selected_device_index == 6
+
+
+def test_stable_uvc_device_path_is_configured_without_discovery(monkeypatch: Any) -> None:
+    device_path = "/dev/v4l/by-id/example-video-index0"
+    source = UvcCameraSourceAdapter(device_path=device_path)
+    opened: list[tuple[str, str, str, dict[str, str]]] = []
+    stream = SimpleNamespace(codec_context=SimpleNamespace(width=1920, height=1080))
+    container = SimpleNamespace(streams=SimpleNamespace(video=[stream]))
+
+    def open_capture(device: str, *, format: str, mode: str, options: dict[str, str]) -> Any:
+        opened.append((device, format, mode, options))
+        return container
+
+    monkeypatch.setitem(
+        sys.modules,
+        "av",
+        SimpleNamespace(open=open_capture),
+    )
+
+    result = source._open_pyav_device()
+
+    assert result is container
+    assert opened == [
+        (
+            device_path,
+            "v4l2",
+            "r",
+            {
+                "video_size": "1280x720",
+                "framerate": "30",
+                "input_format": "mjpeg",
+                "fflags": "nobuffer",
+                "flags": "low_delay",
+            },
+        )
+    ]
+    assert source.selected_device_path == device_path
 
 
 def test_capture_loop_overwrites_unconsumed_frames(monkeypatch: Any) -> None:
