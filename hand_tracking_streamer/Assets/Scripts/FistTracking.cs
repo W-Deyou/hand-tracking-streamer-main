@@ -114,14 +114,14 @@ public class LeftHandFistDetector : MonoBehaviour
     {
         if (!_hand.IsTrackedDataValid)
         {
-            LogHUD("State: Not Tracked");
+            LogDebugHUD("State: Not Tracked");
             _currentState = "Not Tracked";
             return;
         }
         
         if (!_hand.GetJointPosesLocal(out ReadOnlyHandJointPoses jointPoses))
         {
-            LogHUD("State: Failed to get joint poses");
+            LogDebugHUD("State: Failed to get joint poses");
             _currentState = "Error";
             return;
         }
@@ -157,7 +157,7 @@ public class LeftHandFistDetector : MonoBehaviour
         {
             _currentState = state;
             LeftHandState = _currentState; // Update static property for other scripts to access
-            LogHUD($"Fist State: {_currentState} (Bent fingers: {bentFingerCount}/5)");
+            LogDebugHUD($"Fist State: {_currentState} (Bent fingers: {bentFingerCount}/5)");
             
             // Send UDP message
             if (_broadcastUDP && _udpClient != null)
@@ -256,6 +256,14 @@ public class LeftHandFistDetector : MonoBehaviour
     private void LogHUD(string message)
     {
         if (_logToHUD)
+        {
+            LogManager.Instance.Log(_logSourceName, message);
+        }
+    }
+
+    private void LogDebugHUD(string message)
+    {
+        if (_logToHUD && AppManager.Instance != null && AppManager.Instance.ShowDebugInfo)
         {
             LogManager.Instance.Log(_logSourceName, message);
         }

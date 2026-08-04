@@ -196,7 +196,7 @@ public sealed class ControllerInputStreamer : MonoBehaviour
         AppendButton(_packet, input.GripButton);
         AppendButton(_packet, input.Primary2DAxisClick);
 
-        if (logToHUD)
+        if (logToHUD && manager.ShowDebugInfo)
         {
             _hud.Clear();
             _hud.Append("=== [").Append(controllerSide).AppendLine("] Controller ===");

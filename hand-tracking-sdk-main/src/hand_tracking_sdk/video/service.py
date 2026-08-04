@@ -27,6 +27,9 @@ class VideoServiceConfig:
     signaling_port: int = 8765
     source: str = "test"
     preset: str = "720p"
+    encoder_backend: str = "auto"
+    nvenc_preset: str = "p1"
+    video_bitrate_bps: int = 10_000_000
     webcam_index: int = 0
     mj_model_path: str | None = None
     mj_camera: str | None = None
@@ -179,7 +182,9 @@ class VideoService:
                 )
                 await self._sender.start()
                 self._log(
-                    f"sender started source={self._config.source} preset={self._config.preset}"
+                    f"sender started source={self._config.source} "
+                    f"preset={self._config.preset} "
+                    f"encoder={self._config.encoder_backend}"
                 )
             except Exception as exc:
                 await self._emit_error(connection, session_id, "sender_start_failed", str(exc))
@@ -277,6 +282,8 @@ class VideoService:
                     f"overwrites={getattr(stats, 'source_overwrites', 0)} "
                     f"stale={getattr(stats, 'stale_frame_drops', 0)} "
                     f"capture_age_ms={getattr(stats, 'capture_age_ms', None)} "
+                    f"encoder={getattr(stats, 'encoder_backend', 'unknown')} "
+                    f"encode_ms={getattr(stats, 'encode_ms', 0.0):.2f} "
                     f"rtt_ms={stats.rtt_ms}"
                 )
             except Exception:
@@ -300,6 +307,8 @@ class VideoService:
                     "source_overwrites": getattr(stats, "source_overwrites", 0),
                     "stale_frame_drops": getattr(stats, "stale_frame_drops", 0),
                     "capture_age_ms": getattr(stats, "capture_age_ms", None),
+                    "encoder_backend": getattr(stats, "encoder_backend", "unknown"),
+                    "encode_ms": round(getattr(stats, "encode_ms", 0.0), 2),
                     "rtt_ms": None if stats.rtt_ms is None else round(stats.rtt_ms, 2),
                 },
             ),
@@ -402,6 +411,9 @@ class VideoService:
             source=source,
             on_local_ice_candidate=_on_candidate,
             log_hook=lambda msg: self._log(f"[sender] {msg}"),
+            encoder_backend=self._config.encoder_backend,
+            nvenc_preset=self._config.nvenc_preset,
+            video_bitrate_bps=self._config.video_bitrate_bps,
         )
 
     _VALID_PRESETS = ("480p", "720p", "1080p")

@@ -1,0 +1,5 @@
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/.utmp/RelWithDebInfo/366b1w3l/arm64-v8a/CMakeFiles/edit_cache.dir
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/.utmp/RelWithDebInfo/366b1w3l/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/.utmp/RelWithDebInfo/366b1w3l/arm64-v8a/GameActivity/CMakeFiles/game.dir
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/.utmp/RelWithDebInfo/366b1w3l/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/.utmp/RelWithDebInfo/366b1w3l/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

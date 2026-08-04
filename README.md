@@ -10,7 +10,8 @@ Hand Tracking Streamer（HTS）是一套面向机器人遥操作、动作捕捉�
 - [Python SDK](hand-tracking-sdk-main/README.md)
 - [ROS 2 桥接包](hand-tracking-sdk-ros2-main/README.md)
 - [连接方式与数据协议](CONNECTIONS.md)
-- [隐私说明](PRIVACY.md)
+- [隐私说明](PRIV
+ACY.md)
 - [许可证](LICENSE)
 - [视频回传示例](hand-tracking-sdk-main/examples/video/README.md)
 

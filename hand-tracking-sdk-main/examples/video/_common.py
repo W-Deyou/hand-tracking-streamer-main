@@ -129,6 +129,8 @@ async def run_video_service(
         f" port={config.signaling_port}"
         f" source={config.source}"
         f" preset={config.preset}"
+        f" encoder={config.encoder_backend}"
+        f" bitrate={config.video_bitrate_bps / 1_000_000:.1f}Mbps"
     )
     print(f"signaling endpoint (TCP/WebSocket): ws://<HOST_IP>:{config.signaling_port}")
 
@@ -216,6 +218,24 @@ def build_base_parser(
         choices=("480p", "720p", "1080p"),
         help="Video resolution preset.",
     )
+    parser.add_argument(
+        "--encoder",
+        default="auto",
+        choices=("auto", "nvenc", "x264"),
+        help="H.264 encoder backend; auto prefers NVENC and falls back to x264.",
+    )
+    parser.add_argument(
+        "--nvenc-preset",
+        default="p1",
+        choices=("p1", "p2", "p3", "p4", "p5", "p6", "p7"),
+        help="NVENC performance/quality preset (p1 is lowest latency).",
+    )
+    parser.add_argument(
+        "--video-bitrate-mbps",
+        type=float,
+        default=10.0,
+        help="Initial WebRTC video bitrate in Mbps (clamped to 4-12).",
+    )
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logs.")
     if mujoco:
         parser.add_argument(
@@ -256,6 +276,9 @@ async def run_mujoco_host(
         signaling_port=args.tcp_port,
         source="mujoco",
         preset=args.preset,
+        encoder_backend=args.encoder,
+        nvenc_preset=args.nvenc_preset,
+        video_bitrate_bps=int(args.video_bitrate_mbps * 1_000_000),
         mj_model_path=args.mj_model,
         mj_camera=args.mj_camera,
         mj_pre_step=pre_step,

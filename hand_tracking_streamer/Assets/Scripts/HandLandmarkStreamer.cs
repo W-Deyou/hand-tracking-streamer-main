@@ -151,7 +151,9 @@ public class HandLandmarkStreamer : MonoBehaviour
         _sbPacket.Clear();
         _sbLog.Clear();
 
-        bool addDebugHeaderMeta = AppManager.Instance != null && AppManager.Instance.ShowDebugInfo;
+        bool showDebugInfo = AppManager.Instance != null && AppManager.Instance.ShowDebugInfo;
+        bool addDebugHeaderMeta = showDebugInfo;
+        bool writeHudLog = _logToHUD && showDebugInfo;
 
         uint frameId = 0;
         ulong sendTimestampNs = 0;
@@ -183,7 +185,7 @@ public class HandLandmarkStreamer : MonoBehaviour
             AppendQuaternion(_sbPacket, rootPose.rotation);
 
             // Prepare HUD Log
-            if (_logToHUD)
+            if (writeHudLog)
             {
                 _sbLog.AppendLine($"=== [{_handSide}] Wrist ==="); 
                 _sbLog.AppendLine($"Pos: {rootPose.position.ToString("F3")}");
@@ -219,7 +221,7 @@ public class HandLandmarkStreamer : MonoBehaviour
             }
 
             // HUD Log
-            if (_logToHUD)
+            if (writeHudLog)
             {
                 _sbLog.AppendLine($"=== [{_handSide}] Landmarks ===");
                 for (int i = 0; i < _displayJoints.Length; i++)

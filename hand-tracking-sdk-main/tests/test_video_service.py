@@ -6,6 +6,7 @@ from typing import Any
 
 from hand_tracking_sdk.video.schemas import SignalingMessage
 from hand_tracking_sdk.video.service import VideoService, VideoServiceConfig
+from hand_tracking_sdk.video.webrtc_sender import VideoSenderStats
 
 
 @dataclass
@@ -123,3 +124,45 @@ def test_video_service_hello_offer_stop_flow() -> None:
     assert fake_sender.stopped is True
     assert fake_sender.offer_seen == "v=0\r\nm=video 9 UDP/TLS/RTP/SAVPF 96\r\n"
     assert fake_sender.ice_seen == ["cand1"]
+
+
+def test_stats_include_encoder_backend_and_encode_time() -> None:
+    service = VideoService()
+    fake_signaling = _FakeSignaling()
+    service._signaling = fake_signaling  # type: ignore[assignment]
+
+    async def _run() -> None:
+        await service._emit_stats(
+            _FakeConnection(),  # type: ignore[arg-type]
+            "sess-stats",
+            VideoSenderStats(
+                fps=30.0,
+                bitrate_kbps=10_000.0,
+                frame_drops=0,
+                rtt_ms=4.0,
+                encoder_backend="nvenc",
+                encode_ms=2.345,
+            ),
+        )
+
+    asyncio.run(_run())
+
+    payload = fake_signaling.sent[0].payload
+    assert payload["encoder_backend"] == "nvenc"
+    assert payload["encode_ms"] == 2.35
+
+
+def test_default_sender_receives_encoder_config() -> None:
+    service = VideoService(
+        VideoServiceConfig(
+            encoder_backend="x264",
+            nvenc_preset="p3",
+            video_bitrate_bps=8_000_000,
+        )
+    )
+
+    sender = service._default_sender_factory(object(), "sess-config", 30)  # type: ignore[arg-type]
+
+    assert sender._requested_encoder_backend == "x264"
+    assert sender._nvenc_preset == "p3"
+    assert sender._video_bitrate_bps == 8_000_000

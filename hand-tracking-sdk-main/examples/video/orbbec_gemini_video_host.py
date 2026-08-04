@@ -42,6 +42,9 @@ async def _run() -> int:
         signaling_port=args.tcp_port,
         source="orbbec",
         preset=args.preset,
+        encoder_backend=args.encoder,
+        nvenc_preset=args.nvenc_preset,
+        video_bitrate_bps=int(args.video_bitrate_mbps * 1_000_000),
         webcam_index=args.webcam_index,
         verbose=args.verbose,
     )

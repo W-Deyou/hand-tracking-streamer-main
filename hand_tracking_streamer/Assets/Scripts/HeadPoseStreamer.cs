@@ -98,7 +98,8 @@ public class HeadPoseStreamer : MonoBehaviour
         _sbPacket.Clear();
         _sbLog.Clear();
 
-        bool addDebugHeaderMeta = AppManager.Instance != null && AppManager.Instance.ShowDebugInfo;
+        bool showDebugInfo = AppManager.Instance != null && AppManager.Instance.ShowDebugInfo;
+        bool addDebugHeaderMeta = showDebugInfo;
         if (addDebugHeaderMeta)
         {
             _frameId++;
@@ -114,7 +115,7 @@ public class HeadPoseStreamer : MonoBehaviour
         _sbPacket.Append(", ");
         AppendQuaternion(_sbPacket, rotation);
 
-        if (logToHUD)
+        if (logToHUD && showDebugInfo)
         {
             _sbLog.AppendLine("=== [Head] Pose ===");
             _sbLog.Append("Pos: ").AppendLine(FormatVector3Tuple(position));

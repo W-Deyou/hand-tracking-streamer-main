@@ -1,0 +1,17 @@
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/GAToUnityCallbacks.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroEnd.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroHeaderBegin.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroSourceBegin.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAApplication.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAConfiguration.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGADebug.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAEvents.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAInput.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGASoftKeyboard.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGASoftKeyboardCallbacks.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGATypes.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAVersion.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGACallbacks.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAConfigurationCallbacks.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAKeyEventCallbacks.h
+/home/wdy/wang_dy/hand-tracking-streamer-main/hand_tracking_streamer/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAMotionEventCallbacks.h
